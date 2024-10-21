@@ -1,13 +1,15 @@
 
 const BaseURL = 'http://x.xxx.xxx.xxx:xxxx'
+//后端地址
 
-const local_BaseURL = 'http://localhost:9090'
+// const local_BaseURL = 'http://localhost:9090'
+// 本地运行后端地址
 
 function request(url, method, data, header) {
 	// url:请求地址
 	// method:请求类型
 	// data:请求参数
-	// header:请求头
+	// header:请求头用于附加 token 等参数
     return new Promise((resolve, reject) => {
 			uni.showLoading({
 				title: '加载中...',

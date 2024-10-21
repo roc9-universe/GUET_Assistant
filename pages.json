@@ -33,7 +33,7 @@
 	],
 	"tabBar": {
 		"backgroundColor": "white",
-		"selectedColor": "#00009f",
+		"selectedColor": "#00009f",//导航栏选中字体颜色
 		"list": [
 			{
 				"pagePath": "pages/index/index",

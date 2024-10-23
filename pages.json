@@ -29,6 +29,41 @@
 				"navigationBarTitleText" : "我的",
 				"enablePullDownRefresh" : false
 			}
+		},
+		{
+			"path" : "pages/setting/setting",
+			"style" : 
+			{
+				"navigationBarTitleText" : "设置",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/login/login",
+			"style" : 
+			{
+				"navigationBarBackgroundColor": "#ffffff",
+				"navigationBarTitleText" : "登录", //使用环境不需要显示
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/register/register",
+			"style" : 
+			{
+				"navigationBarBackgroundColor": "#ffffff",
+				"navigationBarTitleText" : "注册", //使用环境不需要显示
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/enter/enter",
+			"style" : 
+			{
+				"navigationBarBackgroundColor": "#ffffff",
+				"navigationBarTitleText" : "加载", //使用环境不需要显示
+				"enablePullDownRefresh" : false
+			}
 		}
 	],
 	"tabBar": {

@@ -3,60 +3,55 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "问答页"
+				"navigationBarTitleText": "问答"
 			}
 		},
 		{
-			"path" : "pages/board/board",
-			"style" : 
-			{
-				"navigationBarTitleText" : "展板",
-				"enablePullDownRefresh" : false
+			"path": "pages/board/board",
+			"style": {
+				"navigationBarTitleText": "展板",
+				"enablePullDownRefresh": false
 			}
 		},
 		{
-			"path" : "pages/message/message",
-			"style" : 
-			{
-				"navigationBarTitleText" : "消息",
-				"enablePullDownRefresh" : false
+			"path": "pages/message/message",
+			"style": {
+				"navigationBarTitleText": "消息",
+				"enablePullDownRefresh": false
 			}
 		},
 		{
-			"path" : "pages/mine/mine",
-			"style" : 
-			{
-				"navigationBarTitleText" : "我的",
-				"enablePullDownRefresh" : false
+			"path": "pages/mine/mine",
+			"style": {
+				"navigationBarTitleText": "我的",
+				"enablePullDownRefresh": false
 			}
 		}
 	],
 	"tabBar": {
 		"backgroundColor": "white",
-		"selectedColor": "#00009f",//导航栏选中字体颜色
-		"list": [
-			{
-				"pagePath": "pages/index/index",
-				"iconPath": "static/icon/qa.png",
-				"selectedIconPath": "static/icon/qa_active.png",
-				"text": "问答"
-			},			{
-				"pagePath": "pages/board/board",
-				"iconPath": "static/icon/board.png",
-				"selectedIconPath": "static/icon/board_active.png",
-				"text": "展板"
-			},			{
-				"pagePath": "pages/message/message",
-				"iconPath": "static/icon/message.png",
-				"selectedIconPath": "static/icon/message_active.png",
-				"text": "消息"
-			},			{
-				"pagePath": "pages/mine/mine",
-				"iconPath": "static/icon/mine.png",
-				"selectedIconPath": "static/icon/mine_active.png",
-				"text": "我的"
-			}
-		]
+		"selectedColor": "#00009f", //导航栏选中字体颜色
+		"list": [{
+			"pagePath": "pages/index/index",
+			"iconPath": "static/icon/qa.png",
+			"selectedIconPath": "static/icon/qa_active.png",
+			"text": "问答"
+		}, {
+			"pagePath": "pages/board/board",
+			"iconPath": "static/icon/board.png",
+			"selectedIconPath": "static/icon/board_active.png",
+			"text": "展板"
+		}, {
+			"pagePath": "pages/message/message",
+			"iconPath": "static/icon/message.png",
+			"selectedIconPath": "static/icon/message_active.png",
+			"text": "消息"
+		}, {
+			"pagePath": "pages/mine/mine",
+			"iconPath": "static/icon/mine.png",
+			"selectedIconPath": "static/icon/mine_active.png",
+			"text": "我的"
+		}]
 	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

@@ -6,7 +6,7 @@ const SYSTEM_INFO = uni.getSystemInfoSync();
 /**
  * 获取状态栏的高度
  */
-export const getStatusBarHeight = () => SYSTEM_INFO.statusBarHeight || 15;
+export const getStatusBarHeight = () => SYSTEM_INFO.statusBarHeight || 0;
 
 /** 
  * 获取胶囊按钮具体高度
@@ -19,7 +19,7 @@ export const getTitleBarHeight = () => {
 		} = uni.getMenuButtonBoundingClientRect();
 		return height + (top - getStatusBarHeight()) * 2
 	} else {
-		return 40;
+		return 20;
 	}
 }
 

@@ -3,21 +3,21 @@
 		<!--头像-->
 		<view class="info">
 			<view class="profile">
-				<image class="avatar" src="../../static/icon/mine/avatar.jpg"/>
+				<image class="avatar" src="../../static/icon/mine/avatar.jpg" />
 				<view class="details">
 					<text class="name">XXX</text>
 					<text class="student-id">学号: XXXXXXXXXX</text>
 				</view>
 				<button class="edit-btn" @click="editinfo">编辑资料</button>
 			</view>
-			
+
 			<view class="identity">
 				<text class="school">桂林电子科技大学</text>
 				<image class="icon" src="../../static/icon/mine/school.svg"></image>
 			</view>
 			<text class="specific">学院学生</text>
 		</view>
-	
+
 		<!--功能-->
 		<view class="main">
 			<view class="menu-item" @click="goTomap">
@@ -44,16 +44,16 @@
 	export default {
 		data() {
 			return {
-				
+
 			}
 		},
 		methods: {
-			editinfo(){
+			editinfo() { //你好
 				uni.navigateTo({
 					url: "/pages/setting/setting"
 				})
 			},
-			goTomap(){
+			goTomap() {
 				uni.navigateTo({
 					url: "/pages/map/map"
 				})
@@ -63,69 +63,100 @@
 </script>
 
 <style>
-	.mine{
+	.mine {
 		display: flex;
 		flex-direction: column;
-		width: 100vw; height: calc(100vh - 94px);
+		width: 100vw;
+		height: calc(100vh - 94px);
 		background-color: #f8f8f8;
 	}
-	
-	.info{
+
+	.info {
 		background-color: #174E8E;
 		padding: 20rpx;
-		border-radius: 0 10px 0 10px;
-		height: 320rpx; width: 100vw;
+		border-radius: 0 0px 10px 10px;
+		height: 320rpx;
+		width: 100vw;
 	}
-	.profile{
-		display: flex; flex-direction: row;
+
+	.profile {
+		display: flex;
+		flex-direction: row;
 		align-items: center;
 	}
+
 	.avatar {
-		width: 120rpx; height: 120rpx; margin: 20rpx;
+		width: 120rpx;
+		height: 120rpx;
+		margin: 20rpx;
 		border-radius: 5px;
 	}
-	.details{
-		display: flex; flex-flow: column;
+
+	.details {
+		display: flex;
+		flex-flow: column;
 	}
-	.name{
-		font-size: 42rpx; font-weight: bold;
-		color: white; margin-bottom: 10rpx;
+
+	.name {
+		font-size: 42rpx;
+		font-weight: bold;
+		color: white;
+		margin-bottom: 10rpx;
 	}
-	.student-id{
-		font-size: 24rpx; color: #eaeaea;
+
+	.student-id {
+		font-size: 24rpx;
+		color: #eaeaea;
 	}
-	.edit-btn{
+
+	.edit-btn {
 		background-color: white;
-		color: #2A60B2; font-size: 24rpx;
-		border-radius: 10rpx; 
-		align-items: center; justify-content: center;
-		margin-left: 140rpx; height: 60rpx; width: 170rpx;
+		color: #2A60B2;
+		font-size: 24rpx;
+		border-radius: 10rpx;
+		align-items: center;
+		justify-content: center;
+		margin-left: 140rpx;
+		height: 60rpx;
+		width: 170rpx;
 	}
-	.identity{
-		display: flex; align-items: center; 
-		margin-left: 20rpx; margin-top: 20rpx;
+
+	.identity {
+		display: flex;
+		align-items: center;
+		margin-left: 20rpx;
+		margin-top: 20rpx;
 	}
-	.school{
-		font-size: 32rpx; color: white; 
-		margin-bottom: 10rpx; margin-right: 10rpx;
+
+	.school {
+		font-size: 32rpx;
+		color: white;
+		margin-bottom: 10rpx;
+		margin-right: 10rpx;
 	}
-	.specific{
-		font-size: 24rpx; color: #eaeaea;
-		margin-left: 20rpx; margin-top: 10rpx;
+
+	.specific {
+		font-size: 24rpx;
+		color: #eaeaea;
+		margin-left: 20rpx;
+		margin-top: 10rpx;
 	}
-	
-	.main{
+
+	.main {
 		padding: 20rpx;
 		margin-top: 50rpx;
 		background-color: white;
 	}
-	.menu-item{
-		display: flex; flex-direction: row;
+
+	.menu-item {
+		display: flex;
+		flex-direction: row;
 		align-items: center;
 		padding: 20rpx;
 		border-bottom: 1px solid #eaeaea;
 	}
-	.icon{
+
+	.icon {
 		width: 50rpx;
 		height: 50rpx;
 		margin-right: 20rpx;

@@ -3,7 +3,7 @@
 		<!--头像-->
 		<view class="info">
 			<view class="profile">
-				<image class="avatar" src="../../static/logo.png"/>
+				<image class="avatar" src="../../static/icon/mine/avatar.jpg"/>
 				<view class="details">
 					<text class="name">XXX</text>
 					<text class="student-id">学号: XXXXXXXXXX</text>
@@ -13,27 +13,27 @@
 			
 			<view class="identity">
 				<text class="school">桂林电子科技大学</text>
-				<image class="icon" src="../../static/logo.png"></image>
+				<image class="icon" src="../../static/icon/mine/school.svg"></image>
 			</view>
 			<text class="specific">学院学生</text>
 		</view>
 	
 		<!--功能-->
 		<view class="main">
-			<view class="menu-item">
-				<image class="icon" src="../../static/logo.png" />
+			<view class="menu-item" @click="goTomap">
+				<image class="icon" src="../../static/icon/mine/map.svg" />
 				<text>校内地图</text>
 			</view>
 			<view class="menu-item">
-				<image class="icon" src="../../static/logo.png" />
+				<image class="icon" src="../../static/icon/mine/weather.svg" />
 				<text>今日天气</text>
 			</view>
 			<view class="menu-item">
-				<image class="icon" src="../../static/logo.png" />
+				<image class="icon" src="../../static/icon/mine/about.svg" />
 				<text>关于我们</text>
 			</view>
 			<view class="menu-item" @click="editinfo">
-				<image class="icon" src="../../static/logo.png" />
+				<image class="icon" src="../../static/icon/mine/setting.svg" />
 				<text>设置</text>
 			</view>
 		</view>
@@ -52,6 +52,11 @@
 				uni.navigateTo({
 					url: "/pages/setting/setting"
 				})
+			},
+			goTomap(){
+				uni.navigateTo({
+					url: "/pages/map/map"
+				})
 			}
 		}
 	}
@@ -61,23 +66,23 @@
 	.mine{
 		display: flex;
 		flex-direction: column;
-		width: 100vw;
-		height: 100vh;
+		width: 100vw; height: calc(100vh - 94px);
 		background-color: #f8f8f8;
 	}
 	
 	.info{
 		background-color: #174E8E;
 		padding: 20rpx;
-		border-radius: 0 0 10px 10px;
+		border-radius: 0 10px 0 10px;
 		height: 24vh; width: 100vw;
 	}
 	.profile{
-		display: flex;
+		display: flex; flex-direction: row;
 		align-items: center;
 	}
 	.avatar {
 		width: 10vh; height: 10vh; margin: 20rpx;
+		border-radius: 5px;
 	}
 	.details{
 		display: flex; flex-flow: column;
@@ -91,7 +96,7 @@
 	}
 	.edit-btn{
 		background-color: white;
-		color: #2A60B2; font-size: 16rpx;
+		color: #2A60B2; font-size: 24rpx;
 		border-radius: 10rpx;
 		margin-right:50rpx; height: 5vh; width: 12vh;
 	}
@@ -112,10 +117,9 @@
 		padding: 20rpx;
 		margin-top: 50rpx;
 		background-color: white;
-		
 	}
 	.menu-item{
-		display: flex;
+		display: flex; flex-direction: row;
 		align-items: center;
 		padding: 20rpx;
 		border-bottom: 1px solid #eaeaea;

@@ -1,6 +1,6 @@
 <template>
 	<view class="content">
-		
+		<button @click="goenter" style="color: aquamarine;">enter</button>
 	</view>
 </template>
 
@@ -15,7 +15,11 @@
 
 		},
 		methods: {
-
+			goenter(){
+				uni.redirectTo({
+					url:"/pages/enter/enter"
+				})
+			}
 		}
 	}
 </script>

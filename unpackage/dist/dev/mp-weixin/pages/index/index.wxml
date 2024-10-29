@@ -1,1 +1,1 @@
-<view class="content"></view>
+<view class="content"><button bindtap="{{a}}" style="color:aquamarine">enter</button></view>

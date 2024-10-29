@@ -3,7 +3,13 @@
     "pages/index/index",
     "pages/board/board",
     "pages/message/message",
-    "pages/mine/mine"
+    "pages/mine/mine",
+    "pages/setting/setting",
+    "pages/login/login",
+    "pages/register/register",
+    "pages/enter/enter",
+    "pages/forgetPassword/forgetPassword",
+    "pages/map/map"
   ],
   "window": {
     "navigationBarTextStyle": "black",

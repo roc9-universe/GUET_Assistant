@@ -54,7 +54,12 @@
         "setting" : {
             "urlCheck" : false
         },
-        "usingComponents" : true
+        "usingComponents" : true,
+        "permission" : {
+            "scope.userLocation" : {
+                "desc" : "需要申请定位权限获取你当前的位置，以供校内地图定位。"
+            }
+        }
     },
     "mp-alipay" : {
         "usingComponents" : true

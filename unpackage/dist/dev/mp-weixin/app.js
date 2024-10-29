@@ -6,6 +6,12 @@ if (!Math) {
   "./pages/board/board.js";
   "./pages/message/message.js";
   "./pages/mine/mine.js";
+  "./pages/setting/setting.js";
+  "./pages/login/login.js";
+  "./pages/register/register.js";
+  "./pages/enter/enter.js";
+  "./pages/forgetPassword/forgetPassword.js";
+  "./pages/map/map.js";
 }
 const _sfc_main = {
   onLaunch: function() {

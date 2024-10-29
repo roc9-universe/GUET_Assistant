@@ -1,18 +1,20 @@
+<script setup>
+
+</script>
+
 <template>
 	<view class="content">
+<<<<<<< HEAD
 		<button @click="goenter" style="color: aquamarine;">enter</button>
+=======
+		恶趣味请问
+>>>>>>> 603b05e122ba48b22c206feaee45fa76f3cca9a9
 	</view>
 </template>
 
-<script>
-	export default {
-		data() {
-			return {
-				title: 'Hello'
-			}
-		},
-		onLoad() {
+<style lang="scss">
 
+<<<<<<< HEAD
 		},
 		methods: {
 			goenter(){
@@ -51,3 +53,6 @@
 		color: #8f8f94;
 	}
 </style>
+=======
+</style>
+>>>>>>> 603b05e122ba48b22c206feaee45fa76f3cca9a9

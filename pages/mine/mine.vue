@@ -98,7 +98,7 @@
 		background-color: white;
 		color: #2A60B2; font-size: 24rpx;
 		border-radius: 10rpx;
-		margin-right:50rpx; height: 5vh; width: 12vh;
+		margin-left:50rpx; height: 5vh; width: 12vh;
 	}
 	.identity{
 		display: flex; align-items: center; 

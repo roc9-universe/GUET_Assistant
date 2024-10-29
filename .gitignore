@@ -1,3 +1,4 @@
 # 忽略文件
 unpackage
 api/utils/url.js
+pages/index/index.vue

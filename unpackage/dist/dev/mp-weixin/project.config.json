@@ -20,7 +20,7 @@
   "compileType": "miniprogram",
   "libVersion": "3.6.2",
   "appid": "touristappid",
-  "projectname": "GUET_Assistant",
+  "projectname": "桂电助手",
   "condition": {},
   "editorSetting": {
     "tabIndent": "insertSpaces",

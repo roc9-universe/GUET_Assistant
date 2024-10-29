@@ -1,32 +1,22 @@
 <script setup>
+import { ref } from 'vue';
 
+const goEnter = () => {
+    // console.log("Button clicked, navigating to /pages/mine/mine");
+    uni.redirectTo({
+        url: "/pages/enter/enter"
+    });
+};
 </script>
 
 <template>
 	<view class="content">
-<<<<<<< HEAD
-		<button @click="goenter" style="color: aquamarine;">enter</button>
-=======
+		<button @click="goEnter">enter</button>
 		恶趣味请问
->>>>>>> 603b05e122ba48b22c206feaee45fa76f3cca9a9
 	</view>
 </template>
 
 <style lang="scss">
-
-<<<<<<< HEAD
-		},
-		methods: {
-			goenter(){
-				uni.redirectTo({
-					url:"/pages/enter/enter"
-				})
-			}
-		}
-	}
-</script>
-
-<style>
 	.content {
 		display: flex;
 		flex-direction: column;
@@ -53,6 +43,4 @@
 		color: #8f8f94;
 	}
 </style>
-=======
-</style>
->>>>>>> 603b05e122ba48b22c206feaee45fa76f3cca9a9
+

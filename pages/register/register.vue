@@ -117,10 +117,9 @@
 	}
 	
 	.registerBox{
-		width: 80%;
+		width: 80%; backdrop-filter: blur(10px);
 		background-color: rgba(255, 255, 255, 0.8);
-		padding: 20rpx;
-		border-radius: 20rpx;
+		padding: 20rpx; border-radius: 20rpx;
 		box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
 		margin-bottom: 40rpx;
 	}
@@ -130,7 +129,7 @@
 		margin-bottom: 15rpx;
 	}
 	.label{
-		font-size: 28rpx; width: 20%;
+		font-size: 28rpx; width: 120rpx;
 		margin:0 10rpx 0 10rpx;
 	}
 	.input{
@@ -203,7 +202,7 @@
 		width: 80%;
 		background-color: #174E8E;
 		color: white; text-align: center;
-		border-radius: 50rpx;
+		border-radius: 20rpx;
 		font-size: 32rpx; font-weight: bold;
 		margin-top: 30rpx; margin-bottom: 30rpx;
 	}

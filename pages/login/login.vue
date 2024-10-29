@@ -19,7 +19,7 @@
 		</view>
 		
 		<view class="social-login">
-			<text style="color: #f8f8f8;">————  其他方式  ————</text>
+			<text style="color: #f8f8f8;">———— 其他方式 ————</text>
 			<view class="iconGroup">
 				<image class="icon" src="/static/icon/login/wechat.svg" />
 				<image class="icon" src="/static/icon/login/QQ.svg" />
@@ -78,15 +78,15 @@
 	}
 	
 	.loginBox{
-		width: 80%;
+		width: 80%; backdrop-filter: blur(10px);
 		background-color: rgba(255, 255, 255, 0.8);
-		padding: 20rpx;
-		border-radius: 20rpx;
+		padding: 20rpx; border-radius: 20rpx;
 		box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
 		margin-bottom: 40rpx;
 	}
 	.input-group {
 		margin: 15rpx 0 30rpx 0;
+		align-items: center; justify-content: center;
 	}
 	.label {
 		width: 15%; font-size: 28rpx;
@@ -94,7 +94,7 @@
 		display: block;
 	}
 	.input {
-		width: 80%; border: none;
+		width: 95%; border: none;
 		border-bottom: 1rpx solid #ccc;
 		padding: 10rpx 0;
 		margin: 0 10rpx 0 10rpx;
@@ -102,10 +102,10 @@
 	}
 	
 	.login-button {
-		width: 60%;
+		width: 80%;
 		background-color: #174E8E;
 		color: white; text-align: center;
-		border-radius: 50rpx;
+		border-radius: 20rpx;
 		font-size: 32rpx; font-weight: bold;
 	}
 	.register{
@@ -125,7 +125,7 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		width: 60%;
+		width: 80%;
 		margin: 60rpx 0 30rpx 0;
 	}
 	.iconGroup{

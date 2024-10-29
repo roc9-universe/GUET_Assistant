@@ -1,1 +1,1 @@
-<view class="content"><button bindtap="{{a}}" style="color:brand-theme-color">enter</button> 恶趣味请问 </view>
+<view class="content"><button bindtap="{{a}}">enter</button> 恶趣味请问 </view>

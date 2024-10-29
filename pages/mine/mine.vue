@@ -74,14 +74,14 @@
 		background-color: #174E8E;
 		padding: 20rpx;
 		border-radius: 0 10px 0 10px;
-		height: 24vh; width: 100vw;
+		height: 320rpx; width: 100vw;
 	}
 	.profile{
 		display: flex; flex-direction: row;
 		align-items: center;
 	}
 	.avatar {
-		width: 10vh; height: 10vh; margin: 20rpx;
+		width: 120rpx; height: 120rpx; margin: 20rpx;
 		border-radius: 5px;
 	}
 	.details{
@@ -97,8 +97,9 @@
 	.edit-btn{
 		background-color: white;
 		color: #2A60B2; font-size: 24rpx;
-		border-radius: 10rpx;
-		margin-left:50rpx; height: 5vh; width: 12vh;
+		border-radius: 10rpx; 
+		align-items: center; justify-content: center;
+		margin-left: 140rpx; height: 60rpx; width: 170rpx;
 	}
 	.identity{
 		display: flex; align-items: center; 

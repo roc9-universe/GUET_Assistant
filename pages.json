@@ -39,7 +39,6 @@
 			"path" : "pages/login/login",
 			"style" : 
 			{
-				"navigationBarBackgroundColor": "#ffffff",
 				"navigationBarTitleText" : "登录",
 				"enablePullDownRefresh" : false,
 				"navigationStyle": "custom"
@@ -49,7 +48,6 @@
 			"path" : "pages/register/register",
 			"style" : 
 			{
-				"navigationBarBackgroundColor": "#ffffff",
 				"navigationBarTitleText" : "注册",
 				"enablePullDownRefresh" : false,
 				"navigationStyle": "custom"
@@ -59,7 +57,6 @@
 			"path" : "pages/enter/enter",
 			"style" : 
 			{
-				"navigationBarBackgroundColor": "#ffffff",
 				"navigationBarTitleText" : "加载",
 				"enablePullDownRefresh" : false,
 				"navigationStyle": "custom"
@@ -69,7 +66,6 @@
 			"path" : "pages/forgetPassword/forgetPassword",
 			"style" : 
 			{
-				"navigationBarBackgroundColor": "#ffffff",
 				"navigationBarTitleText" : "忘记密码",
 				"enablePullDownRefresh" : false,
 				"navigationStyle": "custom"

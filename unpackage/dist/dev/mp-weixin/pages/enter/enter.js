@@ -16,11 +16,6 @@ const _sfc_main = {
     }
   },
   mounted() {
-    this.timer = setTimeout(() => {
-      common_vendor.index.redirectTo({
-        url: "/pages/login/login"
-      });
-    }, 3e3);
   }
 };
 function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {

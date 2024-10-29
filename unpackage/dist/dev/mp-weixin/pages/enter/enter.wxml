@@ -1,0 +1,1 @@
+<view class="enter"><button class="skip" bindtap="{{a}}">跳过</button><view class="midWord"><text class="midChinese">桂电助手</text><text class="midPingyin">GUI DIAN ZHU SHOU</text></view><view class="buttom"><image src="{{b}}" class="img"></image><view class="underWord"><text class="underChinese">智慧校园</text><text class="underEnglish">CAMPUSHOY</text></view></view></view>

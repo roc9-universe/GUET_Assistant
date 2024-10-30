@@ -8,7 +8,7 @@
 			}
 		},
 		{
-			"path": "pages/chat/chat",
+			"path": "pages/qa/qa",
 			"style": {
 				"navigationBarTitleText": "问答"
 			}
@@ -66,10 +66,12 @@
 		}
 	],
 	"tabBar": {
-		"backgroundColor": "white",
-		"selectedColor": "#00009f", //导航栏选中字体颜色
+		"backgroundColor": "#f8f8f8",
+		"selectedColor": "#174E8E", //导航栏选中字体颜色
+		"borderStyle": "white",
+		"iconWidth": "20px",
 		"list": [{
-			"pagePath": "pages/chat/chat",
+			"pagePath": "pages/qa/qa",
 			"iconPath": "static/icon/qa.png",
 			"selectedIconPath": "static/icon/qa_active.png",
 			"text": "问答"
@@ -92,7 +94,7 @@
 	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "GUET_Assistant",
+		"navigationBarTitleText": "GUET助手",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"enablePullDownRefresh": false,
 		"backgroundColor": "#F8F8F8"

@@ -39,7 +39,7 @@
 		methods: {
 			goToquestion() {
 				uni.switchTab({
-					url: "/pages/chat/chat"
+					url: "/pages/qa/qa"
 				})
 			},
 			goToregister() {
@@ -56,7 +56,7 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
 	.loginPage {
 		display: flex;
 		flex-direction: column;
@@ -64,8 +64,6 @@
 		justify-content: center;
 		width: 100vw;
 		height: 100vh;
-		/*background-image: url("@/static/loginbg.png");
-		background-size: 100% 100%;*/
 	}
 
 	.background-image {
@@ -80,7 +78,8 @@
 	.title {
 		width: 80%;
 		font-weight: bolder;
-		color: #174E8E;
+		color: $brand-theme-color;
+		;
 		font-size: 64rpx;
 		margin-bottom: 50rpx;
 	}
@@ -119,7 +118,7 @@
 
 	.login-button {
 		width: 80%;
-		background-color: #174E8E;
+		background-color: $brand-theme-color;
 		color: white;
 		text-align: center;
 		border-radius: 20rpx;
@@ -154,12 +153,12 @@
 		flex-direction: row;
 		justify-content: space-around;
 		width: 100%;
-	}
 
-	.icon {
-		width: 80rpx;
-		height: 80rpx;
-		margin-top: 20rpx;
-		border-radius: 50rpx;
+		.icon {
+			width: 80rpx;
+			height: 80rpx;
+			margin-top: 20rpx;
+			border-radius: 50rpx;
+		}
 	}
 </style>

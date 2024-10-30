@@ -4,13 +4,12 @@
 </script>
 
 <template>
-	<view class="qa-box">
+	<view class="box qa-box">
 		<view class="qa-body">
 			<view v-for="index in 10" :key="index" class="qa-item" :class="index % 2 === 0? 'qa-item-user': ''">
 				<image class="qa-avatar" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
 				<view class="qa-content"> <text>{{data}}</text> </view>
 			</view>
-
 		</view>
 
 		<view class="qa-footer">
@@ -20,28 +19,12 @@
 	</view>
 </template>
 
-<style lang="scss" scoped>
-	// #ifdef H5
-	page {
-		height: 100%;
-	}
-
-	// #endif
-
+<style scoped lang="scss">
 	.qa-box {
-		width: 100%;
-		// #ifdef H5
-		height: 100%;
-		// #endif
-		// #ifndef H5
-		height: calc(100vh - constant(safe-area-inset-bottom));
-		height: calc(100vh - env(safe-area-inset-bottom));
-		// #endif
-		overflow: hidden;
-		background-color: $bg-color-grey;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
+		background-color: $bg-color-grey;
 
 		.qa-body {
 			height: 100%;
@@ -99,9 +82,9 @@
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				width: 140rpx;
+				min-width: 140rpx;
 				margin-left: 15rpx;
-				padding: 4rpx 1.34em;
+				padding: 4rpx 0;
 				background-color: $brand-theme-color;
 				color: white;
 			}

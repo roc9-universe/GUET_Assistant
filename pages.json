@@ -34,7 +34,9 @@
 		{
 			"path": "pages/setting/setting",
 			"style": {
-				"navigationBarTitleText": "设置"
+				"navigationBarTitleText": "设置",
+				"navigationBarBackgroundColor": "#174E8E",
+				"navigationBarTextStyle": "white"
 			}
 		},
 		{
@@ -94,7 +96,7 @@
 	},
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "GUET助手",
+		"navigationBarTitleText": "桂电助手",
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"enablePullDownRefresh": false,
 		"backgroundColor": "#F8F8F8"

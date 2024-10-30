@@ -41,6 +41,18 @@
 </template>
 
 <script>
+	import {
+		getNavBarHeight
+	} from "@/utils/system.js";
+	import {
+		ref
+	} from "vue";
+	
+	const buttonInfo = ref({
+		top: getNavBarHeight(),
+		right: 20
+	});
+	
 	export default {
 		data() {
 			return {
@@ -74,7 +86,7 @@
 	.info {
 		background-color: #174E8E;
 		padding: 20rpx;
-		border-radius: 0 0px 10px 10px;
+		border-radius: 0 0 10px 10px;
 		height: 320rpx;
 		width: 100vw;
 	}
@@ -116,7 +128,7 @@
 		border-radius: 10rpx;
 		align-items: center;
 		justify-content: center;
-		margin-left: 140rpx;
+		margin-right: 15rpx;
 		height: 60rpx;
 		width: 170rpx;
 	}

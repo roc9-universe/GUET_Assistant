@@ -1,9 +1,4 @@
-/*export function AMapWX(a) {
-    this.key = a.key;
-    this.requestConfig = { key: a.key, s: 'rsx', platform: 'WXJS', appname: a.key, sdkversion: '1.2.0', logversion: '2.0' };
-    this.MeRequestConfig = { key: a.key, serviceName: 'https://restapi.amap.com/rest/me' };
-}*/
-function AMapWX(a){this.key=a.key;this.requestConfig={key:a.key,s:"rsx",platform:"WXJS",appname:a.key,sdkversion:"1.2.0",logversion:"2.0"};this.MeRequestConfig={key:a.key,serviceName:"https://restapi.amap.com/rest/me"}}
+export function AMapWX(a){this.key=a.key;this.requestConfig={key:a.key,s:"rsx",platform:"WXJS",appname:a.key,sdkversion:"1.2.0",logversion:"2.0"};this.MeRequestConfig={key:a.key,serviceName:"https://restapi.amap.com/rest/me"}}
 AMapWX.prototype.getWxLocation=function(a,b){wx.getLocation({type:"gcj02",success:function(c){c=c.longitude+","+c.latitude;wx.setStorage({key:"userLocation",data:c});b(c)},fail:function(c){wx.getStorage({key:"userLocation",success:function(d){d.data&&b(d.data)}});a.fail({errCode:"0",errMsg:c.errMsg||""})}})};
 AMapWX.prototype.getMEKeywordsSearch=function(a){if(!a.options)return a.fail({errCode:"0",errMsg:"\u7f3a\u5c11\u5fc5\u8981\u53c2\u6570"});var b=a.options,c=this.MeRequestConfig,d={key:c.key,s:"rsx",platform:"WXJS",appname:a.key,sdkversion:"1.2.0",logversion:"2.0"};b.layerId&&(d.layerId=b.layerId);b.keywords&&(d.keywords=b.keywords);b.city&&(d.city=b.city);b.filter&&(d.filter=b.filter);b.sortrule&&(d.sortrule=b.sortrule);b.pageNum&&(d.pageNum=b.pageNum);b.pageSize&&(d.pageSize=b.pageSize);b.sig&&(d.sig=
 b.sig);wx.request({url:c.serviceName+"/cpoint/datasearch/local",data:d,method:"GET",header:{"content-type":"application/json"},success:function(e){(e=e.data)&&e.status&&"1"===e.status&&0===e.code?a.success(e.data):a.fail({errCode:"0",errMsg:e})},fail:function(e){a.fail({errCode:"0",errMsg:e.errMsg||""})}})};
@@ -34,5 +29,5 @@ AMapWX.prototype.getWalkingRoute=function(a){var b=Object.assign({},this.request
 AMapWX.prototype.getTransitRoute=function(a){var b=Object.assign({},this.requestConfig);a.origin&&(b.origin=a.origin);a.destination&&(b.destination=a.destination);a.strategy&&(b.strategy=a.strategy);a.city&&(b.city=a.city);a.cityd&&(b.cityd=a.cityd);wx.request({url:"https://restapi.amap.com/v3/direction/transit/integrated",data:b,method:"GET",header:{"content-type":"application/json"},success:function(c){c&&c.data&&c.data.route&&(c=c.data.route,a.success({distance:c.distance||"",taxi_cost:c.taxi_cost||
 "",transits:c.transits}))},fail:function(c){a.fail({errCode:"0",errMsg:c.errMsg||""})}})};
 AMapWX.prototype.getRidingRoute=function(a){var b=Object.assign({},this.requestConfig);a.origin&&(b.origin=a.origin);a.destination&&(b.destination=a.destination);wx.request({url:"https://restapi.amap.com/v3/direction/riding",data:b,method:"GET",header:{"content-type":"application/json"},success:function(c){c&&c.data&&c.data.route&&a.success({paths:c.data.route.paths})},fail:function(c){a.fail({errCode:"0",errMsg:c.errMsg||""})}})};//module.exports.AMapWX=AMapWX;
-module.exports.AMapWX = AMapWX;
+//module.exports.AMapWX = AMapWX;
 export default { AMapWX };

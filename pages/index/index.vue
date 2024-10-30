@@ -44,11 +44,11 @@
 		clearTimeout(timer.value);
 	};
 
-	/*timer.value = setTimeout(()=>{
+	timer.value = setTimeout(()=>{
 		uni.redirectTo({
 			url:'/pages/login/login'
 		});
-	},3000);*/
+	},2000);
 </script>
 
 <style>

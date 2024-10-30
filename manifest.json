@@ -54,11 +54,17 @@
 	    "setting" : {
 	        "urlCheck" : false
 	    },
-	    "usingComponents" : true,
+		"requiredPrivateInfos": ["chooseLocation","getLocation"],
+		"usingComponents" : true,
+		"lazyCodeLoading": "requiredComponents",
+		"libVersion": "latest",
 	    "permission" : {
 	        "scope.userLocation" : {
 	            "desc" : "需要申请定位权限获取你当前的位置，以供校内地图定位。"
-	        }
+			},
+			"scope.userProfile": {
+			    "desc": "获取用户信息"
+			}
 	    }
 	},
 	"mp-alipay": {

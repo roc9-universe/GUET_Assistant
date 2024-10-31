@@ -1,8 +1,14 @@
 <template>
 	<view class="registerPage">
 		<image class="background-image" src="/static/background/loginbg.png" mode="aspectFill"></image>
+		<view class="back" :style="{ top: buttonInfo.top + 'px', left: buttonInfo.left +'px' }" @click="goTologin">
+			<image class="backimg" src="../../static/icon/login/back.svg" ></image>
+			<text class="backword" >返回登录</text>
+		</view>
+	
 		<view class="title">注册</view>
-		<view class="registerBox">
+		
+		<form class="registerBox">
 			<view class="input-group">
 				<text class="label">用户名</text>
 				<input class="input" placeholder="请输入用户名" />
@@ -48,20 +54,29 @@
 				</scroll-view>
 			</view>
 
-			<button class="register-buttom" @click="goTologin">验证</button>
-		</view>
+			<button class="register-buttom" @click="register">验证</button>
+		</form>
 	</view>
 </template>
 
 <script>
+import { ref } from "vue";	
+import { getNavBarHeight } from "@/utils/system.js";
+const buttonInfo = ref({
+		top: getNavBarHeight(),
+		left: 20
+	});
+
 	export default {
 		data() {
 			return {
+				buttonInfo,
+				
 				selectedIdentity: "student",
 
 				showDropdown: false,
 				selectedOption: '',
-				options: ['选项1', '选项2', '选项3', '选项4', '选项5', '选项6', '选项7', '选项8'] // 示例选项
+				options: ['信息与通信学院', '选项2', '计算机与信息安全学院', '选项4', '选项5', '选项6', '选项7', '选项8'] // 示例选项
 			}
 		},
 		methods: {
@@ -81,6 +96,9 @@
 					url: "/pages/login/login"
 				})
 			},
+			register(){
+				this.goTologin();
+			}
 		}
 	}
 </script>
@@ -91,6 +109,7 @@
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+		position: relative;
 		width: 100vw;
 		height: 100vh;
 		/*background-color: #f8f8f8;
@@ -107,6 +126,23 @@
 		z-index: -1;
 	}
 
+	.back{
+		position: fixed;
+		display: flex;
+		flex-direction: row;
+		align-items: center;	
+	}
+	.backimg{
+		width: 50rpx;
+		height: 50rpx;
+	}
+	.backword{
+		margin-left: 10rpx;
+		color: $brand-theme-color;
+		font-size: 28rpx;
+		font-weight: bold;
+	}
+	
 	.title {
 		width: 80%;
 		font-weight: bolder;
@@ -141,7 +177,7 @@
 	.input {
 		width: 70%;
 		border: none;
-		border-bottom: 1rpx solid #ccc;
+		border-bottom: 1rpx solid $border-color;
 		padding: 10rpx;
 		margin: 0 10rpx 0 25rpx;
 		font-size: 28rpx;
@@ -184,8 +220,8 @@
 		margin-left: 24rpx;
 		height: 8%;
 		width: 70%;
-		background-color: #f8f8f8;
-		border: 1px solid #ccc;
+		background-color: $bg-color-grey;
+		border: 1px solid $border-color;
 		border-radius: 4px;
 		display: flex;
 		justify-content: space-between;
@@ -195,7 +231,7 @@
 
 	.arrow {
 		font-size: 28rpx;
-		color: #666;
+		color: black;
 	}
 
 	.dropdown-options {
@@ -203,7 +239,7 @@
 		top: 100%;
 		width: 100%;
 		background-color: white;
-		border: 1px solid #ccc;
+		border: 1px solid $border-color;
 		border-radius: 4px;
 		z-index: 10;
 		overflow-y: auto;
@@ -211,7 +247,7 @@
 
 	.dropdown-option {
 		padding: 20rpx;
-		border-bottom: 1px solid #eee;
+		border-bottom: 1px solid $border-color;
 		cursor: pointer;
 	}
 
@@ -220,7 +256,7 @@
 	}
 
 	.dropdown-option:hover {
-		background-color: #f0f0f0;
+		background-color: $bg-color-grey;
 	}
 
 	.register-buttom {

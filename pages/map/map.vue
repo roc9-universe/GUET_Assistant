@@ -6,7 +6,6 @@
                 <text class="tip-titile">{{ textData.name }}</text>
                 <text class="tip-address">{{ textData.address }}</text>
             </view>
-            <!--<view @click="choiceAddress" style="color: #174E8E;">确定</view>-->
         </view>
         <view class="map_container">
             <map
@@ -17,13 +16,15 @@
                 :scale="14"
                 :show-location="true"
                 :markers="markers"
+				:polyline="polyline"
                 @click="handleMarkerTap"></map>
         </view>
 
 		<view class="search">
 			<view v-show="isSearch" class="searchBox">
-			    <input type="text" v-model="searchKey" @change="handelSearch" placeholder="请输入搜索内容" />
-			    <text style="color: #174E8E; margin-left: 200rpx;" @click="handelSearch">搜索</text>
+			    <input type="text" v-model="searchKey" @focus="handleSearchTap" @input="handelSearch" placeholder="请输入搜索内容" />
+			    <text style="color: #174E8E; margin-left: 140rpx;" @click="handelSearch">搜索</text>
+				<text style="color: #174E8E; margin-left: 20rpx;" @click="handelCancel">重置</text>
 			</view>
 		</view>	
         <scroll-view scroll-y class="address-list">
@@ -66,9 +67,11 @@ const key = ref('af701eb29bf0d652372fb76c0b388410'); // 高德地图key
 const addressList = ref([]); // 周边列表
 const searchAddressList = ref([]); // 搜索返回的周边列表
 const activeId = ref(-1); // 当前选中的周边id
+const isFirstClick = ref(true); //是否首次搜索
 const isSearch = ref(false); // 是否搜索状态
 const searchKey = ref(''); // 用户搜索的内容
 let throttleTimer = null; // 定时器编号
+const polyline = ref([]); //导航路径
 const textData = ref({
     latitude: null,
     longitude: null,
@@ -84,49 +87,47 @@ const currentLocation = ref({
     latitude: null,
 });
 
+
 onMounted(() => {
     myAmapFun.value = new amapFile.AMapWX({ key: key.value });
-    getRegeo(true);
-	uni.getLocation({
-	    type: 'gcj02',
-	    success: (res) => {
-	        currentLocation.value.longitude = res.longitude;
-	        currentLocation.value.latitude = res.latitude;
-	    },
-	});
+    uni.getLocation({
+		type: 'gcj02',
+        success: (res) => {
+            currentLocation.value.longitude = res.longitude;
+            currentLocation.value.latitude = res.latitude;
+            longitude.value = res.longitude;
+            latitude.value = res.latitude;
+            getRegeo(true);
+        },
+    });
 });
 
 // 获取地址描述信息
 const getRegeo = (isUseResAddress) => {
-    let location = null;
-    if (longitude.value != null && latitude.value != null) {
-        location = longitude.value + ',' + latitude.value;
-    }
-
+    const location = `${longitude.value},${latitude.value}`;
     myAmapFun.value.getRegeo({
-        iconPath: '标记坐标图片',
+        iconPath: '../../static/icon/mine/position.svg',
         iconWidth: 22,
         iconHeight: 32,
         location: location,
         success: (data) => {
-            console.log('成功的数据', data[0].regeocodeData);
             addressList.value = data[0].regeocodeData.pois;
             if (isUseResAddress) {
                 latitude.value = data[0].latitude;
                 longitude.value = data[0].longitude;
             }
-			 textData.value = {
-			    latitude: data[0].latitude,
-			    longitude: data[0].longitude,
-			    name: data[0].name,
-			    address: data[0].desc,
-			    province: data[0].regeocodeData.addressComponent.province,
-			    city: data[0].regeocodeData.addressComponent.city,
-			    district: data[0].regeocodeData.addressComponent.district,
-			};
-		},
-        fail: function (info) {
-            wx.showModal({ title: info.errMsg });
+            textData.value = {
+                latitude: data[0].latitude,
+                longitude: data[0].longitude,
+                name: data[0].name,
+                address: data[0].desc,
+                province: data[0].regeocodeData.addressComponent.province,
+                city: data[0].regeocodeData.addressComponent.city,
+                district: data[0].regeocodeData.addressComponent.district,
+            };
+        },
+        fail: (info) => {
+            uni.showModal({ title: info.errMsg });
         },
     });
 };
@@ -170,9 +171,24 @@ const sureAddress = (ev, type) => {
 	    province: ev.province || '',
 	    city: ev.city || '',
 	    district: ev.district || '',
-	    width: '22',
-	    height: '32'
 	};
+};
+
+// 用户点击搜索框
+const handleSearchTap = () => {
+	if (isFirstClick.value) {
+		searchKey.value = ''; // 清空搜索内容
+		searchAddressList.value = []; // 清空搜索列表
+		isSearch.value = true;
+		isFirstClick.value = false;
+	}
+};
+// 用户点击重置按钮（搜索列表页）
+const handelCancel = () => {
+    searchKey.value = ''; // 清空搜索内容
+    searchAddressList.value = []; // 清空搜索列表
+    isSearch.value = false;
+	isFirstClick.value = true;
 };
 
 // 用户搜索内容
@@ -184,7 +200,7 @@ const handelSearch = (ev) => {
         // 只有输入框内有值的时候才会搜索
         if (searchKey.value) {
             myAmapFun.value.getPoiAround({
-                iconPath: '标记图片',
+                iconPath: '../../static/icon/mine/position.svg',
                 iconWidth: 22,
                 iconHeight: 32,
                 location: location,
@@ -207,19 +223,11 @@ const handelSearch = (ev) => {
         }
     }, 500);
 };
-// 用户选择了位置
-const choiceAddress = () => {
-    secretStore.addressInfo = textData.value; // 将数据存到内存中
-    uni.navigateBack();
-};
 
-// 路径导航
+//导航规划路径
 const navigateToSelectedLocation = () => {
     if (!longitude.value || !latitude.value || !currentLocation.value.longitude || !currentLocation.value.latitude) {
-        uni.showToast({
-            title: '请先选择位置',
-            icon: 'none',
-        });
+        uni.showToast({ title: '请先选择位置', icon: 'none' });
         return;
     }
 
@@ -228,47 +236,29 @@ const navigateToSelectedLocation = () => {
         destination: `${longitude.value},${latitude.value}`,
         success: (data) => {
             if (data.paths && data.paths[0] && data.paths[0].steps) {
-                const steps = data.paths[0].steps;
-                const route = steps.map(step => ({
-                    longitude: parseFloat(step.polyline.split(';')[0].split(',')[0]),
-                    latitude: parseFloat(step.polyline.split(';')[0].split(',')[1]),
-                }));
-
-                // 在地图上展示路径
+                const routePoints = data.paths[0].steps.flatMap(step =>
+                    step.polyline.split(';').map(point => {
+                        const [lng, lat] = point.split(',').map(Number);
+                        return { longitude: lng, latitude: lat };
+                    })
+                );
                 markers.value = [
-                    ...markers.value,
-                    ...route.map((point, index) => ({
-                        id: index + 1,
-                        latitude: point.latitude,
-                        longitude: point.longitude,
-                        iconPath: '标记图片', // 可自定义路径标记的图标
-                        width: 10,
-                        height: 10,
-                    })),
+                    { id: 0, latitude: currentLocation.value.latitude, longitude: currentLocation.value.longitude, iconPath: 'start_icon', width: 30, height: 30 },
+                    { id: 1, latitude: latitude.value, longitude: longitude.value, iconPath: 'end_icon', width: 30, height: 30 },
                 ];
-                uni.showToast({
-                    title: '导航路径已生成',
-                    icon: 'none',
-                });
+                polyline.value = [{ points: routePoints, color: "#174E8E", width: 6, dottedLine: false }];
+                uni.showToast({ title: '导航路径已生成', icon: 'none' });
             } else {
-                uni.showToast({
-                    title: '路径规划失败',
-                    icon: 'none',
-                });
+                uni.showToast({ title: '路径规划失败', icon: 'none' });
             }
         },
-        fail: (info) => {
-            console.error(info);
-            uni.showToast({
-                title: '路径规划失败',
-                icon: 'none',
-            });
-        },
+        fail: (info) => uni.showToast({ title: '路径规划失败', icon: 'none' }),
     });
 };
 </script>
 
 <style lang="scss" scoped>
+//@import url(@/common/style/base-style.scss);
 :deep(.uni-easyinput__placeholder-class) {
     background-color: red !important;
 }
@@ -307,7 +297,7 @@ text {
     bottom: auto;
     left: 50rpx;
     right: 50rpx;
-    height: 700rpx;
+    height: 650rpx;
 	width: 650rpx;
     overflow-y: auto; /* 添加滚动条 */
     .address-list-item {
@@ -358,6 +348,12 @@ text {
     }
 }
 .navigate{
-	
+	width: 750rpx;
+	height: 90rpx;
+	background-color: #174E8E;
+	font-size: 36rpx;
+	color: white;
+	align-items: center;
+	justify-content: center;
 }
 </style>

@@ -12,7 +12,7 @@
 				<text class="midPingyin">GUI DIAN ZHU SHOU</text>
 			</view>
 
-			<view class="buttom">
+			<view class="bottom">
 				<image src="../../static/icon/enter/zhxy.jpg" class="img"></image>
 				<view class="underWord">
 					<text class="underChinese">智慧校园</text>
@@ -51,17 +51,17 @@
 	},2000);
 </script>
 
-<style>
+<style lang="scss">
 	.enter {
 		width: 100vw;
 		height: 100vh;
-		background-color: #f8f8f8;
+		background-color: $bg-color-grey;
 		overflow: hidden;
 		position: relative;
 	}
 
 	.skip {
-		background-color: #174E8E;
+		background-color: $brand-theme-color;
 		color: white;
 		width: 120rpx;
 		font-size: 24rpx;
@@ -74,59 +74,59 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
-	}
+	
+		.midWord {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			margin-top: 20vh;
+		
+			.midChinese {
+				font-size: 64rpx;
+				color: $brand-theme-color;
+				font-weight: bold;
+			}
 
-	.midWord {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		margin-top: 20vh;
-	}
+			.midPingyin {
+				font-size: 24rpx;
+				color: $brand-theme-color;
+				margin-top: 10rpx;
+			}
+		}
+	
+		.bottom {
+			width: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-bottom: 15vh;
 
-	.midChinese {
-		font-size: 64rpx;
-		color: #174E8E;
-		font-weight: bold;
-	}
+			.img {
+				width: 180rpx;
+				height: 180rpx;
+				border-radius: 10px;
+			}
 
-	.midPingyin {
-		font-size: 24rpx;
-		color: #174E8E;
-		margin-top: 10rpx;
-	}
+			.underWord {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				margin-left: 50rpx;
+			}
 
-	.buttom {
-		width: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		margin-bottom: 15vh;
-	}
+			.underChinese {
+				font-size: 64rpx;
+				font-style: italic;
+				text-shadow: 2rpx 2rpx 4rpx rgba(0, 0, 0, 0.5);
+			}
 
-	.img {
-		width: 180rpx;
-		height: 180rpx;
-		border-radius: 10px;
-	}
-
-	.underWord {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		margin-left: 50rpx;
-	}
-
-	.underChinese {
-		font-size: 64rpx;
-		font-style: italic;
-		text-shadow: 2rpx 2rpx 4rpx rgba(0, 0, 0, 0.5);
-	}
-
-	.underEnglish {
-		font-size: 32rpx;
-		margin-top: 10rpx;
-		letter-spacing: 5rpx;
+			.underEnglish {
+				font-size: 32rpx;
+				margin-top: 10rpx;
+				letter-spacing: 5rpx;
+			}
+		}
 	}
 </style>

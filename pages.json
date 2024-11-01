@@ -20,6 +20,12 @@
 			}
 		},
 		{
+			"path": "pages/noticeList/noticeList",
+			"style": {
+				"navigationBarTitleText": "公告列表"
+			}
+		},
+		{
 			"path": "pages/message/message",
 			"style": {
 				"navigationBarTitleText": "消息"

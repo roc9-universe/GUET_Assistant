@@ -9,16 +9,14 @@ page {
 
 	// #endif
 
-// 全局背景样式，动态计算背景铺满，h5页面需要额外设置page { height: 100%; }
+// 全局背景样式，h5页面需要额外设置page { height: 100%; }
 .box {
 	width: 100%;
 	// #ifdef H5
 	height: 100%;
 	// #endif
 	// #ifndef H5
-	height: calc(100vh - constant(safe-area-inset-bottom));
-	height: calc(100vh - env(safe-area-inset-bottom));
+	height: 100vh;
 	// #endif
-	// overflow: hidden;
 	background-color: $uni-bg-color-grey;
 }

@@ -28,7 +28,7 @@
 				<image class="icon" src="../../static/icon/mine/weather.svg" />
 				<text>今日天气</text>
 			</view>
-			<view class="menu-item">
+			<view class="menu-item" @click="goToabout">
 				<image class="icon" src="../../static/icon/mine/about.svg" />
 				<text>关于我们</text>
 			</view>
@@ -40,23 +40,11 @@
 	</view>
 </template>
 
-<script>
-	import {
-		getNavBarHeight
-	} from "@/utils/system.js";
-	import {
-		ref
-	} from "vue";
-	
-	const buttonInfo = ref({
-		top: getNavBarHeight(),
-		right: 20
-	});
-	
+<script>	
 	export default {
 		data() {
 			return {
-
+		
 			}
 		},
 		methods: {
@@ -68,6 +56,11 @@
 			goTomap() {
 				uni.navigateTo({
 					url: "/pages/map/map"
+				})
+			},
+			goToabout(){
+				uni.navigateTo({
+					url: "/pages/about/about"
 				})
 			}
 		}
@@ -153,7 +146,7 @@
 		}
 	}
 	.main {
-		padding: 20rpx;
+		padding: 10rpx 20rpx 20rpx 20rpx;
 		margin-top: 50rpx;
 		margin-bottom: 20rpx;
 		background-color: white;

@@ -34,9 +34,7 @@
 		{
 			"path": "pages/setting/setting",
 			"style": {
-				"navigationBarTitleText": "设置",
-				"navigationBarBackgroundColor": "#174E8E",
-				"navigationBarTextStyle": "white"
+				"navigationBarTitleText": "设置"
 			}
 		},
 		{
@@ -64,6 +62,13 @@
 			"path": "pages/map/map",
 			"style": {
 				"navigationBarTitleText": "校内地图"
+			}
+		},
+		{
+			"path" : "pages/about/about",
+			"style" : 
+			{
+				"navigationBarTitleText" : "关于我们"
 			}
 		}
 	],

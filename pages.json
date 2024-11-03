@@ -65,6 +65,13 @@
 			}
 		},
 		{
+			"path" : "pages/weather/weather",
+			"style" : 
+			{
+				"navigationBarTitleText" : "今日天气"
+      }
+    },
+    {
 			"path" : "pages/about/about",
 			"style" : 
 			{

@@ -63,6 +63,13 @@
 			"style": {
 				"navigationBarTitleText": "校内地图"
 			}
+		},
+		{
+			"path" : "pages/weather/weather",
+			"style" : 
+			{
+				"navigationBarTitleText" : "今日天气"
+			}
 		}
 	],
 	"tabBar": {

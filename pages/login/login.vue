@@ -2,17 +2,19 @@
 	<view class="loginPage">
 		<image class="background-image" src="/static/background/loginbg.png" mode="aspectFill"></image>
 		<view class="title">登录</view>
-		<view class="loginBox">
-			<view class="input-group">
-				<text class="label">学号</text>
-				<input class="input" placeholder="请输入学号" />
+		<form class="form">
+			<view class="loginBox">
+				<view class="input-group">
+					<text class="label">学号</text>
+					<input class="input" v-model="studentId" placeholder="请输入学号" required/>
+				</view>
+				<view class="input-group">
+					<text class="label">密码</text>
+					<input class="input" v-model="password" placeholder="请输入密码" type="password" required/>
+				</view>
 			</view>
-			<view class="input-group">
-				<text class="label">密码</text>
-				<input class="input" placeholder="请输入密码" password="true" />
-			</view>
-		</view>
-		<button class="login-button" @click="goToquestion">登录</button>
+			<button class="login-button" type="button" @click="goToquestion">登录</button>
+		</form>
 		<view class="register">
 			<text class="register-option" @click="goToregister">账号注册</text>
 			<text class="register-option" @click="goToforget">忘记密码</text>
@@ -33,13 +35,14 @@
 	export default {
 		data() {
 			return {
-
-			}
-		},
+                studentId: null,
+                password: null,
+            };
+        },
 		methods: {
 			goToquestion() {
 				uni.switchTab({
-					url: "/pages/chat/chat"
+					url: "/pages/qa/qa"
 				})
 			},
 			goToregister() {
@@ -56,7 +59,7 @@
 	}
 </script>
 
-<style>
+<style lang="scss">
 	.loginPage {
 		display: flex;
 		flex-direction: column;
@@ -64,8 +67,6 @@
 		justify-content: center;
 		width: 100vw;
 		height: 100vh;
-		/*background-image: url("@/static/loginbg.png");
-		background-size: 100% 100%;*/
 	}
 
 	.background-image {
@@ -80,46 +81,50 @@
 	.title {
 		width: 80%;
 		font-weight: bolder;
-		color: #174E8E;
+		color: $brand-theme-color;
+		;
 		font-size: 64rpx;
 		margin-bottom: 50rpx;
 	}
 
-	.loginBox {
+	.form{
 		width: 80%;
+	}
+
+	.loginBox {
 		backdrop-filter: blur(10px);
 		background-color: rgba(255, 255, 255, 0.8);
 		padding: 20rpx;
 		border-radius: 20rpx;
 		box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
 		margin-bottom: 40rpx;
-	}
+		
+		.input-group {
+			margin: 15rpx 0 30rpx 0;
+			align-items: center;
+			justify-content: center;
+		}
 
-	.input-group {
-		margin: 15rpx 0 30rpx 0;
-		align-items: center;
-		justify-content: center;
-	}
+		.label {
+			width: 15%;
+			font-size: 28rpx;
+			margin: 0 10rpx 0 10rpx;
+			display: block;
+		}
 
-	.label {
-		width: 15%;
-		font-size: 28rpx;
-		margin: 0 10rpx 0 10rpx;
-		display: block;
-	}
-
-	.input {
-		width: 95%;
-		border: none;
-		border-bottom: 1rpx solid #ccc;
-		padding: 10rpx 0;
-		margin: 0 10rpx 0 10rpx;
-		font-size: 28rpx;
+		.input {
+			width: 95%;
+			border: none;
+			border-bottom: 1rpx solid $border-color;
+			padding: 10rpx 0;
+			margin: 0 10rpx 0 10rpx;
+			font-size: 28rpx;
+		}
 	}
 
 	.login-button {
 		width: 80%;
-		background-color: #174E8E;
+		background-color: $brand-theme-color;
 		color: white;
 		text-align: center;
 		border-radius: 20rpx;
@@ -132,15 +137,15 @@
 		justify-content: space-around;
 		width: 100%;
 		margin: 20rpx;
+	
+		.register-option {
+			color: #f8f8f8;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
 	}
-
-	.register-option {
-		color: #f8f8f8;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
-
+	
 	.social-login {
 		display: flex;
 		flex-direction: column;
@@ -154,12 +159,12 @@
 		flex-direction: row;
 		justify-content: space-around;
 		width: 100%;
-	}
 
-	.icon {
-		width: 80rpx;
-		height: 80rpx;
-		margin-top: 20rpx;
-		border-radius: 50rpx;
+		.icon {
+			width: 80rpx;
+			height: 80rpx;
+			margin-top: 20rpx;
+			border-radius: 50rpx;
+		}
 	}
 </style>

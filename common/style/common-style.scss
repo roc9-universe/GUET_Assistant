@@ -2,3 +2,21 @@ view,swiper,swiper-item{
 	box-sizing: border-box;
 }
 
+// #ifdef H5
+page {
+	height: 100%;
+}
+
+	// #endif
+
+// 全局背景样式，h5页面需要额外设置page { height: 100%; }
+.box {
+	width: 100%;
+	// #ifdef H5
+	height: 100%;
+	// #endif
+	// #ifndef H5
+	height: 100vh;
+	// #endif
+	background-color: $uni-bg-color-grey;
+}

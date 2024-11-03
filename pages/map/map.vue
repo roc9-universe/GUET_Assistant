@@ -6,7 +6,6 @@
                 <text class="tip-titile">{{ textData.name }}</text>
                 <text class="tip-address">{{ textData.address }}</text>
             </view>
-            <view @click="choiceAddress" style="color: #0079ff">确定</view>
         </view>
         <view class="map_container">
             <map
@@ -17,16 +16,19 @@
                 :scale="14"
                 :show-location="true"
                 :markers="markers"
+				:polyline="polyline"
                 @click="handleMarkerTap"></map>
         </view>
 
+		<view class="search">
+			<view v-show="isSearch" class="searchBox">
+			    <input type="text" v-model="searchKey" @focus="handleSearchTap" @input="handelSearch" placeholder="请输入搜索内容" />
+			    <text style="color: #174E8E; margin-left: 140rpx;" @click="handelSearch">搜索</text>
+				<text style="color: #174E8E; margin-left: 20rpx;" @click="handelCancel">重置</text>
+			</view>
+		</view>	
         <scroll-view scroll-y class="address-list">
             <view v-show="!isSearch">
-                <view class="search">
-                    <view class="searchBox" @click="handleSearchTap">
-                        <text style="font-size: 26rpx; color: gray"> 搜索地点 </text>
-                    </view>
-                </view>
                 <view class="address-list-item" v-for="item in addressList" :key="item.id" @click="sureAddress(item)">
                     <view>
                         <text class="tip-titile">{{ item.name }}</text>
@@ -38,12 +40,6 @@
                 </view>
             </view>
             <view v-show="isSearch">
-                <view class="search">
-                    <view class="searchBox">
-                        <input type="text" v-model="searchKey" @change="handelSearch" placeholder="请输入搜索内容" />
-                        <text style="color: #0079ff" @click="handelCancel">取消</text>
-                    </view>
-                </view>
                 <view class="address-list-item" v-for="item in searchAddressList" :key="item.id" @click="sureAddress(item)">
                     <view>
                         <text class="tip-titile">{{ item.name }}</text>
@@ -55,6 +51,7 @@
                 </view>
             </view>
         </scroll-view>
+		<button class="navigate" @click="navigateToSelectedLocation">开始导航</button>
     </view>
 </template>
 
@@ -66,50 +63,71 @@ const longitude = ref(null); // 经度
 const latitude = ref(null); // 纬度
 const markers = ref([]); // 标记点
 const myAmapFun = ref(null);
-const key = ref('	af701eb29bf0d652372fb76c0b388410'); // 高德地图key
+const key = ref('af701eb29bf0d652372fb76c0b388410'); // 高德地图key
 const addressList = ref([]); // 周边列表
 const searchAddressList = ref([]); // 搜索返回的周边列表
 const activeId = ref(-1); // 当前选中的周边id
+const isFirstClick = ref(true); //是否首次搜索
 const isSearch = ref(false); // 是否搜索状态
 const searchKey = ref(''); // 用户搜索的内容
 let throttleTimer = null; // 定时器编号
+const polyline = ref([]); //导航路径
 const textData = ref({
-    latitude: '', // 纬度
-    longitude: '', // 经度
-    name: '', // 名称
-    address: '', // 详细地址
-    province: '', // 省份
-    city: '', // 城市
-    district: '', // 区县
+    latitude: null,
+    longitude: null,
+    name: null,
+    address: null,
+    province: null,
+    city: null,
+    district: null,
 });
+// 用户当前位置的经纬度
+const currentLocation = ref({
+    longitude: null,
+    latitude: null,
+});
+
 
 onMounted(() => {
     myAmapFun.value = new amapFile.AMapWX({ key: key.value });
-    getRegeo(true);
+    uni.getLocation({
+		type: 'gcj02',
+        success: (res) => {
+            currentLocation.value.longitude = res.longitude;
+            currentLocation.value.latitude = res.latitude;
+            longitude.value = res.longitude;
+            latitude.value = res.latitude;
+            getRegeo(true);
+        },
+    });
 });
 
 // 获取地址描述信息
 const getRegeo = (isUseResAddress) => {
-    let location = null;
-    if (longitude.value != null && latitude.value != null) {
-        location = longitude.value + ',' + latitude.value;
-    }
-
+    const location = `${longitude.value},${latitude.value}`;
     myAmapFun.value.getRegeo({
-        iconPath: '标记坐标图片',
+        iconPath: '../../static/icon/mine/position.svg',
         iconWidth: 22,
         iconHeight: 32,
         location: location,
         success: (data) => {
-            console.log('成功的数据', data[0].regeocodeData);
             addressList.value = data[0].regeocodeData.pois;
             if (isUseResAddress) {
                 latitude.value = data[0].latitude;
                 longitude.value = data[0].longitude;
             }
+            textData.value = {
+                latitude: data[0].latitude,
+                longitude: data[0].longitude,
+                name: data[0].name,
+                address: data[0].desc,
+                province: data[0].regeocodeData.addressComponent.province,
+                city: data[0].regeocodeData.addressComponent.city,
+                district: data[0].regeocodeData.addressComponent.district,
+            };
         },
-        fail: function (info) {
-            wx.showModal({ title: info.errMsg });
+        fail: (info) => {
+            uni.showModal({ title: info.errMsg });
         },
     });
 };
@@ -144,19 +162,35 @@ const sureAddress = (ev, type) => {
             longitude: longitude.value, // 正确地使用了longitude变量
         },
     ];
+	
+	textData.value = {
+	    latitude: latitude.value,
+	    longitude: longitude.value,
+	    name: ev.name,
+	    address: ev.address,
+	    province: ev.province || '',
+	    city: ev.city || '',
+	    district: ev.district || '',
+	};
 };
-// 用户点击搜索按钮
+
+// 用户点击搜索框
 const handleSearchTap = () => {
-    searchKey.value = ''; // 清空搜索内容
-    searchAddressList.value = []; // 清空搜索列表
-    isSearch.value = true;
+	if (isFirstClick.value) {
+		searchKey.value = ''; // 清空搜索内容
+		searchAddressList.value = []; // 清空搜索列表
+		isSearch.value = true;
+		isFirstClick.value = false;
+	}
 };
-// 用户点击取消按钮（搜索列表页）
+// 用户点击重置按钮（搜索列表页）
 const handelCancel = () => {
     searchKey.value = ''; // 清空搜索内容
     searchAddressList.value = []; // 清空搜索列表
     isSearch.value = false;
+	isFirstClick.value = true;
 };
+
 // 用户搜索内容
 const handelSearch = (ev) => {
     if (throttleTimer) {
@@ -166,7 +200,7 @@ const handelSearch = (ev) => {
         // 只有输入框内有值的时候才会搜索
         if (searchKey.value) {
             myAmapFun.value.getPoiAround({
-                iconPath: '标记图片',
+                iconPath: '../../static/icon/mine/position.svg',
                 iconWidth: 22,
                 iconHeight: 32,
                 location: location,
@@ -189,30 +223,46 @@ const handelSearch = (ev) => {
         }
     }, 500);
 };
-// 用户选择了位置
-const choiceAddress = () => {
-    secretStore.addressInfo = textData.value; // 将数据存到内存中
-    uni.navigateBack();
+
+//导航规划路径
+const navigateToSelectedLocation = () => {
+    if (!longitude.value || !latitude.value || !currentLocation.value.longitude || !currentLocation.value.latitude) {
+        uni.showToast({ title: '请先选择位置', icon: 'none' });
+        return;
+    }
+
+    myAmapFun.value.getWalkingRoute({
+        origin: `${currentLocation.value.longitude},${currentLocation.value.latitude}`,
+        destination: `${longitude.value},${latitude.value}`,
+        success: (data) => {
+            if (data.paths && data.paths[0] && data.paths[0].steps) {
+                const routePoints = data.paths[0].steps.flatMap(step =>
+                    step.polyline.split(';').map(point => {
+                        const [lng, lat] = point.split(',').map(Number);
+                        return { longitude: lng, latitude: lat };
+                    })
+                );
+                markers.value = [
+                    { id: 0, latitude: currentLocation.value.latitude, longitude: currentLocation.value.longitude, iconPath: 'start_icon', width: 30, height: 30 },
+                    { id: 1, latitude: latitude.value, longitude: longitude.value, iconPath: 'end_icon', width: 30, height: 30 },
+                ];
+                polyline.value = [{ points: routePoints, color: "#174E8E", width: 6, dottedLine: false }];
+                uni.showToast({ title: '导航路径已生成', icon: 'none' });
+            } else {
+                uni.showToast({ title: '路径规划失败', icon: 'none' });
+            }
+        },
+        fail: (info) => uni.showToast({ title: '路径规划失败', icon: 'none' }),
+    });
 };
 </script>
 
 <style lang="scss" scoped>
+//@import url(@/common/style/base-style.scss);
 :deep(.uni-easyinput__placeholder-class) {
     background-color: red !important;
 }
-.container {
-    width: 680.56rpx;
-    height: 416.67rpx;
-    margin: 6.94rpx 0;
-    border: 1px solid #e3e3e3;
 
-    .coordinate {
-        z-index: 9999;
-        position: relative;
-        top: 50%;
-        left: 50%;
-    }
-}
 .map_container {
     position: relative;
     top: 0;
@@ -223,7 +273,7 @@ const choiceAddress = () => {
 .map {
     width: 100%;
     /* 计算总的高度，减去底部空间，然后取45% */
-    height: calc((100vh - 80px) * 0.45);
+    height: 450rpx;
 }
 .map_text {
     background: #fff;
@@ -245,10 +295,10 @@ text {
     position: relative;
     top: auto; /* 移除绝对定位 */
     bottom: auto;
-    left: 0;
-    right: 0;
-    /* 同样计算剩余的高度，取剩下的45% */
-    height: calc((100vh - 80px) * 0.7);
+    left: 50rpx;
+    right: 50rpx;
+    height: 650rpx;
+	width: 650rpx;
     overflow-y: auto; /* 添加滚动条 */
     .address-list-item {
         border-bottom: 1px solid #eee;
@@ -268,11 +318,13 @@ text {
 }
 .search {
     width: 750rpx;
-    padding: 8px 15px;
+    padding: 8rpx;
     background-color: #fff;
     border-radius: 10rpx;
     border-bottom: 1px solid #eee;
-
+	align-items: center;
+	margin-left: 40rpx;
+	
     .searchBox {
         height: 65rpx;
         width: 90%;
@@ -286,12 +338,22 @@ text {
 
     .searchInput {
         height: 45rpx;
-        padding: 8px 15px;
+        padding: 8px;
         outline: none;
         border: 1px solid #d3d3d3;
         border-radius: 5px;
         background-color: #ebebeb;
-        margin-top: 10px;
+        margin-top: 20rpx;
+		margin-right: 50rpx;
     }
+}
+.navigate{
+	width: 750rpx;
+	height: 90rpx;
+	background-color: #174E8E;
+	font-size: 36rpx;
+	color: white;
+	align-items: center;
+	justify-content: center;
 }
 </style>

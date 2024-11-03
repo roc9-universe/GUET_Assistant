@@ -28,7 +28,7 @@
 				<image class="icon" src="../../static/icon/mine/weather.svg" />
 				<text>今日天气</text>
 			</view>
-			<view class="menu-item">
+			<view class="menu-item" @click="goToabout">
 				<image class="icon" src="../../static/icon/mine/about.svg" />
 				<text>关于我们</text>
 			</view>
@@ -40,11 +40,11 @@
 	</view>
 </template>
 
-<script>
+<script>	
 	export default {
 		data() {
 			return {
-
+		
 			}
 		},
 		methods: {
@@ -57,105 +57,109 @@
 				uni.navigateTo({
 					url: "/pages/map/map"
 				})
+			},
+			goToabout(){
+				uni.navigateTo({
+					url: "/pages/about/about"
+				})
 			}
 		}
 	}
 </script>
 
-<style>
+<style lang="scss">
 	.mine {
 		display: flex;
 		flex-direction: column;
 		width: 100vw;
-		height: calc(100vh - 94px);
-		background-color: #f8f8f8;
+		height: calc(100vh - env(safe-area-inset-bottom));
+		background-color: $bg-color-grey;
 	}
 
 	.info {
-		background-color: #174E8E;
+		background-color: $brand-theme-color;
 		padding: 20rpx;
-		border-radius: 0 0px 10px 10px;
+		border-radius: 0 0 10px 10px;
 		height: 320rpx;
 		width: 100vw;
+	
+		.profile {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+		
+			.avatar {
+				width: 120rpx;
+				height: 120rpx;
+				margin: 20rpx;
+				border-radius: 5px;
+			}
+			
+			.details {
+				display: flex;
+				flex-flow: column;
+			}
+			
+			.name {
+				font-size: 42rpx;
+				font-weight: bold;
+				color: white;
+				margin-bottom: 10rpx;
+			}
+			
+			.student-id {
+				font-size: 24rpx;
+				color: #eaeaea;
+			}
+			
+			.edit-btn {
+				background-color: white;
+				color: $brand-theme-color;
+				font-size: 24rpx;
+				border-radius: 10rpx;
+				align-items: center;
+				justify-content: center;
+				margin-right: 15rpx;
+				height: 60rpx;
+				width: 170rpx;
+			}
 	}
-
-	.profile {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
+		.identity {
+			display: flex;
+			align-items: center;
+			margin-left: 20rpx;
+			margin-top: 20rpx;
+		
+			.school {
+				font-size: 32rpx;
+				color: white;
+				margin-bottom: 10rpx;
+				margin-right: 10rpx;
+			}
+		}
+		
+		.specific {
+			font-size: 24rpx;
+			color: $bg-color-grey;
+			margin-left: 20rpx;
+			margin-top: 10rpx;
+		}
 	}
-
-	.avatar {
-		width: 120rpx;
-		height: 120rpx;
-		margin: 20rpx;
-		border-radius: 5px;
-	}
-
-	.details {
-		display: flex;
-		flex-flow: column;
-	}
-
-	.name {
-		font-size: 42rpx;
-		font-weight: bold;
-		color: white;
-		margin-bottom: 10rpx;
-	}
-
-	.student-id {
-		font-size: 24rpx;
-		color: #eaeaea;
-	}
-
-	.edit-btn {
-		background-color: white;
-		color: #2A60B2;
-		font-size: 24rpx;
-		border-radius: 10rpx;
-		align-items: center;
-		justify-content: center;
-		margin-left: 140rpx;
-		height: 60rpx;
-		width: 170rpx;
-	}
-
-	.identity {
-		display: flex;
-		align-items: center;
-		margin-left: 20rpx;
-		margin-top: 20rpx;
-	}
-
-	.school {
-		font-size: 32rpx;
-		color: white;
-		margin-bottom: 10rpx;
-		margin-right: 10rpx;
-	}
-
-	.specific {
-		font-size: 24rpx;
-		color: #eaeaea;
-		margin-left: 20rpx;
-		margin-top: 10rpx;
-	}
-
 	.main {
-		padding: 20rpx;
+		padding: 10rpx 20rpx 20rpx 20rpx;
 		margin-top: 50rpx;
+		margin-bottom: 20rpx;
 		background-color: white;
+	
+		.menu-item {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			padding: 20rpx;
+			border-bottom: 1px solid $border-color;
+		}
 	}
-
-	.menu-item {
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		padding: 20rpx;
-		border-bottom: 1px solid #eaeaea;
-	}
-
+	
 	.icon {
 		width: 50rpx;
 		height: 50rpx;

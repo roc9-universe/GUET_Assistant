@@ -70,6 +70,13 @@
 			{
 				"navigationBarTitleText" : "关于我们"
 			}
+		},
+		{
+			"path" : "pages/tool/tool",
+			"style" : 
+			{
+				"navigationBarTitleText" : "常用工具"
+			}
 		}
 	],
 	"tabBar": {

@@ -24,9 +24,13 @@
 				<image class="icon" src="../../static/icon/mine/map.svg" />
 				<text>校内地图</text>
 			</view>
-			<view class="menu-item">
+			<view class="menu-item" @click="goToweather">
 				<image class="icon" src="../../static/icon/mine/weather.svg" />
 				<text>今日天气</text>
+			</view>
+			<view class="menu-item" @click="goTotool">
+				<image class="icon" src="../../static/icon/mine/tool.svg" />
+				<text>常用工具</text>
 			</view>
 			<view class="menu-item" @click="goToabout">
 				<image class="icon" src="../../static/icon/mine/about.svg" />
@@ -58,11 +62,24 @@
 					url: "/pages/map/map"
 				})
 			},
+			goToweather(){
+				console.log("跳转天气");
+				uni.navigateTo({
+					url: "/pages/weather/weather"
+				})
+			},
+			goTotool(){
+				console.log("跳转工具");
+				uni.navigateTo({
+					url: "/pages/tool/tool"
+				})
+			},
 			goToabout(){
 				uni.navigateTo({
 					url: "/pages/about/about"
 				})
 			}
+			
 		}
 	}
 </script>

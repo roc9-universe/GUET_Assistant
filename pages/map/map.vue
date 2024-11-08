@@ -1,6 +1,6 @@
 <template>
     <view>
-        <view class="map_text" v-if="textData.name">
+        <view class="map_text" v-if="textData.name && !isNavigationMode" >
             <view>
                 <text>您选择的位置：</text>
                 <text class="tip-titile">{{ textData.name }}</text>
@@ -9,26 +9,35 @@
         </view>
         <view class="map_container">
             <map
-                :class="['map']"
+				ref="mapRef"
+                :class="['map',{ 'fullScreen': isNavigationMode }]"
                 :id="'map'"
                 :longitude="longitude"
                 :latitude="latitude"
-                :scale="14"
+                :scale="isNavigationMode ? navigationScale : originalScale"
                 :show-location="true"
                 :markers="markers"
 				:polyline="polyline"
                 @click="handleMarkerTap"></map>
         </view>
+		
+		<view v-if="!isNavigationMode" class="place">
+			<text style="color: #174E8E; margin-left: 20rpx;;">猜你想去</text>
+			<view v-for="place in recommendedPlaces" :key="place.id" class="place-item" @click="selectPlace(place)">
+			    {{ place.name }}
+			</view>
+		</view>
 
-		<view class="search">
+		<view v-if="!isNavigationMode" class="search">
 			<view v-show="isSearch" class="searchBox">
 			    <input type="text" v-model="searchKey" @focus="handleSearchTap" @input="handelSearch" placeholder="请输入搜索内容" />
 			    <text style="color: #174E8E; margin-left: 140rpx;" @click="handelSearch">搜索</text>
 				<text style="color: #174E8E; margin-left: 20rpx;" @click="handelCancel">重置</text>
 			</view>
 		</view>	
-        <scroll-view scroll-y class="address-list">
-            <view v-show="!isSearch">
+		
+        <scroll-view scroll-y class="address-list" >
+            <view v-show="!isSearch" v-if="!isNavigationMode">
                 <view class="address-list-item" v-for="item in addressList" :key="item.id" @click="sureAddress(item)">
                     <view>
                         <text class="tip-titile">{{ item.name }}</text>
@@ -39,7 +48,7 @@
                     </view>
                 </view>
             </view>
-            <view v-show="isSearch">
+            <view v-show="isSearch" v-if="!isNavigationMode">
                 <view class="address-list-item" v-for="item in searchAddressList" :key="item.id" @click="sureAddress(item)">
                     <view>
                         <text class="tip-titile">{{ item.name }}</text>
@@ -51,7 +60,9 @@
                 </view>
             </view>
         </scroll-view>
-		<button class="navigate" @click="navigateToSelectedLocation">开始导航</button>
+		<button class="navigate" v-if="!isNavigationMode" @click="navigateToSelectedLocation">开始导航</button>
+		<button class="navigate" v-if="isNavigationMode" @click="exitNavigationMode">退出导航</button>
+
     </view>
 </template>
 
@@ -59,6 +70,7 @@
 import { ref, onMounted } from 'vue';
 import * as amapFile from '../../utils/amap-wx.130';
 
+const mapRef = ref(null); // 用于获取 map 实例
 const longitude = ref(null); // 经度
 const latitude = ref(null); // 纬度
 const markers = ref([]); // 标记点
@@ -72,6 +84,11 @@ const isSearch = ref(false); // 是否搜索状态
 const searchKey = ref(''); // 用户搜索的内容
 let throttleTimer = null; // 定时器编号
 const polyline = ref([]); //导航路径
+const isNavigationMode = ref(false); // 是否处于导航模式
+const originalScale = ref(14);       // 原始地图缩放级别
+const navigationScale = ref(16);     // 导航时的地图放大级别
+const defaultLongitude = ref(110.416819);
+const defaultLatitude = ref(25.311724);
 const textData = ref({
     latitude: null,
     longitude: null,
@@ -87,9 +104,20 @@ const currentLocation = ref({
     latitude: null,
 });
 
+// 推荐地点数据
+const recommendedPlaces = ref([
+  { id: 1, name: "第十六教学楼", longitude: 110.41890899999999, latitude: 25.31016200000001, },
+  { id: 2, name: "第十七教学楼", longitude: 110.41897900000004, latitude: 25.309527999999993, },
+  { id: 3, name: "第十七教学楼", longitude: 110.41897900000004, latitude: 25.309527999999993, },
+  { id: 4, name: "第十七教学楼", longitude: 110.41897900000004, latitude: 25.309527999999993, },
+  { id: 5, name: "第十七教学楼", longitude: 110.41897900000004, latitude: 25.309527999999993, },
+  { id: 6, name: "第十七教学楼", longitude: 110.41897900000004, latitude: 25.309527999999993, },
+  { id: 7, name: "第十七教学楼", longitude: 110.41897900000004, latitude: 25.309527999999993, },
+]);
 
 onMounted(() => {
     myAmapFun.value = new amapFile.AMapWX({ key: key.value });
+
     uni.getLocation({
 		type: 'gcj02',
         success: (res) => {
@@ -97,8 +125,16 @@ onMounted(() => {
             currentLocation.value.latitude = res.latitude;
             longitude.value = res.longitude;
             latitude.value = res.latitude;
-            getRegeo(true);
+            if (longitude.value && latitude.value) {
+                getRegeo(true);
+            } else {
+                console.log('位置数据未准备好，等待...');
+            }
         },
+		fail: (err) => {
+		    console.log('定位失败', err);
+		    uni.showModal({ title: '定位失败', content: err.message });
+		}
     });
 });
 
@@ -112,6 +148,7 @@ const getRegeo = (isUseResAddress) => {
         location: location,
         success: (data) => {
             addressList.value = data[0].regeocodeData.pois;
+			console.log("Data:", addressList.value);
             if (isUseResAddress) {
                 latitude.value = data[0].latitude;
                 longitude.value = data[0].longitude;
@@ -125,10 +162,63 @@ const getRegeo = (isUseResAddress) => {
                 city: data[0].regeocodeData.addressComponent.city,
                 district: data[0].regeocodeData.addressComponent.district,
             };
+			
+			setTimeout(() => {
+			    console.log("Address list updated:", addressList.value); // 确保视图更新
+			}, 100);
         },
         fail: (info) => {
             uni.showModal({ title: info.errMsg });
         },
+    });
+};
+
+// 页面显示时确保地图正确显示
+const onShow = () => {
+    // 获取用户位置
+    uni.getLocation({
+        type: 'gcj02', // 高德坐标系
+        success: (res) => {
+            longitude.value = res.longitude || defaultLongitude;
+            latitude.value = res.latitude || defaultLatitude;
+
+            // 确保地图已渲染并获取地图实例
+            nextTick(() => {
+                const map = mapRef.value;
+                if (map) {
+                    // 设置地图的中心
+                    console.log("Map instance: ", map); // 确认map实例是否正确
+                    if (map.setCenter) {
+                        map.setCenter({
+                            longitude: longitude.value,
+                            latitude: latitude.value,
+                        });
+                        console.log("set center");
+                    } else {
+                        console.log("setCenter method is not available on map instance");
+                    }
+                } else {
+                    console.log("Map instance not found");
+                }
+            });
+        },
+        fail: (err) => {
+            console.log('定位失败', err);
+            // 定位失败时使用默认经纬度
+            longitude.value = defaultLongitude;
+            latitude.value = defaultLatitude;
+
+            // 确保地图更新
+            nextTick(() => {
+                const map = mapRef.value;
+                if (map) {
+                    map.setCenter({
+                        longitude: longitude.value,
+                        latitude: latitude.value
+                    });
+                }
+            });
+        }
     });
 };
 
@@ -172,6 +262,22 @@ const sureAddress = (ev, type) => {
 	    city: ev.city || '',
 	    district: ev.district || '',
 	};
+};
+
+// 用户点击推荐地点
+const selectPlace = (place) => {
+    longitude.value = place.longitude;
+    latitude.value = place.latitude; 
+
+    // 更改标记点
+    markers.value = [
+        {
+            id: 1,
+            latitude: place.latitude,
+            longitude: place.longitude,
+        },
+    ];
+    getRegeo();
 };
 
 // 用户点击搜索框
@@ -224,6 +330,19 @@ const handelSearch = (ev) => {
     }, 500);
 };
 
+// 哈弗辛公式计算两点间的地理距离（单位：公里）
+function haversine(lat1, lon1, lat2, lon2) {
+    const R = 6371; // 地球半径，单位为 km
+    const rad = Math.PI / 180;
+    const dLat = (lat2 - lat1) * rad;
+    const dLon = (lon2 - lon1) * rad;
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(lat1 * rad) * Math.cos(lat2 * rad) *
+              Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c; // 返回距离，单位为公里
+}
+
 //导航规划路径
 const navigateToSelectedLocation = () => {
     if (!longitude.value || !latitude.value || !currentLocation.value.longitude || !currentLocation.value.latitude) {
@@ -243,17 +362,57 @@ const navigateToSelectedLocation = () => {
                     })
                 );
                 markers.value = [
-                    { id: 0, latitude: currentLocation.value.latitude, longitude: currentLocation.value.longitude, iconPath: 'start_icon', width: 30, height: 30 },
-                    { id: 1, latitude: latitude.value, longitude: longitude.value, iconPath: 'end_icon', width: 30, height: 30 },
+                    { id: 0, latitude: currentLocation.value.latitude, longitude: currentLocation.value.longitude, iconPath: '../../static/icon/mine/position.svg', width: 30, height: 30 },
+                    { id: 1, latitude: latitude.value, longitude: longitude.value, iconPath: '../../static/icon/mine/position.svg', width: 30, height: 30 },
                 ];
                 polyline.value = [{ points: routePoints, color: "#174E8E", width: 6, dottedLine: false }];
-                uni.showToast({ title: '导航路径已生成', icon: 'none' });
+                
+				isNavigationMode.value = true;
+				
+				// 计算视野边界
+				const lngValues = routePoints.map(p => p.longitude);
+				const latValues = routePoints.map(p => p.latitude);
+				const maxLng = Math.max(...lngValues);
+				const minLng = Math.min(...lngValues);
+				const maxLat = Math.max(...latValues);
+				const minLat = Math.min(...latValues);
+				
+				// 中心点经纬度
+				longitude.value = (maxLng + minLng) / 2;
+				latitude.value = (maxLat + minLat) / 2;
+				
+				// 动态缩放比例
+				const distance = haversine(minLat, minLng, maxLat, maxLng);
+				console.log("distance:",distance);
+				const recommendedScale = ref();
+				if (distance < 1) {
+				    recommendedScale.value = 17;  // 1km以内使用最大缩放级别
+				} else if (distance < 5) {
+				    recommendedScale.value = 15;  // 1km到5km之间使用较大缩放级别
+				} else if (distance < 50) {
+				    recommendedScale.value = 13;  // 5km到50km之间使用中等缩放级别
+				} else {
+				    recommendedScale.value = 11;  // 超过50km时使用较小缩放级别
+				}
+				navigationScale.value = recommendedScale.value;
+				uni.showToast({ title: '导航路径已生成', icon: 'none' });
             } else {
                 uni.showToast({ title: '路径规划失败', icon: 'none' });
             }
         },
         fail: (info) => uni.showToast({ title: '路径规划失败', icon: 'none' }),
     });
+};
+
+//退出导航模式
+const exitNavigationMode = () => {
+    isNavigationMode.value = false;  // 退出导航模式
+    polyline.value = [];             // 清除导航路径
+    markers.value = [];              // 清除标记点
+	setTimeout(() => {
+	    longitude.value = currentLocation.value.longitude;
+	    latitude.value = currentLocation.value.latitude;
+	}, 300);
 };
 </script>
 
@@ -272,18 +431,21 @@ const navigateToSelectedLocation = () => {
 }
 .map {
     width: 100%;
-    /* 计算总的高度，减去底部空间，然后取45% */
     height: 450rpx;
+	transition: height 0.3s ease;
+}
+.fullScreen{
+	height: calc(100vh - env(safe-area-inset-bottom));
 }
 .map_text {
-    background: #fff;
+    background: $bg-color-grey;
     padding: 0 15px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 text {
-    margin: 5px 0;
+    margin: 5px;
     display: block;
     font-size: 12px;
 }
@@ -301,7 +463,7 @@ text {
 	width: 650rpx;
     overflow-y: auto; /* 添加滚动条 */
     .address-list-item {
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid $border-color;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -309,26 +471,44 @@ text {
 }
 .tip-titile {
     font-size: 28rpx;
-    color: #333;
+    color: $text-font-color-1;
     font-weight: 400;
 }
 .tip-address {
     font-size: 20rpx;
     color: gray;
 }
+
+.place{
+	height: 60rpx;
+	display: flex;
+	align-items: center;
+	justify-content: left;
+	overflow-x: auto; /* 允许横向滚动 */
+	white-space: nowrap; /* 禁止内容换行 */
+	font-size: 20rpx;
+	margin-left: 20rpx;
+}
+.place-item {
+  padding: 10px;
+  border-bottom: 1px solid $border-color;
+  color: $brand-theme-color;
+  cursor: pointer;
+}
+
 .search {
     width: 750rpx;
     padding: 8rpx;
     background-color: #fff;
     border-radius: 10rpx;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid $border-color;
 	align-items: center;
 	margin-left: 40rpx;
 	
     .searchBox {
         height: 65rpx;
         width: 90%;
-        background-color: #ebebeb;
+        background-color: $bg-color-grey;
         padding: 10rpx 0;
         display: flex;
         align-items: center;
@@ -340,9 +520,9 @@ text {
         height: 45rpx;
         padding: 8px;
         outline: none;
-        border: 1px solid #d3d3d3;
+        border: 1px solid $border-color;
         border-radius: 5px;
-        background-color: #ebebeb;
+        background-color: $bg-color-grey;
         margin-top: 20rpx;
 		margin-right: 50rpx;
     }
@@ -350,10 +530,14 @@ text {
 .navigate{
 	width: 750rpx;
 	height: 90rpx;
-	background-color: #174E8E;
+	background-color: $brand-theme-color;
 	font-size: 36rpx;
 	color: white;
+	bottom: env(safe-area-inset-bottom);
+	position: fixed;
 	align-items: center;
 	justify-content: center;
+	border-radius: 5px 5px 0 0;
+	box-sizing: border-box;
 }
 </style>

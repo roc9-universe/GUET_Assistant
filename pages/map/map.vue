@@ -9,7 +9,7 @@
         </view>
         <view class="map_container">
             <map
-				ref="mapRef"
+				v-if="isLocationReady"
                 :class="['map',{ 'fullScreen': isNavigationMode }]"
                 :id="'map'"
                 :longitude="longitude"
@@ -70,7 +70,7 @@
 import { ref, onMounted } from 'vue';
 import * as amapFile from '../../utils/amap-wx.130';
 
-const mapRef = ref(null); // 用于获取 map 实例
+const isLocationReady = ref(false)
 const longitude = ref(null); // 经度
 const latitude = ref(null); // 纬度
 const markers = ref([]); // 标记点
@@ -127,6 +127,7 @@ onMounted(() => {
             latitude.value = res.latitude;
             if (longitude.value && latitude.value) {
                 getRegeo(true);
+				isLocationReady.value = true;
             } else {
                 console.log('位置数据未准备好，等待...');
             }
@@ -170,55 +171,6 @@ const getRegeo = (isUseResAddress) => {
         fail: (info) => {
             uni.showModal({ title: info.errMsg });
         },
-    });
-};
-
-// 页面显示时确保地图正确显示
-const onShow = () => {
-    // 获取用户位置
-    uni.getLocation({
-        type: 'gcj02', // 高德坐标系
-        success: (res) => {
-            longitude.value = res.longitude || defaultLongitude;
-            latitude.value = res.latitude || defaultLatitude;
-
-            // 确保地图已渲染并获取地图实例
-            nextTick(() => {
-                const map = mapRef.value;
-                if (map) {
-                    // 设置地图的中心
-                    console.log("Map instance: ", map); // 确认map实例是否正确
-                    if (map.setCenter) {
-                        map.setCenter({
-                            longitude: longitude.value,
-                            latitude: latitude.value,
-                        });
-                        console.log("set center");
-                    } else {
-                        console.log("setCenter method is not available on map instance");
-                    }
-                } else {
-                    console.log("Map instance not found");
-                }
-            });
-        },
-        fail: (err) => {
-            console.log('定位失败', err);
-            // 定位失败时使用默认经纬度
-            longitude.value = defaultLongitude;
-            latitude.value = defaultLatitude;
-
-            // 确保地图更新
-            nextTick(() => {
-                const map = mapRef.value;
-                if (map) {
-                    map.setCenter({
-                        longitude: longitude.value,
-                        latitude: latitude.value
-                    });
-                }
-            });
-        }
     });
 };
 

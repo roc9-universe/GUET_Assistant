@@ -14,7 +14,7 @@ const whiteList = [
  * @param {Object} url 请求地址
  * @param {Object} method 请求类型
  * @param {Object} header 请求参数
- * @param {Object} data 请求头用于附加 token 等参数
+ * @param {Object} data 请求体
  */
 export function request(config = {}) {
 	let {
@@ -24,8 +24,9 @@ export function request(config = {}) {
 		header = {}
 	} = config;
 
-	// 处理无需token的白名单请求
+	// 处理非白名单请求
 	if (!whiteList.some((v) => url.indexOf(v) > -1)) {
+		console.log(123, url)
 		const token = uni.getStorageSync('userInfo').token;
 		header['access-token'] = token || void 0;
 	}

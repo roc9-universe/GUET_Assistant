@@ -6,11 +6,11 @@
 			<view class="loginBox">
 				<view class="input-group">
 					<text class="label">学号</text>
-					<input class="input" v-model="studentId" placeholder="请输入学号" required/>
+					<input class="input" v-model="studentId" placeholder="请输入学号" required />
 				</view>
 				<view class="input-group">
 					<text class="label">密码</text>
-					<input class="input" v-model="password" placeholder="请输入密码" type="password" required/>
+					<input class="input" v-model="password" placeholder="请输入密码" type="password" required />
 				</view>
 			</view>
 			<button class="login-button" type="button" @click="goToquestion">登录</button>
@@ -32,14 +32,17 @@
 </template>
 
 <script>
-import { userLogin,getUserInfo } from "../../api/login.js"
+	import {
+		userLogin,
+		getUserInfo
+	} from "../../api/user.js"
 	export default {
 		data() {
 			return {
-                studentId: null,
-                password: null,
-            };
-        },
+				studentId: null,
+				password: null,
+			};
+		},
 		methods: {
 			async goToquestion() {
 				try {
@@ -48,13 +51,8 @@ import { userLogin,getUserInfo } from "../../api/login.js"
 						console.log("登录成功");
 						// 获取用户 ID
 						const userId = uni.getStorageSync('userInfo').id;
-						console.log("id：",userId);
 						// 调用 getUserInfo 获取用户信息
 						const userInfo = await getUserInfo(userId);
-						// 将用户信息存储到本地缓存中
-						uni.setStorageSync('userDetails', userInfo);
-						
-						console.log("信息：",userInfo);
 						uni.switchTab({
 							url: "/pages/qa/qa"
 						});
@@ -111,7 +109,7 @@ import { userLogin,getUserInfo } from "../../api/login.js"
 		margin-bottom: 50rpx;
 	}
 
-	.form{
+	.form {
 		width: 80%;
 	}
 
@@ -122,7 +120,7 @@ import { userLogin,getUserInfo } from "../../api/login.js"
 		border-radius: 20rpx;
 		box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
 		margin-bottom: 40rpx;
-		
+
 		.input-group {
 			margin: 15rpx 0 30rpx 0;
 			align-items: center;
@@ -161,7 +159,7 @@ import { userLogin,getUserInfo } from "../../api/login.js"
 		justify-content: space-around;
 		width: 100%;
 		margin: 20rpx;
-	
+
 		.register-option {
 			color: #f8f8f8;
 			display: flex;
@@ -169,7 +167,7 @@ import { userLogin,getUserInfo } from "../../api/login.js"
 			align-items: center;
 		}
 	}
-	
+
 	.social-login {
 		display: flex;
 		flex-direction: column;

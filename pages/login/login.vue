@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import { userLogin,getUserInfo } from "../../api/login.js"
 	export default {
 		data() {
 			return {
@@ -40,10 +41,33 @@
             };
         },
 		methods: {
-			goToquestion() {
-				uni.switchTab({
-					url: "/pages/qa/qa"
-				})
+			async goToquestion() {
+				try {
+					const response = await userLogin(this.studentId, this.password);
+					if (response.code === 200) {
+						console.log("登录成功");
+						// 获取用户 ID
+						const userId = uni.getStorageSync('userInfo').id;
+						console.log("id：",userId);
+						// 调用 getUserInfo 获取用户信息
+						const userInfo = await getUserInfo(userId);
+						// 将用户信息存储到本地缓存中
+						uni.setStorageSync('userDetails', userInfo);
+						
+						console.log("信息：",userInfo);
+						uni.switchTab({
+							url: "/pages/qa/qa"
+						});
+					} else {
+						// 显示错误消息
+						uni.showToast({
+							title: response.msg,
+							icon: "none"
+						});
+					}
+				} catch (error) {
+					console.error("登录失败:", error);
+				}
 			},
 			goToregister() {
 				uni.navigateTo({

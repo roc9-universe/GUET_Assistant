@@ -14,19 +14,19 @@
 			</swiper>
 		</view>
 		<view class="function_box">
-			<view class="box">
+			<view class="xbox">
 				<button class="function_btn" plain="true" @click="goToMap">
 				    <image class="img_btn" src="../../static/icon/board/map.png" alt=""> </image>
 				</button>
 				<text style="font-size: 13px;">校园地图</text>
 			</view>
-			<view class="box">
+			<view class="xbox">
 				<button class="function_btn" plain="true" @click="goToIntroduce">
 				    <image class="img_btn" src="../../static/icon/board/school.png" alt=""> </image>
 				</button>
 				<text style="font-size: 13px;">院校介绍</text>
 			</view>
-			<view class="box">
+			<view class="xbox">
 				<button class="function_btn" plain="true" @click="goToQa">
 				    <image class="img_btn" src="../../static/icon/board/robot.png" alt=""> </image>
 				</button>

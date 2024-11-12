@@ -6,8 +6,10 @@ import {
 const BASE_URL = httpBaseURL;
 /** 请求白名单，放置一些不需要token的接口 */
 const whiteList = [
-	"/user/login"
+	"/user/login",
+	"/user/register"
 ];
+
 
 /**
  * 请求方法

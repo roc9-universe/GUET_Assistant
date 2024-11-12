@@ -20,6 +20,12 @@
 			}
 		},
 		{
+			"path": "pages/noticeList/noticeList",
+			"style": {
+				"navigationBarTitleText": "公告列表"
+			}
+		},
+		{
 			"path": "pages/message/message",
 			"style": {
 				"navigationBarTitleText": "消息"
@@ -65,6 +71,13 @@
 			}
 		},
 		{
+			"path" : "pages/weather/weather",
+			"style" : 
+			{
+				"navigationBarTitleText" : "今日天气"
+      }
+    },
+    {
 			"path" : "pages/about/about",
 			"style" : 
 			{

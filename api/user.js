@@ -15,7 +15,9 @@ export function userLogin(studentId, password) {
 			url: `/user/login/${studentId}/${password}`,
 			method: "POST",
 			header: {
+
 				'Content-Type': 'application/x-www-form-urlencoded'
+
 			}
 		})
 		.then(response => {
@@ -61,6 +63,7 @@ export function loginWithWechat(code) {
 }
 
 /**
+=======
  * 获取用户信息
  * @param {number} id 用户 ID
  */

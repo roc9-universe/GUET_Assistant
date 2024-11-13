@@ -37,9 +37,9 @@ export function userLogin(studentId, password) {
  * @param {string} code 微信登录时获得的 code
  */
 export function loginWithWechat(code) {
-	return uni.request({
-			url: '/user/login',
-			method: 'POST',
+	return request({
+			url: `/user/login`,
+			method: "POST",
 			header: {
 				'Content-Type': 'application/json',
 			},
@@ -48,16 +48,24 @@ export function loginWithWechat(code) {
 			}
 		})
 		.then(response => {
-			const token = response.data.token;
-			const id = response.data.id;
-			// 保存 token 和用户信息
-			uni.setStorageSync('userInfo', {
-				token,
-				id
-			});
-			return response; // 返回整个响应对象
+			//console.log("Response:", response);
+			if (response.code === 200) {
+				//console.log("Response:", response.data.data.token);
+				const token = response.data.token;
+				const id = response.data.id;
+				// 保存 token 和用户信息
+				uni.setStorageSync('userInfo', {
+					token,
+					id
+				});
+				return response; // 返回整个响应对象
+			} else {
+				console.log('登录失败:返回不为200', response.data.msg || '未知错误');
+				throw new Error('登录失败');
+			}
 		})
 		.catch(error => {
+			console.log('请求错误:', error);
 			throw new Error('登录请求失败，请重试');
 		});
 }

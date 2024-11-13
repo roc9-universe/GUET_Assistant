@@ -58,9 +58,9 @@ export default {
 			const userInfo = uni.getStorageSync('userInfo');
 			if (userInfo) {
 				// 用户名和学号
-				this.username = userInfo.username || '未登录';
-				this.studentId = userInfo.studentId || '无学号信息';
-				this.type = userInfo.type || '无身份信息';
+				this.username = userInfo.username || '未绑定';
+				this.studentId = userInfo.studentId || '请前往编辑资料绑定';
+				this.type = userInfo.type || '未绑定身份';
 				//console.log("name:",this.username);
 			}
 	},

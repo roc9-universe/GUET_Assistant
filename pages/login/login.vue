@@ -94,8 +94,9 @@ export default {
 						try {
 							// 调用 loginWithWechat 进行微信登录
 							const loginResponse = await loginWithWechat(res.code);
-							if (loginResponse.data.code === 200) {
-								const { token, id } = loginResponse.data.data;
+							//console.log("loginResponse:", loginResponse.code);
+							if (loginResponse.code === 200) {
+								const { token, id } = loginResponse.data;
 								// 获取用户 ID
 								const userId = uni.getStorageSync("userInfo").id;
 								// 调用 getUserInfo 获取用户信息

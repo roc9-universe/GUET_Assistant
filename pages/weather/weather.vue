@@ -1,194 +1,356 @@
 <template>
 	<view class="container">
-		<view class="top_bar">
-
-		</view>
+		<view class="top_bar"></view>
 
 		<view class="content">
 			<image class="background-image" src="../../static/background/wheatherbackg.jpg" mode="aspectFill"></image>
-			
-			<view class="search_box">
-				<view class="search_icon"></view>
-				<view class="search_input"></view>
-			</view>
-			
+
 			<view class="main_weather">
-				
+				<view class="title_container">
+					<view class="title_main">灵川县 乡道167</view>
+					<image class="icon_location" src="../../static/icon/weather/location.svg"></image>
+				</view>
+				<view class="temperature">{{ temperature }}°C</view>
+				<view class="title_second">{{ text }} | 空气{{ category }}</view>
 			</view>
 
-			<view class="list_weather">
-				
+			<view class="list_weather_container">
+				<view class="list_weather" v-for="(item, index) in fiveDaysWeather" key="index">
+					<view class="week_day">
+						{{ item.week_day }}
+					</view>
+					<view class="date">
+						{{ item.date }}
+					</view>
+					<image class="list_weather_icon" :src="item.weather_icon" mode="scaleToFill"></image>
+					<view class="weather_text">
+						{{ item.weather_text }}
+					</view>
+				</view>
 			</view>
 
-			<view class="title_air">
-				空气质量
-			</view>
+			<view class="title_air">空气质量</view>
 			<view class="charts-box">
 				<qiun-data-charts type="ring" :opts="opts" :chartData="chartData" />
 			</view>
-			
 		</view>
 	</view>
 </template>
 
 <script>
+import { request } from "@/utils/request.js";
 export default {
-  data() {
-    return {
-      chartData: {},
-      //这里的 opts 是图表类型 type="ring" 的全部配置参数，您可以将此配置复制到 config-ucharts.js 文件中下标为 ['ring'] 的节点中来覆盖全局默认参数。实际应用过程中 opts 只需传入与全局默认参数中不一致的【某一个属性】即可实现同类型的图表显示不同的样式，达到页面简洁的需求。
-      opts: {
-        timing: "easeOut",
-        duration: 1000,
-        rotate: false,
-        rotateLock: false,
-        color: ["#fdecd8","#f39423","#f9c78b","#f5a544","#fbdab2","#f7b463","#FC8452"],
-        padding: [5,5,5,5],
-        fontSize: 13,
-        fontColor: "#ffffff",
-        dataLabel: true,
-        dataPointShape: true,
-        dataPointShapeType: "solid",
-        touchMoveLimit: 60,
-        enableScroll: false,
-        enableMarkLine: false,
-        legend: {
-          show: true,
-          position: "right",
-          lineHeight: 25,
-          float: "center",
-          padding: 5,
-          margin: 5,
-          backgroundColor: "#333132",
-          borderColor: "#333132",
-          borderWidth: 0,
-          fontSize: 13,
-          fontColor: "#ffffff",
-          hiddenColor: "#CECECE",
-          itemGap: 10
-        },
-        title: {
-          name: "",
-          color: "#ffffff",
-          offsetX: 0,
-          offsetY: 0
-        },
-        subtitle: {
-          name: "",
-          color: "#ffffff",
-          offsetX: 0,
-          offsetY: 0
-        },
-        extra: {
-          ring: {
-            ringWidth: 15,
-            activeOpacity: 0.5,
-            activeRadius: 10,
-            offsetAngle: 0,
-            labelWidth: 15,
-            border: true,
-            borderWidth: 3,
-            borderColor: "#333132",
-            centerColor: "#333132",
-            customRadius: 0,
-            linearType: "none"
-          },
-          tooltip: {
-            showBox: true,
-            showArrow: true,
-            showCategory: false,
-            borderWidth: 0,
-            borderRadius: 0,
-            borderColor: "#ffffff",
-            borderOpacity: 0.7,
-            bgColor: "#ffffff",
-            bgOpacity: 0.7,
-            gridType: "solid",
-            dashLength: 4,
-            gridColor: "#CCCCCC",
-            boxPadding: 3,
-            fontSize: 13,
-            lineHeight: 20,
-            fontColor: "#ffffff",
-            legendShow: true,
-            legendShape: "auto",
-            splitLine: true,
-            horizentalLine: false,
-            xAxisLabel: false,
-            yAxisLabel: false,
-            labelBgColor: "#ffffff",
-            labelBgOpacity: 0.7,
-            labelFontColor: "#ffffff"
-          }
-        }
-      }
-    };
-  },
-  onReady() {
-    this.getServerData();
-  },
-  methods: {
-    getServerData() {
-      //模拟从服务器获取数据时的延时
-      setTimeout(() => {
-        //模拟服务器返回数据，如果数据格式和标准格式不同，需自行按下面的格式拼接
-        let res = {
-            series: [
-              {
-                data: [{"name":"PM10","value":61},{"name":"PM2.5","value":37},{"name":"MO2","value":25},{"name":"SO2","value":3},{"name":"O3","value":108},{"name":"CO","value":0}]
-              }
-            ]
-          };
-        this.chartData = JSON.parse(JSON.stringify(res));
-      }, 500);
-    },
-  }
+	data() {
+		return {
+			chartData: {},
+			//这里的 opts 是图表类型 type="ring" 的全部配置参数，您可以将此配置复制到 config-ucharts.js 文件中下标为 ['ring'] 的节点中来覆盖全局默认参数。实际应用过程中 opts 只需传入与全局默认参数中不一致的【某一个属性】即可实现同类型的图表显示不同的样式，达到页面简洁的需求。
+			opts: {
+				timing: "easeOut",
+				duration: 1000,
+				rotate: false,
+				rotateLock: false,
+				color: ["#fdecd8", "#f39423", "#f9c78b", "#f5a544", "#fbdab2", "#f7b463", "#FC8452"],
+				padding: [5, 5, 5, 5],
+				fontSize: 13,
+				fontColor: "#ffffff",
+				dataLabel: true,
+				dataPointShape: true,
+				dataPointShapeType: "solid",
+				touchMoveLimit: 60,
+				enableScroll: false,
+				enableMarkLine: false,
+				legend: {
+					show: true,
+					position: "right",
+					lineHeight: 25,
+					float: "center",
+					padding: 5,
+					margin: 5,
+					backgroundColor: "#333132",
+					borderColor: "#333132",
+					borderWidth: 0,
+					fontSize: 13,
+					fontColor: "#ffffff",
+					hiddenColor: "#CECECE",
+					itemGap: 10
+				},
+				title: {
+					name: "",
+					color: "#ffffff",
+					offsetX: 0,
+					offsetY: 0
+				},
+				subtitle: {
+					name: "",
+					color: "#ffffff",
+					offsetX: 0,
+					offsetY: 0
+				},
+				extra: {
+					ring: {
+						ringWidth: 15,
+						activeOpacity: 0.5,
+						activeRadius: 10,
+						offsetAngle: 0,
+						labelWidth: 15,
+						border: true,
+						borderWidth: 3,
+						borderColor: "#333132",
+						centerColor: "#333132",
+						customRadius: 0,
+						linearType: "none"
+					},
+					tooltip: {
+						showBox: true,
+						showArrow: true,
+						showCategory: false,
+						borderWidth: 0,
+						borderRadius: 0,
+						borderColor: "#ffffff",
+						borderOpacity: 0.7,
+						bgColor: "#ffffff",
+						bgOpacity: 0.7,
+						gridType: "solid",
+						dashLength: 4,
+						gridColor: "#CCCCCC",
+						boxPadding: 3,
+						fontSize: 13,
+						lineHeight: 20,
+						fontColor: "#ffffff",
+						legendShow: true,
+						legendShape: "auto",
+						splitLine: true,
+						horizentalLine: false,
+						xAxisLabel: false,
+						yAxisLabel: false,
+						labelBgColor: "#ffffff",
+						labelBgOpacity: 0.7,
+						labelFontColor: "#ffffff"
+					}
+				}
+			},
+			temperature: 20,
+			text: "",
+			category: "",
+			fiveDaysWeather: [],
+			c: "<"
+		};
+	},
+	onReady() {
+		this.getWeatherData();
+	},
+	methods: {
+		goback() {
+			uni.navigateBack();
+		},
+		getWeatherData() {
+			request({ url: "/message/weather", method: "GET" })
+				.then((res) => {
+					console.log(res);
+
+					const air = res.data.todayAir;
+					//取当天数据
+					this.text = res.data.toadyWeather.text;
+					this.temperature = parseInt(res.data.toadyWeather.temp);
+					this.category = air.category;
+
+					// 取未来5天数据
+					const temp = res.data["5dayWeather"];
+					const weekdays = ["星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+					for (let i = 0; i < 5; i++) {
+						let date = new Date(temp[i].fxDate);
+						let item = {};
+						let month = date.getMonth(date) + 1;
+						let day = date.getDate(date);
+						item.week_day = weekdays[date.getDay()];
+						item.date = month + "/" + day;
+						item.weather_icon = "../../static/icon/weather/" + temp[i].iconDay + "-fill.svg";
+						console.log("icon=>" + temp[i].iconDay);
+						item.weather_text = temp[i].textDay;
+
+						this.fiveDaysWeather.push(item);
+					}
+					console.log(this.fiveDaysWeather);
+
+					// 取出空气质量数据
+					let airData = {
+						series: [
+							{
+								data: [
+									{
+										name: "PM10",
+										value: parseInt(air.pm10)
+									},
+									{
+										name: "PM2.5",
+										value: parseInt(air.pm2p5)
+									},
+									{
+										name: "NO2",
+										value: parseInt(air.no2)
+									},
+									{
+										name: "SO2",
+										value: parseInt(air.so2)
+									},
+									{
+										name: "O3",
+										value: parseInt(air.o3)
+									},
+									{
+										name: "CO",
+										value: parseInt(air.co)
+									}
+								]
+							}
+						]
+					};
+					this.chartData = JSON.parse(JSON.stringify(airData));
+				})
+				.catch((error) => {
+					console.error("请求失败:", error);
+					uni.showToast({
+						title: "error",
+						duration: 1500
+					});
+				});
+		}
+	}
 };
 </script>
 
 <style lang="scss">
-	@import '../../common/style/base-style.scss';
+@import "../../common/style/base-style.scss";
 
-	/* 请根据实际需求修改父元素尺寸，组件自动识别宽高 */
-	.charts-box {
-		margin-left: 2.5%;
-		width: 95%;
-		height: 512rpx;
-		background-color: #333132;
-		border-radius: 64rpx;
-	}
+/* 请根据实际需求修改父元素尺寸，组件自动识别宽高 */
+.charts-box {
+	width: 100%;
+	background-color: #333132;
+	border-radius: 64rpx;
+}
 
-	.container {
-		display: flex;
-		flex-direction: column;
-		height: 100%;
-	}
+.container {
+	padding-right: 20rpx;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
 
-	.top_bar {
-		height: 8vh;
-		background-color: $brand-theme-color;
-	}
+.top_bar {
+	height: 6vh;
+	background-color: $brand-theme-color;
+}
 
-	.content {
-		width: 100%;
-		flex: 1;
-		justify-content: center; 
-	}
+.content {
+	padding: $page-padding;
+	width: 100%;
+	flex: 1;
+	justify-content: center;
+}
 
-	.search_box {
-		margin-top: 16rpx;
-		height: 64rpx;
-		width: 100%;
-		background-color: #ebebeb;
-		border-radius: 32rpx;
-	}
+.search_box {
+	margin-top: 16rpx;
+	height: 64rpx;
+	width: 100%;
+	background-color: #ebebeb;
+	border-radius: 32rpx;
+}
 
-	.background-image {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		left: 0;
-		z-index: -1;
-	}
+.main_weather {
+	margin-top: 8%;
+	margin-bottom: 8%;
+}
+
+.background-image {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: -1;
+}
+
+.title_air {
+	padding: $page-padding;
+	font-size: 36rpx;
+	font-weight: bolder;
+	color: $text-font-color-5;
+}
+
+.title_container {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+}
+
+.title_main {
+	font-size: 64rpx;
+	font-weight: bold;
+	color: $text-font-color-5;
+}
+
+.icon_location {
+	width: 48rpx;
+	height: 48rpx;
+}
+
+.temperature {
+	font-size: 128rpx;
+	color: $text-font-color-5;
+	text-align: center;
+}
+
+.title_second {
+	font-size: 32rpx;
+	font-weight: bold;
+	color: white;
+	text-align: center;
+}
+
+.list_weather_container {
+	width: 100%;
+	height: 16vh;
+	margin-top: 10%;
+	margin-bottom: 10%;
+	display: flex;
+	flex-direction: row;
+}
+
+.list_weather {
+	width: 20%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	background-color: #333132;
+	padding-top: 2%;
+	justify-content: center;
+	align-items: center;
+}
+
+.week_day {
+	text-align: center;
+	font-size: 24rpx;
+	font-weight: bold;
+	color: $text-font-color-5;
+}
+
+.date {
+	text-align: center;
+	font-size: 24rpx;
+	font-weight: bold;
+	color: $text-font-color-5;
+}
+
+.list_weather_icon {
+	width: 50%;
+	height: 50%;
+}
+
+.weather_text {
+	text-align: center;
+	font-size: 24rpx;
+	font-weight: bold;
+	color: $text-font-color-5;
+}
 </style>

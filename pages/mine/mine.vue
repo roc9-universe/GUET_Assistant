@@ -8,7 +8,7 @@
 					<text class="name">{{ username }}</text>
 					<text class="student-id">学号/工号: {{ studentId }}</text>
 				</view>
-				<button class="edit-btn" @click="editinfo">编辑资料</button>
+				<button class="edit-btn" @click="editInfo">编辑资料</button>
 			</view>
 
 			<view class="identity">
@@ -36,9 +36,13 @@
 				<image class="icon" src="../../static/icon/mine/about.svg" />
 				<text>关于我们</text>
 			</view>
-			<view class="menu-item" @click="editinfo">
+			<view class="menu-item" @click="editInfo">
 				<image class="icon" src="../../static/icon/mine/setting.svg" />
 				<text>设置</text>
+			</view>
+			<view class="menu-item" @click="exitLogin">
+				<image class="icon" src="../../static/icon/mine/exit.svg" />
+				<text>退出登录</text>
 			</view>
 		</view>
 	</view>
@@ -48,53 +52,59 @@
 export default {
 	data() {
 		return {
-			username: '',
-			studentId: '',
-			type: ''
-		}
+			username: "",
+			studentId: "",
+			type: ""
+		};
 	},
 	onShow() {
-			// 从 storage 中获取用户信息
-			const userInfo = uni.getStorageSync('userInfo');
-			if (userInfo) {
-				// 用户名和学号
-				this.username = userInfo.username || '未绑定';
-				this.studentId = userInfo.studentId || '请前往编辑资料绑定';
-				this.type = userInfo.type || '未绑定身份';
-				//console.log("name:",this.username);
-			}
+		// 从 storage 中获取用户信息
+		const userInfo = uni.getStorageSync("userInfo");
+		if (userInfo) {
+			// 用户名和学号
+			this.username = userInfo.username || "未绑定";
+			this.studentId = userInfo.studentId || "请前往编辑资料绑定";
+			this.type = userInfo.type || "未绑定身份";
+			//console.log("name:",this.username);
+		}
 	},
 	methods: {
-		editinfo() { //你好
+		editInfo() {
+			//你好
 			uni.navigateTo({
 				url: "/pages/setting/setting"
-			})
+			});
 		},
 		goTomap() {
 			uni.navigateTo({
 				url: "/pages/map/map"
-			})
+			});
 		},
-		goToweather(){
+		goToweather() {
 			console.log("跳转天气");
 			uni.navigateTo({
 				url: "/pages/weather/weather"
-			})
+			});
 		},
-		goTotool(){
+		goTotool() {
 			console.log("跳转工具");
 			uni.navigateTo({
 				url: "/pages/tool/tool"
-			})
+			});
 		},
-		goToabout(){
+		goToabout() {
 			uni.navigateTo({
 				url: "/pages/about/about"
-			})
+			});
+		},
+		exitLogin() {
+			uni.clearStorageSync("userInfo");
+			uni.redirectTo({
+				url: "/pages/login/login"
+			});
 		}
-
 	}
-}
+};
 </script>
 
 <style lang="scss">

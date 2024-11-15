@@ -7,7 +7,6 @@
 				<view class="input-group">
 					<text class="label">学号/工号</text>
 					<input class="input" v-model="studentId" placeholder="请输入学号/工号" required />
-
 				</view>
 				<view class="input-group">
 					<text class="label">密码</text>
@@ -49,7 +48,6 @@ export default {
 						icon: "none"
 					});
 				} else {
-
 					const response = await userLogin(this.studentId, this.password);
 					if (response.code === 200) {
 						console.log("登录成功");
@@ -171,7 +169,6 @@ export default {
 .form {
 	width: 80%;
 }
-
 
 .loginBox {
 	backdrop-filter: blur(10px);

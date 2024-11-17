@@ -1,15 +1,22 @@
 import {
 	httpBaseURL
-} from "@/api/utils/url.js"
+} from "@/api/utils/url.js";
 
+/** 请求地址 */
 const BASE_URL = httpBaseURL;
+/** 请求白名单，放置一些不需要token的接口 */
+const whiteList = [
+	"/user/login",
+	"/user/register"
+];
+
 
 /**
  * 请求方法
  * @param {Object} url 请求地址
  * @param {Object} method 请求类型
  * @param {Object} header 请求参数
- * @param {Object} data 请求头用于附加 token 等参数
+ * @param {Object} data 请求体
  */
 export function request(config = {}) {
 	let {
@@ -17,11 +24,15 @@ export function request(config = {}) {
 		data = {},
 		method = "GET",
 		header = {}
-	} = config
+	} = config;
 
-	const token = uni.getStorageSync('userInfo').token;
-	url = BASE_URL + url
-	header['access-token'] = token || void 0
+	// 处理非白名单请求
+	if (!whiteList.some((v) => url.indexOf(v) > -1)) {
+		console.log(123, url)
+		const token = uni.getStorageSync('userInfo').token;
+		header['access-token'] = token || void 0;
+	}
+	url = BASE_URL + url;
 
 
 	return new Promise((resolve, reject) => {

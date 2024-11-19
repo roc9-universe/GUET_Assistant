@@ -42,9 +42,9 @@ const skipRequested = ref(false);
 
 onShow(async () => {
 	const startTime = Date.now(); // 记录开始时间
-	// 获取本地存储中的 userinfo
-	const userinfo = uni.getStorageSync("userInfo");
-	console.log("本地存储的 userinfo:", userinfo);
+	// 获取本地存储中的 userInfo
+	const userInfo = uni.getStorageSync("userInfo");
+	console.log("本地存储的 userInfo:", userInfo);
 
 	// 定义跳转到登录页的函数
 	const redirectToLogin = () => {
@@ -53,11 +53,11 @@ onShow(async () => {
 		});
 	};
 
-	// 检查 userinfo 和 token
-	if (!userinfo || !userinfo.token) {
-		console.log("userinfo 或 token 不存在");
+	// 检查 userInfo 和 token
+	if (!userInfo || !userInfo.token) {
+		console.log("userInfo 或 token 不存在");
 
-		// 如果没有 userinfo 或 token，设置 2 秒后跳转
+		// 如果没有 userInfo 或 token，设置 2 秒后跳转
 		const elapsedTime = Date.now() - startTime;
 		if (elapsedTime < 2000) {
 			// 如果时间小于 2 秒，等待剩余的时间
@@ -81,10 +81,10 @@ onShow(async () => {
 	//定义请求获取用户信息
 	const executeRequest = async () => {
 		try {
-			const data = await getUserInfo(userinfo.id);
-			// 更新 userinfo 数据
-			uni.setStorageSync("userinfo", {
-				...userinfo,
+			const data = await getUserInfo(userInfo.id);
+			// 更新 userInfo 数据
+			uni.setStorageSync("userInfo", {
+				...userInfo,
 				...data
 			});
 			const elapsedTime = Date.now() - startTime; // 计算请求时间
@@ -115,8 +115,8 @@ onShow(async () => {
 	// 点击跳过按钮
 	const handleSkip = () => {
 		skipRequested.value = true; // 标记为跳过
-		// 检查 userinfo 和 token
-		if (!userinfo || !userinfo.token) {
+		// 检查 userInfo 和 token
+		if (!userInfo || !userInfo.token) {
 			redirectToLogin();
 			return;
 		} else {

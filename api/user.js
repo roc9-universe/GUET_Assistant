@@ -1,9 +1,6 @@
 import {
 	request
 } from "../utils/request.js";
-import {
-	baseUrlApi
-} from "./utils/utils";
 
 /**
  * 用户登录
@@ -15,9 +12,7 @@ export function userLogin(studentId, password) {
 			url: `/user/login/${studentId}/${password}`,
 			method: "POST",
 			header: {
-
 				'Content-Type': 'application/x-www-form-urlencoded'
-
 			}
 		})
 		.then(response => {
@@ -44,25 +39,20 @@ export function loginWithWechat(code) {
 				'Content-Type': 'application/json',
 			},
 			data: {
-				code: code // 将微信返回的 code 传给后端
+				code: code
 			}
 		})
 		.then(response => {
-			//console.log("Response:", response);
-			if (response.code === 200) {
-				//console.log("Response:", response.data.data.token);
-				const token = response.data.token;
-				const id = response.data.id;
-				// 保存 token 和用户信息
-				uni.setStorageSync('userInfo', {
-					token,
-					id
-				});
-				return response; // 返回整个响应对象
-			} else {
-				console.log('登录失败:返回不为200', response.data.msg || '未知错误');
-				throw new Error('登录失败');
-			}
+			const {
+				token,
+				id
+			} = response.data;
+			// 保存 token 和用户信息
+			uni.setStorageSync('userInfo', {
+				token,
+				id
+			});
+			return response;
 		})
 		.catch(error => {
 			console.log('请求错误:', error);
@@ -130,12 +120,8 @@ export function userRegister(userInfo) {
 			},
 		})
 		.then(response => {
-			if (response.code === 200) {
-				console.log("注册成功:", response.msg);
-				return response;
-			} else {
-				throw new Error(response.msg || "注册失败");
-			}
+			console.log("注册成功:", response.msg);
+			return response;
 		})
 		.catch(error => {
 			console.error("注册请求失败:", error);

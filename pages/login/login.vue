@@ -85,14 +85,14 @@ export default {
 			});
 		},
 		loginWithwechat() {
+			// 微信登录
 			wx.login({
 				success: async (res) => {
-					console.log("code:", res.code);
 					if (res.code) {
 						try {
 							// 调用 loginWithWechat 进行微信登录
 							const loginResponse = await loginWithWechat(res.code);
-							//console.log("loginResponse:", loginResponse.code);
+							// 微信登录成功
 							if (loginResponse.code === 200) {
 								const { token, id } = loginResponse.data;
 								// 获取用户 ID

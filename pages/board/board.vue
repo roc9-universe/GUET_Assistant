@@ -48,7 +48,7 @@
 			      >
 			        <view class="announcement_content">
 			          <view class="announcement_title">{{ item.title }}</view>
-			          <view class="announcement_date">{{ item.date }}</view>
+			          <view class="announcement_date">{{ TimestampToYYYYMMDD(item.publishTime) }}</view>
 			        </view>
 					<view class="divider"></view> <!-- 分割线 -->
 			      </view>
@@ -57,35 +57,45 @@
 	</view>
 </template>
 
+
 <script>
+import { getNoticeList } from "../../api/notice.js";
+	
 	export default {
 		data() {
 			return {
-				announcements: [
-				    {
-				        title: "公告标题 1斯卡哈就是看个哈时数据的撒娇看封是发积分",
-				        date: "2024-01-01",
-				        content: "这是公告内容 1。"
-				    },
-				    {
-						title: "公告标题 2",
-				        date: "2024-01-02",
-				        content: "这是公告内容 2。"
-				    },
-				    {
-						title: "公告标题 3",
-				        date: "2024-01-03",
-				        content: "这是公告内容 3。"
-				    },
-					{
-						title: "公告标题 4",
-					    date: "2024-01-04",
-					    content: "这是公告内容 4。"
-					},
-				]
+				announcements:[],
+				
 			}
 		},
+		created(){
+			this.loadAnnouncements();
+		},
 		methods: {
+			async loadAnnouncements() {
+			      try {
+			        const response = await getNoticeList();
+			        this.announcements = response.data;
+			      } catch (error) {
+			        console.error('加载公告列表失败', error);
+			      }
+			},
+			TimestampToYYYYMMDD(timestamp) {
+			      const date = new Date(timestamp);
+			      const year = date.getFullYear();
+			      const month = String(date.getMonth() + 1).padStart(2, '0');
+			      const day = String(date.getDate()).padStart(2, '0');
+			      return `${year}-${month}-${day}`;
+			},
+			viewDetail(announcement){
+				wx.showToast({
+					title:"正在跳转"
+				})
+				// wx.navigateTo({
+				//     url: `/pages/noticeList/viewDetail?id=${announcement.id}&title=${announcement.title}`
+				// });
+			},
+			
 			goToNoticeList() {
 			    uni.navigateTo({
 					url: '/pages/noticeList/noticeList' // 目标页面路径

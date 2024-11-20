@@ -3,13 +3,13 @@
 		<view class="announcement_list">
 		      <view
 		        class="announcement_item"
-		        v-for="(item, index) in announcements"
+		        v-for="(item, index) in noticeList"
 		        :key="index"
 		        
 		      >
 		        <view class="announcement_content">
 		          <view class="announcement_title">{{ item.title }}</view>
-		          <view class="announcement_date">{{ item.date }}</view>
+		          <view class="announcement_date">{{ TimestampToYYYYMMDD(item.publishTime) }}</view>
 		        </view>
 				<view class="divider"></view> <!-- 分割线 -->
 		      </view>
@@ -18,45 +18,32 @@
 </template>
 
 <script>
+import { getNoticeList } from "../../api/notice.js";
 	export default {
 		data() {
 			return {
-				announcements: [
-				    {
-				        title: "公告标题 1斯卡哈就是看个哈时数据的撒娇看封是发积分",
-				        date: "2024-01-01",
-				        content: "这是公告内容 1。"
-				    },
-				    {
-						title: "公告标题 2",
-				        date: "2024-01-02",
-				        content: "这是公告内容 2。"
-				    },
-				    {
-						title: "公告标题 3",
-				        date: "2024-01-03",
-				        content: "这是公告内容 3。"
-				    },
-					{
-						title: "公告标题 4",
-					    date: "2024-01-04",
-					    content: "这是公告内容 4。"
-					},
-					{
-						title: "公告标题 5",
-					    date: "2024-01-05",
-					    content: "这是公告内容 5。"
-					},
-					{
-						title: "公告标题 6",
-					    date: "2024-01-06",
-					    content: "这是公告内容 6。"
-					},
-				]
+				noticeList:[],
 			}
 		},
+		created() {
+			this.loadAnnouncements()
+		},
 		methods: {
-			
+			async loadAnnouncements() {
+			      try {
+			        const response = await getNoticeList();
+			        this.noticeList = response.data;
+			      } catch (error) {
+			        console.error('加载公告列表失败', error);
+			      }
+			},
+			TimestampToYYYYMMDD(timestamp) {
+			      const date = new Date(timestamp);
+			      const year = date.getFullYear();
+			      const month = String(date.getMonth() + 1).padStart(2, '0');
+			      const day = String(date.getDate()).padStart(2, '0');
+			      return `${year}-${month}-${day}`;
+			},
 		}
 	}
 </script>
@@ -73,6 +60,7 @@
 	}
 	.announcement_list {
 	  display: flex;
+	  width: 90%;
 	  flex-direction: column; /* 垂直排列 */
 	}
 	.announcement_item {

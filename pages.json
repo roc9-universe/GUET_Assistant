@@ -26,6 +26,12 @@
 			}
 		},
 		{
+			"path": "pages/detail/viewDetail",
+			"style": {
+				"navigationBarTitleText": "公告详情"
+			}
+		},
+		{
 			"path": "pages/message/message",
 			"style": {
 				"navigationBarTitleText": "消息"
@@ -89,6 +95,13 @@
 			"style" : 
 			{
 				"navigationBarTitleText" : "常用工具"
+			}
+		},
+		{
+			"path" : "pages/noticeList/viewDetail/viewDetail",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
 			}
 		}
 	],

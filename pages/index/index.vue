@@ -82,11 +82,6 @@ onShow(async () => {
 	const executeRequest = async () => {
 		try {
 			const data = await getUserInfo(userInfo.id);
-			// 更新 userInfo 数据
-			uni.setStorageSync("userInfo", {
-				...userInfo,
-				...data
-			});
 			const elapsedTime = Date.now() - startTime; // 计算请求时间
 			if (elapsedTime < 2000) {
 				// 如果时间小于 2 秒，等待剩余的时间

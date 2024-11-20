@@ -20,6 +20,10 @@
 
 		<!--功能-->
 		<view class="main">
+			<view class="menu-item" v-if="isAdmin" @click="goTopublish">
+				<image class="icon" src="../../static/icon/mine/publish.svg" />
+				<text>发布信息</text>
+			</view>
 			<view class="menu-item" @click="goTomap">
 				<image class="icon" src="../../static/icon/mine/map.svg" />
 				<text>校内地图</text>
@@ -54,7 +58,8 @@ export default {
 		return {
 			username: "",
 			studentId: "",
-			type: ""
+			type: "",
+			isAdmin: false
 		};
 	},
 	onShow() {
@@ -66,6 +71,11 @@ export default {
 			this.studentId = userInfo.studentId || "请前往编辑资料绑定";
 			this.type = userInfo.type || "未绑定身份";
 			//console.log("name:",this.username);
+			if (userInfo.type === "admin") {
+				this.isAdmin = true;
+			} else {
+				this.isAdmin = false;
+			}
 		}
 	},
 	methods: {
@@ -73,6 +83,11 @@ export default {
 			//你好
 			uni.navigateTo({
 				url: "/pages/setting/setting"
+			});
+		},
+		goTopublish(){
+			uni.navigateTo({
+				url: "/pages/publish/publish"
 			});
 		},
 		goTomap() {

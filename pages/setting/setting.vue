@@ -3,10 +3,20 @@ import { ref, shallowRef } from "vue";
 import { onShow } from "@dcloudio/uni-app";
 import { getUserInfo, updateUserInfo } from "../../api/user.js";
 
+/** 用户头像 */
+const avatar = ref("https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png");
+/** 选择头像 */
+const onChooseAvatar = (e) => {
+	const { avatarUrl } = e.detail;
+	avatar.value = avatarUrl;
+};
+
+/** 用于循环渲染的用户信息列表 */
 const userInfo = ref({});
+/** 用于更新数据的用户id */
 let userId = "";
 
-// 获取数据
+/** 获取用户数据 */
 function fetchUserInfo() {
 	const data = uni.getStorageSync("userInfo");
 	userId = data.id;
@@ -71,7 +81,9 @@ function fetchUserInfo() {
 	};
 }
 
-onShow(fetchUserInfo);
+onShow(() => {
+	fetchUserInfo();
+});
 
 /** 当前弹窗的引用 */
 const inputDialog = ref();
@@ -122,7 +134,6 @@ const dialogInputConfirm = async () => {
 };
 /** 弹窗取消 */
 const dialogInputClose = () => {
-	console.log("132");
 	inputData.value = "";
 };
 
@@ -134,20 +145,15 @@ const styles = ref({
 
 <template>
 	<view class="box">
-		<setting-card>
-			<template #title>头像</template>
-			<template #item>
-				<image class="avatar" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
-			</template>
-		</setting-card>
-		<setting-card>
-			<template #title>昵称</template>
-			<template #item>
-				<view class="text">
-					<text>暂无</text>
-				</view>
-			</template>
-		</setting-card>
+		<view class="avatar-box">
+			<setting-card>
+				<template #title>头像</template>
+				<template #item>
+					<image class="avatar" :src="avatar" />
+				</template>
+			</setting-card>
+			<button class="avatar-button" open-type="chooseAvatar" @chooseavatar="onChooseAvatar">获取微信头像</button>
+		</view>
 
 		<view style="margin-top: 40rpx">
 			<view v-for="(item, key) in userInfo" :key="key" @click="inputDialogToggle(item, key)">
@@ -195,10 +201,20 @@ const styles = ref({
 </template>
 
 <style scoped lang="scss">
-.avatar {
-	width: 120rpx;
-	height: 120rpx;
-	border-radius: 20rpx;
+.avatar-box {
+	position: relative;
+	.avatar {
+		width: 120rpx;
+		height: 120rpx;
+		border-radius: 20rpx;
+	}
+	.avatar-button {
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top: 0;
+		opacity: 0;
+	}
 }
 
 .text {
@@ -213,24 +229,4 @@ const styles = ref({
 		white-space: nowrap;
 	}
 }
-
-// :deep(.uni-dialog-title .uni-popup__error) {
-// 	color: #151515;
-// }
-
-// @mixin flex {
-// 	/* #ifndef APP-NVUE */
-// 	display: flex;
-// 	/* #endif */
-// 	flex-direction: row;
-// }
-
-// .popup-content {
-// 	@include flex;
-// 	align-items: center;
-// 	justify-content: center;
-// 	padding: 15px;
-// 	height: 50px;
-// 	background-color: #fff;
-// }
 </style>

@@ -90,6 +90,20 @@
 			{
 				"navigationBarTitleText" : "常用工具"
 			}
+		},
+		{
+			"path" : "pages/publish/publish",
+			"style" : 
+			{
+				"navigationBarTitleText" : "发布信息"
+			}
+		},
+		{
+			"path" : "pages/edit/edit",
+			"style" : 
+			{
+				"navigationBarTitleText" : "编辑信息"
+			}
 		}
 	],
 	"tabBar": {

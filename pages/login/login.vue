@@ -24,7 +24,7 @@
 			<text style="color: #f8f8f8">———— 其他方式 ————</text>
 			<view class="iconGroup">
 				<image class="icon" @click="loginWithwechat" src="/static/icon/login/wechat.svg" />
-				<image class="icon" src="/static/icon/login/QQ.svg" />
+				<image class="icon" @click="loginWithQQ" src="/static/icon/login/QQ.svg" />
 			</view>
 		</view>
 	</view>
@@ -133,6 +133,12 @@ export default {
 						icon: "none"
 					});
 				}
+			});
+		},
+		loginWithQQ(){
+			uni.showToast({
+				title: "抱歉，QQ登录暂不可用，请使用其他方式登录。",
+				icon: "none"
 			});
 		}
 	}

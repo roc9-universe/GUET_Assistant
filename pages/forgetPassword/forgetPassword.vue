@@ -7,9 +7,8 @@
 		</view>
 		<view class="title">找回密码</view>
 		<form class="forgetBox">
-			
-		
-		<button class="register-buttom" @click="forgetPassword">找回密码</button>
+			<text class="backword">该功能正在开发，请返回</text>
+			<button class="register-buttom" @click="forgetPassword">返回登录</button>
 		</form>
 	</view>
 </template>

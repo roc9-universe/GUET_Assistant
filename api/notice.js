@@ -3,6 +3,33 @@ import {
 } from "../utils/request.js";
 
 /**
+ * 管理员发布信息
+ */
+export function postMessage(data) {
+	return request({
+			url: `/message/postMessage`,
+			method: "POST",
+			data
+		})
+		.then(response => {
+			return response;
+		})
+}
+
+/**
+ * 获取消息类型
+ */
+export function getMessageType() {
+	return request({
+			url: `/message/getMessageType`,
+			method: "GET",
+		})
+		.then(response => {
+			return response;
+		})
+}
+
+/**
  * 获取校园公告
  * 
  */
@@ -25,7 +52,7 @@ export function getMessageList(id, title) {
 			url: `/message/getMessageList?id=${id}&title=${title}`,
 			method: "GET"
 		})
-		.then(response =>{
+		.then(response => {
 			return response;
 		})
 }

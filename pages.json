@@ -77,45 +77,33 @@
 			}
 		},
 		{
-			"path" : "pages/weather/weather",
-			"style" : 
-			{
-				"navigationBarTitleText" : "今日天气"
-      }
-    },
-    {
-			"path" : "pages/about/about",
-			"style" : 
-			{
-				"navigationBarTitleText" : "关于我们"
+			"path": "pages/weather/weather",
+			"style": {
+				"navigationBarTitleText": "今日天气"
 			}
 		},
 		{
-			"path" : "pages/tool/tool",
-			"style" : 
-			{
-				"navigationBarTitleText" : "常用工具"
+			"path": "pages/about/about",
+			"style": {
+				"navigationBarTitleText": "关于我们"
 			}
 		},
 		{
-			"path" : "pages/noticeList/viewDetail/viewDetail",
-			"style" : 
-			{
-				"navigationBarTitleText" : ""
+			"path": "pages/tool/tool",
+			"style": {
+				"navigationBarTitleText": "常用工具"
 			}
 		},
 		{
-			"path" : "pages/publish/publish",
-			"style" : 
-			{
-				"navigationBarTitleText" : "发布信息"
+			"path": "pages/publish/publish",
+			"style": {
+				"navigationBarTitleText": "发布信息"
 			}
 		},
 		{
-			"path" : "pages/edit/edit",
-			"style" : 
-			{
-				"navigationBarTitleText" : "编辑信息"
+			"path": "pages/edit/edit",
+			"style": {
+				"navigationBarTitleText": "编辑信息"
 			}
 		}
 	],

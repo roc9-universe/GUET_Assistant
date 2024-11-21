@@ -23,6 +23,18 @@ export function compareTimestamp(timestamp) {
 	}
 }
 
+/** 
+ * 将路径转换为 File 对象（需要在 H5 或兼容环境中使用） 
+ * @param {string} filePath 文件路径
+ * @param {string} fileName 文件名
+ * @returns {File} File 对象
+ */
+export function createFileFromPath(filePath, fileName) {
+	return new File([filePath], fileName, {
+		type: "image/png"
+	});
+}
+
 
 export function gotoHome() {
 	uni.showModal({

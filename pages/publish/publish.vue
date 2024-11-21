@@ -1,22 +1,7 @@
+<script setup></script>
+
 <template>
-	<view>
-		
-	</view>
+	<view>2132132</view>
 </template>
 
-<script>
-	export default {
-		data() {
-			return {
-				
-			}
-		},
-		methods: {
-			
-		}
-	}
-</script>
-
-<style>
-
-</style>
+<style></style>

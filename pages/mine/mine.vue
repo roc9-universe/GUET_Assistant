@@ -3,10 +3,10 @@
 		<!--头像-->
 		<view class="info">
 			<view class="profile">
-				<image class="avatar" src="../../static/icon/mine/avatar.jpg" />
+				<image class="avatar" :src="avatar" />
 				<view class="details">
 					<text class="name">{{ username }}</text>
-					<text class="student-id">学号/工号: {{ studentId }}</text>
+					<text class="student-id">{{ type === "学生" ? "学号" : "工号" }} {{ studentId }}</text>
 				</view>
 				<button class="edit-btn" @click="editInfo">编辑资料</button>
 			</view>
@@ -15,7 +15,7 @@
 				<text class="school">桂林电子科技大学</text>
 				<image class="icon" src="../../static/icon/mine/school.svg"></image>
 			</view>
-			<text class="specific">学院{{ type }}</text>
+			<text class="specific">学院{{ isAdmin ? "管理员" : type }}</text>
 		</view>
 
 		<!--功能-->
@@ -44,7 +44,7 @@
 				<image class="icon" src="../../static/icon/mine/setting.svg" />
 				<text>设置</text>
 			</view>
-			<view class="menu-item" @click="exitLogin">
+			<view class="menu-item" style="border-bottom: 0" @click="exitLogin">
 				<image class="icon" src="../../static/icon/mine/exit.svg" />
 				<text>退出登录</text>
 			</view>
@@ -56,6 +56,7 @@
 export default {
 	data() {
 		return {
+			avatar: "",
 			username: "",
 			studentId: "",
 			type: "",
@@ -69,6 +70,7 @@ export default {
 			// 用户名和学号
 			this.username = userInfo.username || "未绑定";
 			this.studentId = userInfo.studentId || "请前往编辑资料绑定";
+			this.avatar = userInfo.avatar || "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
 			this.type = userInfo.type || "未绑定身份";
 			//console.log("name:",this.username);
 			if (userInfo.type === "admin") {
@@ -85,7 +87,7 @@ export default {
 				url: "/pages/setting/setting"
 			});
 		},
-		goTopublish(){
+		goTopublish() {
 			uni.navigateTo({
 				url: "/pages/publish/publish"
 			});
@@ -201,7 +203,7 @@ export default {
 	}
 }
 .main {
-	padding: 10rpx 20rpx 20rpx 20rpx;
+	padding: 0 20rpx;
 	margin-top: 50rpx;
 	margin-bottom: 20rpx;
 	background-color: white;
@@ -211,7 +213,7 @@ export default {
 		flex-direction: row;
 		align-items: center;
 		padding: 20rpx;
-		border-bottom: 1px solid $border-color;
+		border-bottom: 1px solid $text-font-color-5;
 	}
 }
 

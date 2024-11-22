@@ -61,7 +61,6 @@ export function loginWithWechat(code) {
 }
 
 /**
-=======
  * 获取用户信息
  * @param {number} id 用户 ID
  */
@@ -127,4 +126,21 @@ export function userRegister(userInfo) {
 			console.error("注册请求失败:", error);
 			throw error;
 		});
+}
+
+/**
+ * 用户账号绑定
+ * code 和 studentId、password二选一（微信绑定、账号绑定）
+ * @param {string} code - 微信code
+ * @param {string} studentId - 账号ID（学号、工号）
+ * @param {string} password - 账号密码
+ */
+export function binding(data) {
+	return request({
+		url: "/user/binding",
+		method: "PUT",
+		data
+	}).then(response => {
+		return response.data;
+	})
 }

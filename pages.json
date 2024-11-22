@@ -31,6 +31,7 @@
 				"navigationBarTitleText": "公告详情"
 			}
 		},
+
 		{
 			"path": "pages/message/message",
 			"style": {
@@ -96,14 +97,8 @@
 			{
 				"navigationBarTitleText" : "常用工具"
 			}
-		},
-		{
-			"path" : "pages/noticeList/viewDetail/viewDetail",
-			"style" : 
-			{
-				"navigationBarTitleText" : ""
-			}
 		}
+		
 	],
 	"tabBar": {
 		"backgroundColor": "#f8f8f8",

@@ -46,7 +46,7 @@ const msglist = [
 		title: "系统通知",
 		describe: "恭喜你，昵称审核通...",
 		time: "11分钟前",
-		unreadCount: 1
+		unreadCount: 0
 	},
 	{
 		index: 2,
@@ -64,7 +64,7 @@ const msglist = [
 		title: "学校公告",
 		describe: "关于开展2023-2024...",
 		time: "2周前",
-		unreadCount: 1
+		unreadCount: 4 
 	}
 ];
 

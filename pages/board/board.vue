@@ -44,7 +44,8 @@
 			        class="announcement_item"
 			        v-for="announcement in announcements"
 			        :key="announcement.id"
-					@click="viewDetail(announcement.id,announcement.title,announcement.publishTime)"
+					  @click="viewDetail(announcement.id,announcement.title,announcement.publishTime)"
+
 			        
 			      >
 			        <view class="announcement_content">
@@ -83,6 +84,7 @@ import { getNoticeList } from "../../api/notice.js";
 			      }
 			},
 			TimestampToYYYYMMDD(timestamp) {
+			
 			      const date = new Date(timestamp);
 			      const year = date.getFullYear();
 			      const month = String(date.getMonth() + 1).padStart(2, '0');

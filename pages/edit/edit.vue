@@ -2,6 +2,7 @@
 // 基础
 import { ref, reactive, onMounted, computed, getCurrentInstance } from "vue";
 import { onShow } from "@dcloudio/uni-app";
+import { upload } from "../../api/general.js";
 
 const readOnly = ref(false);
 const formats = reactive({});
@@ -105,12 +106,27 @@ const insertDate = () => {
 const insertImage = () => {
 	uni.chooseImage({
 		count: 1,
-		success: (res) => {
-			editorCtx.insertImage({
-				src: res.tempFilePaths[0],
-				alt: "图像",
-				success: () => {
-					console.log("insert image success");
+		success: (chooseImageRes) => {
+			uni.uploadFile({
+				url: upload(),
+				filePath: chooseImageRes.tempFilePaths[0],
+				name: "file",
+				header: {
+					"access-token": uni.getStorageSync("userInfo").token
+				},
+				success: async (uploadFileRes) => {
+					// 解析 JSON 字符串
+					const { data } = JSON.parse(uploadFileRes.data);
+					editorCtx.insertImage({
+						src: data,
+						alt: "图像",
+						success: () => {
+							console.log("insert image success");
+						}
+					});
+				},
+				fail: (e) => {
+					console.error("上传图片失败", e);
 				}
 			});
 		}

@@ -10,6 +10,7 @@
         <rich-text :nodes="richTextContent"></rich-text>
       </view>
     </view>
+
 </template>
 
 <script>
@@ -30,25 +31,15 @@ export default {
 	this.announcementTime = options.publishTime
 	console.log(this.announcementTime)
     const { id, title , publishTime } = options;
-	
     this.loadAnnouncementDetail(id,title);
   },
-  // computed: {
-  //     formattedDate() {
-  //       const date = new Date(this.announcementTime);
-		// console.log(this.announcementTime)
-  //       const year = date.getFullYear();
-  //       const month = String(date.getMonth() + 1).padStart(2, "0");
-  //       const day = String(date.getDate()).padStart(2, "0");
-  //       return `${year}-${month}-${day}`;
-  //     },
-  //   },
+
   methods: {
     // 获取公告详情
     async loadAnnouncementDetail(id,title) {
       try {
         const response = await getNoticeDetail(id,title);
-		this.richTextContent = response.data[0]
+		    this.richTextContent = response.data[0]
       } catch (error) {
         console.error('加载公告详情失败', error);
       }
@@ -61,11 +52,13 @@ export default {
 	      const day = String(date.getDate()).padStart(2, '0');
 	      return `${year}-${month}-${day}`;
 	},
+
   }
 };
 </script>
 
 <style>
+
 .article-container {
   padding: 20px;
   background-color: #ffffff;

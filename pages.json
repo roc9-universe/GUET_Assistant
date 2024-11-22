@@ -113,7 +113,15 @@
 			{
 				"navigationBarTitleText" : "外部网页"
 			}
+		},
+		{
+			"path" : "pages/messageList/messageList",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
 		}
+		
 	],
 	"tabBar": {
 		"backgroundColor": "#f8f8f8",

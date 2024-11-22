@@ -3,18 +3,34 @@ import { ref, shallowRef } from "vue";
 import { onShow } from "@dcloudio/uni-app";
 import { getUserInfo, updateUserInfo } from "../../api/user.js";
 import { createFileFromPath } from "../../utils/common.js";
+import { upload } from "../../api/general.js";
 
 /** 用户头像 */
 const avatar = ref("https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png");
 /** 选择头像 */
-const onChooseAvatar = async (e) => {
+const onChooseAvatar = (e) => {
 	const { avatarUrl } = e.detail;
-	await updateUserInfo({
-		id: userId,
-		avatar: avatarUrl
+	uni.uploadFile({
+		url: upload(),
+		filePath: avatarUrl,
+		name: "file",
+		header: {
+			"access-token": uni.getStorageSync("userInfo").token
+		},
+		success: async (uploadFileRes) => {
+			// 解析 JSON 字符串
+			const { data } = JSON.parse(uploadFileRes.data);
+			await updateUserInfo({
+				id: userId,
+				avatar: data
+			});
+			await getUserInfo(userId);
+			fetchUserInfo();
+		},
+		fail: (e) => {
+			console.error("上传图片失败", e);
+		}
 	});
-	await getUserInfo(userId);
-	fetchUserInfo();
 };
 
 /** 用于循环渲染的用户信息列表 */

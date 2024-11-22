@@ -42,13 +42,14 @@
 			<view class="announcement_list">
 			      <view
 			        class="announcement_item"
-			        v-for="(item, index) in announcements"
-			        :key="index"
+			        v-for="announcement in announcements"
+			        :key="announcement.id"
+					@click="viewDetail(announcement.id,announcement.title)"
 			        
 			      >
 			        <view class="announcement_content">
-			          <view class="announcement_title">{{ item.title }}</view>
-			          <view class="announcement_date">{{ TimestampToYYYYMMDD(item.publishTime) }}</view>
+			          <view class="announcement_title">{{ announcement.title }}</view>
+			          <view class="announcement_date">{{ TimestampToYYYYMMDD(announcement.publishTime) }}</view>
 			        </view>
 					<view class="divider"></view> <!-- 分割线 -->
 			      </view>
@@ -59,13 +60,13 @@
 
 
 <script>
+
 import { getNoticeList } from "../../api/notice.js";
 	
 	export default {
 		data() {
 			return {
 				announcements:[],
-				
 			}
 		},
 		created(){
@@ -81,19 +82,17 @@ import { getNoticeList } from "../../api/notice.js";
 			      }
 			},
 			TimestampToYYYYMMDD(timestamp) {
+			
 			      const date = new Date(timestamp);
 			      const year = date.getFullYear();
 			      const month = String(date.getMonth() + 1).padStart(2, '0');
 			      const day = String(date.getDate()).padStart(2, '0');
 			      return `${year}-${month}-${day}`;
 			},
-			viewDetail(announcement){
-				wx.showToast({
-					title:"正在跳转"
-				})
-				// wx.navigateTo({
-				//     url: `/pages/noticeList/viewDetail?id=${announcement.id}&title=${announcement.title}`
-				// });
+			viewDetail(id,title){
+				wx.navigateTo({
+				    url: `/pages/detail/viewDetail?id=${id}&title=${title}`
+				});
 			},
 			
 			goToNoticeList() {

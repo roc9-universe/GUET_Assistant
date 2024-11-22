@@ -45,12 +45,16 @@ export function getNoticeList() {
 
 /**
  * 根据公告id和公告标题获取公告详情
- * 
+ * @param {string} id 
+ * @param {string} title 
  */
-export function getMessageList(id, title) {
+export function getNoticeDetail(id, title) {
 	return request({
 			url: `/message/getMessageList?id=${id}&title=${title}`,
-			method: "GET"
+			method: "GET",
+			header: {
+				'Content-Type': 'application/x-www-form-urlencoded'
+			}
 		})
 		.then(response => {
 			return response;

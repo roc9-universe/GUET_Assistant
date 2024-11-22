@@ -42,6 +42,7 @@ export function request(config = {}) {
 			method,
 			header,
 			success: res => {
+				console.log()
 				if (res.data.code === 200) {
 					resolve(res.data)
 				} else if (res.data.code === 400) {
@@ -52,6 +53,7 @@ export function request(config = {}) {
 					})
 					reject(res.data)
 				} else {
+					
 					uni.showToast({
 						title: res.data.msg,
 						icon: "none"

@@ -2,17 +2,16 @@
 	<view class="noticeList_box">
 		<view class="announcement_list">
 		      <view
-		        class="announcement_item"
-		        v-for="(item, index) in noticeList"
-		        :key="index"
-		        
-		      >
-		        <view class="announcement_content">
-		          <view class="announcement_title">{{ item.title }}</view>
-		          <view class="announcement_date">{{ TimestampToYYYYMMDD(item.publishTime) }}</view>
+		        v-for="announcement in announcements"
+		          :key="announcement.id"
+		          
+		        >
+		          <view class="announcement_content">
+		            <view class="announcement_title">{{ announcement.title }}</view>
+		            <view class="announcement_date">{{ TimestampToYYYYMMDD(announcement.publishTime) }}</view>
+		          </view>
+				  <view class="divider"></view> <!-- 分割线 -->
 		        </view>
-				<view class="divider"></view> <!-- 分割线 -->
-		      </view>
 		</view>
 	</view>
 </template>
@@ -22,7 +21,7 @@ import { getNoticeList } from "../../api/notice.js";
 	export default {
 		data() {
 			return {
-				noticeList:[],
+				announcements:[],
 			}
 		},
 		created() {
@@ -32,7 +31,7 @@ import { getNoticeList } from "../../api/notice.js";
 			async loadAnnouncements() {
 			      try {
 			        const response = await getNoticeList();
-			        this.noticeList = response.data;
+			        this.announcements = response.data;
 			      } catch (error) {
 			        console.error('加载公告列表失败', error);
 			      }
@@ -60,7 +59,7 @@ import { getNoticeList } from "../../api/notice.js";
 	}
 	.announcement_list {
 	  display: flex;
-	  width: 90%;
+	width: 90%;
 	  flex-direction: column; /* 垂直排列 */
 	}
 	.announcement_item {

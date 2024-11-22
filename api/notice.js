@@ -35,7 +35,7 @@ export function getMessageType() {
  */
 export function getNoticeList() {
 	return request({
-			url: `/message/getTitleList?userId=${'2100810819'}&type=${'校园公告'}`,
+			url: `/message/getTitleList?type=${'校园公告'}`,
 			method: "GET",
 		})
 		.then(response => {

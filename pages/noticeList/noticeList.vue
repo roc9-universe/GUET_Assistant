@@ -5,6 +5,7 @@
 		        v-for="announcement in announcements"
 		          :key="announcement.id"
 		          @click="viewDetail(announcement.id,announcement.title)"
+
 		        >
 		          <view class="announcement_content">
 		            <view class="announcement_title">{{ announcement.title }}</view>

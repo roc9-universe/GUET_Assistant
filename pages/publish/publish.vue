@@ -37,7 +37,7 @@ onShow(() => {
 /** 消息类型修改的时候触发 */
 const messageTypeChange = () => {
 	if (!["系统消息", "活动消息"].includes(submitForm.value.messageType)) {
-		submitForm.value.userId = [];
+		delete submitForm.value.userId;
 	}
 };
 
@@ -74,6 +74,14 @@ const onPubish = async () => {
 			icon: "error"
 		});
 	}
+};
+
+/** 取消发布 */
+const onCancel = () => {
+	uni.navigateBack();
+	uni.removeStorage({
+		key: "publishDraft"
+	});
 };
 </script>
 
@@ -116,12 +124,13 @@ const onPubish = async () => {
 		</view>
 		<view class="pubish-button-box">
 			<button class="pubish-button" hover-class="is-hover" @click="onPubish()">发布</button>
+			<button style="margin-top: 10px" @click="onCancel()">取消</button>
 		</view>
 	</view>
 </template>
 
 <style scoped lang="scss">
-.box {
+s .box {
 	display: flex;
 	flex-direction: column;
 }

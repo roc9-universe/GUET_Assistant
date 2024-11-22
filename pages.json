@@ -106,6 +106,13 @@
 			"style": {
 				"navigationBarTitleText": "编辑信息"
 			}
+		},
+		{
+			"path" : "pages/externalPage/externalPage",
+			"style" : 
+			{
+				"navigationBarTitleText" : "外部网页"
+			}
 		}
 	],
 	"tabBar": {

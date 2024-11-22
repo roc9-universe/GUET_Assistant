@@ -87,8 +87,7 @@ export function getUserInfo(id) {
 }
 
 /**
- * 根据id获取用户信息
- * 
+ * 修改用户信息
  */
 export function updateUserInfo(data) {
 	return request({

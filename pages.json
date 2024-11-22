@@ -77,6 +77,13 @@
 			{
 				"navigationBarTitleText" : "关于我们"
 			}
+		},
+		{
+			"path" : "pages/messageList/messageList",
+			"style" : 
+			{
+				"navigationBarTitleText" : ""
+			}
 		}
 	],
 	"tabBar": {

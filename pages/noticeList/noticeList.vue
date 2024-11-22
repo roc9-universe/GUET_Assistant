@@ -4,7 +4,7 @@
 		      <view
 		        v-for="announcement in announcements"
 		          :key="announcement.id"
-		          
+		          @click="viewDetail(announcement.id,announcement.title)"
 		        >
 		          <view class="announcement_content">
 		            <view class="announcement_title">{{ announcement.title }}</view>
@@ -35,6 +35,11 @@ import { getNoticeList } from "../../api/notice.js";
 			      } catch (error) {
 			        console.error('加载公告列表失败', error);
 			      }
+			},
+			viewDetail(id,title){
+				wx.navigateTo({
+				    url: `/pages/detail/viewDetail?id=${id}&title=${title}`
+				});
 			},
 			TimestampToYYYYMMDD(timestamp) {
 			      const date = new Date(timestamp);

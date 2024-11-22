@@ -44,7 +44,7 @@
 			        class="announcement_item"
 			        v-for="announcement in announcements"
 			        :key="announcement.id"
-					@click="viewDetail(announcement.id,announcement.title)"
+					@click="viewDetail(announcement.id,announcement.title,announcement.publishTime)"
 			        
 			      >
 			        <view class="announcement_content">
@@ -76,22 +76,22 @@ import { getNoticeList } from "../../api/notice.js";
 			async loadAnnouncements() {
 			      try {
 			        const response = await getNoticeList();
-			        this.announcements = response.data;
+					//只展示前4条，其他的公告点击查看更多
+			        this.announcements = response.data.slice(0,4);
 			      } catch (error) {
 			        console.error('加载公告列表失败', error);
 			      }
 			},
 			TimestampToYYYYMMDD(timestamp) {
-			
 			      const date = new Date(timestamp);
 			      const year = date.getFullYear();
 			      const month = String(date.getMonth() + 1).padStart(2, '0');
 			      const day = String(date.getDate()).padStart(2, '0');
 			      return `${year}-${month}-${day}`;
 			},
-			viewDetail(id,title){
+			viewDetail(id,title,publishTime){
 				wx.navigateTo({
-				    url: `/pages/detail/viewDetail?id=${id}&title=${title}`
+				    url: `/pages/detail/viewDetail?id=${id}&title=${title}&publishTime=${publishTime}`
 				});
 			},
 			
@@ -213,7 +213,7 @@ import { getNoticeList } from "../../api/notice.js";
 	  flex-direction: column; /* 垂直排列 */
 	}
 	.announcement_item {
-	  cursor: pointer; /* 鼠标悬停效果 */
+	  // cursor: pointer; /* 鼠标悬停效果 */
 	}
 	.announcement_title {
 	  font-size: 13px; /* 标题字体大小 */

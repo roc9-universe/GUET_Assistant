@@ -2,13 +2,19 @@
 import { ref, shallowRef } from "vue";
 import { onShow } from "@dcloudio/uni-app";
 import { getUserInfo, updateUserInfo } from "../../api/user.js";
+import { createFileFromPath } from "../../utils/common.js";
 
 /** 用户头像 */
 const avatar = ref("https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png");
 /** 选择头像 */
-const onChooseAvatar = (e) => {
+const onChooseAvatar = async (e) => {
 	const { avatarUrl } = e.detail;
-	avatar.value = avatarUrl;
+	await updateUserInfo({
+		id: userId,
+		avatar: avatarUrl
+	});
+	await getUserInfo(userId);
+	fetchUserInfo();
 };
 
 /** 用于循环渲染的用户信息列表 */
@@ -20,13 +26,14 @@ let userId = "";
 function fetchUserInfo() {
 	const data = uni.getStorageSync("userInfo");
 	userId = data.id;
+	avatar.value = data.avatar;
 	userInfo.value = {
 		username: {
 			name: "姓名",
 			value: data.username
 		},
 		studentId: {
-			name: "学号",
+			name: data.type === "学生" ? "学号" : "工号",
 			value: data.studentId
 		},
 		gender: {
@@ -79,6 +86,16 @@ function fetchUserInfo() {
 			value: data.classname
 		}
 	};
+
+	// 非学生移除班级
+	if (userInfo.value.type.value !== "学生") {
+		delete userInfo.value.classname;
+	}
+
+	// 管理员移除身份（管理员身份不可更改）
+	if (userInfo.value.type.value === "admin") {
+		delete userInfo.value.type;
+	}
 }
 
 onShow(() => {
@@ -169,7 +186,6 @@ const styles = ref({
 		</view>
 
 		<view>
-			<!-- 输入框示例 -->
 			<uni-popup ref="inputDialog" type="dialog">
 				<uni-popup-dialog
 					mode="input"

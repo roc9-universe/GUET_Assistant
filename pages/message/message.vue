@@ -25,7 +25,8 @@
 				</view>
 			</view>
 		</view>
-	</view>
+
+	</view> 
 </template>
 
 <script setup>
@@ -36,7 +37,7 @@ const msglist = [
 		icon: "../../static/icon/msglist/tianqi.svg",
 		bgc: "#6881ff",
 		title: "天气",
-		describe: "",
+		describe: "请大家注意天气变化",
 		time: "",
 		unreadCount: 0
 	},
@@ -74,13 +75,14 @@ let totalUnreadCount = 0;
 msglist.forEach((item) => {
 	totalUnreadCount += item.unreadCount; // 累加每个消息的 unreadCount
 });
-uni.setTabBarBadge({
-	index: 2,
-	text: totalUnreadCount.toString()
-});
+if (totalUnreadCount > 0) {
+	uni.setTabBarBadge({
+		index: 2,
+		text: totalUnreadCount.toString()
+	});
+}
 
 function navigateTo(index) {
-	const listItem = msglist[index];
 	switch (index) {
 		case 0:
 			uni.navigateTo({
@@ -89,12 +91,12 @@ function navigateTo(index) {
 			break;
 		case 1:
 			uni.navigateTo({
-				url: `/pages/messageList/messageList?item=${encodeURIComponent(JSON.stringify(item))}`
+				url: `/pages/messageList/messageList?title=${msglist[index].title}`
 			});
 			break;
 		case 2:
 			uni.navigateTo({
-				url: `/pages/messageList/messageList?item=${encodeURIComponent(JSON.stringify(item))}`
+				url: `/pages/messageList/messageList?title=${msglist[index].title}`
 			});
 			break;
 		case 3:
@@ -184,4 +186,5 @@ function navigateTo(index) {
 	color: #fff;
 	border-radius: 18rpx;
 }
+
 </style>

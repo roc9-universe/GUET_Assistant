@@ -1,84 +1,97 @@
 <template>
-	<view>
-		<view class="map_text" v-if="textData.name && !isNavigationMode">
-			<view>
-				<text>您选择的位置：</text>
-				<text class="tip-titile">{{ textData.name }}</text>
-				<text class="tip-address">{{ textData.address }}</text>
-			</view>
-		</view>
-		<view class="map_container">
-			<map
-				v-if="isLocationReady"
-				:class="['map', { fullScreen: isNavigationMode }]"
-				:id="'map'"
-				:longitude="longitude"
-				:latitude="latitude"
-				:scale="isNavigationMode ? navigationScale : originalScale"
-				:show-location="true"
-				:markers="markers"
-				:polyline="polyline"
-				@click="handleMarkerTap"
-			></map>
-		</view>
-
-		<view v-if="!isNavigationMode" class="place">
-			<text style="color: #174e8e; margin-left: 20rpx">猜你想去</text>
-			<view v-for="place in recommendedPlaces" :key="place.id" class="place-item" @click="selectPlace(place)">
-				{{ place.name }}
-			</view>
-		</view>
-
-		<view v-if="!isNavigationMode" class="search">
-			<view v-show="isSearch" class="searchBox">
-				<input
-					type="text"
-					v-model="searchKey"
-					@focus="handleSearchTap"
-					@input="handelSearch"
-					placeholder="请输入搜索内容"
-				/>
-				<text style="color: #174e8e; margin-left: 140rpx" @click="handelSearch">搜索</text>
-				<text style="color: #174e8e; margin-left: 20rpx" @click="handelCancel">重置</text>
-			</view>
-		</view>
-
-		<scroll-view scroll-y class="address-list">
-			<view v-show="!isSearch" v-if="!isNavigationMode">
-				<view class="address-list-item" v-for="item in addressList" :key="item.id" @click="sureAddress(item)">
-					<view>
-						<text class="tip-titile">{{ item.name }}</text>
-						<text class="tip-address">{{ (+item.distance).toFixed(0) }}m | {{ item.address }}</text>
-					</view>
-					<view style="margin-right: 30rpx">
-						<img
-							v-if="activeId == item.id"
-							style="width: 50rpx; height: 50rpx"
-							src="../../static/icon/mine/success.svg"
-							alt=""
-						/>
-					</view>
+	<view class="page-container">
+		<view class="top">
+			<view class="map_text" v-if="textData.name && !isNavigationMode">
+				<view>
+					<text>您选择的位置：</text>
+					<text class="tip-titile">{{ textData.name }}</text>
+					<text class="tip-address">{{ textData.address }}</text>
 				</view>
 			</view>
-			<view v-show="isSearch" v-if="!isNavigationMode">
-				<view class="address-list-item" v-for="item in searchAddressList" :key="item.id" @click="sureAddress(item)">
-					<view>
-						<text class="tip-titile">{{ item.name }}</text>
-						<text class="tip-address">{{ (+item.distance).toFixed(0) }}m | {{ item.address }}</text>
-					</view>
-					<view style="margin-right: 30rpx">
-						<img
-							v-if="activeId == item.id"
-							style="width: 50rpx; height: 50rpx"
-							src="../../static/icon/mine/success.svg"
-							alt=""
-						/>
-					</view>
+			<view class="map_container">
+				<map
+					v-if="isLocationReady"
+					:class="['map', { fullScreen: isNavigationMode }]"
+					:id="'map'"
+					:longitude="longitude"
+					:latitude="latitude"
+					:scale="isNavigationMode ? navigationScale : originalScale"
+					:show-location="true"
+					:markers="markers"
+					:polyline="polyline"
+					@click="handleMarkerTap"
+				></map>
+			</view>
+
+			<view v-if="!isNavigationMode" class="place">
+				<text style="color: #174e8e; margin-left: 20rpx">猜你想去</text>
+				<view v-for="place in recommendedPlaces" :key="place.id" class="place-item" @click="selectPlace(place)">
+					{{ place.name }}
 				</view>
 			</view>
-		</scroll-view>
-		<button class="navigate" v-if="!isNavigationMode" @click="navigateToSelectedLocation">开始导航</button>
-		<button class="navigate" v-if="isNavigationMode" @click="exitNavigationMode">退出导航</button>
+
+			<view v-if="!isNavigationMode" class="search">
+				<view v-show="isSearch" class="searchBox">
+					<input
+						type="text"
+						v-model="searchKey"
+						@focus="handleSearchTap"
+						@input="handelSearch"
+						placeholder="请输入搜索内容"
+					/>
+					<text style="color: #174e8e; margin-left: 140rpx" @click="handelSearch">搜索</text>
+					<text style="color: #174e8e; margin-left: 20rpx" @click="handelCancel">重置</text>
+				</view>
+			</view>
+		</view>
+		<view class="buttom">
+			<scroll-view scroll-y class="address-list">
+				<view v-show="!isSearch" v-if="!isNavigationMode">
+					<view
+						class="address-list-item"
+						v-for="item in addressList"
+						:key="item.id"
+						@click="sureAddress(item)"
+					>
+						<view>
+							<text class="tip-titile">{{ item.name }}</text>
+							<text class="tip-address">{{ (+item.distance).toFixed(0) }}m | {{ item.address }}</text>
+						</view>
+						<view style="margin-right: 30rpx">
+							<img
+								v-if="activeId == item.id"
+								style="width: 50rpx; height: 50rpx"
+								src="../../static/icon/mine/success.svg"
+								alt=""
+							/>
+						</view>
+					</view>
+				</view>
+				<view v-show="isSearch" v-if="!isNavigationMode">
+					<view
+						class="address-list-item"
+						v-for="item in searchAddressList"
+						:key="item.id"
+						@click="sureAddress(item)"
+					>
+						<view>
+							<text class="tip-titile">{{ item.name }}</text>
+							<text class="tip-address">{{ (+item.distance).toFixed(0) }}m | {{ item.address }}</text>
+						</view>
+						<view style="margin-right: 30rpx">
+							<img
+								v-if="activeId == item.id"
+								style="width: 50rpx; height: 50rpx"
+								src="../../static/icon/mine/success.svg"
+								alt=""
+							/>
+						</view>
+					</view>
+				</view>
+			</scroll-view>
+			<button class="navigate" v-if="!isNavigationMode" @click="navigateToSelectedLocation">开始导航</button>
+			<button class="navigate" v-if="isNavigationMode" @click="exitNavigationMode">退出导航</button>
+		</view>
 	</view>
 </template>
 
@@ -400,14 +413,34 @@ const exitNavigationMode = () => {
 
 <style lang="scss" scoped>
 //@import url(@/common/style/base-style.scss);
-:deep(.uni-easyinput__placeholder-class) {
-	background-color: red !important;
+.page-container {
+	display: flex;
+	flex-direction: column;
+	height: 100vh; /* 全屏高度 */
+}
+
+.top {
+	flex: 0 0 auto; /* 前置内容占据自适应高度 */
+	margin-bottom: 20rpx;
+}
+.buttom{
+	flex: 1; /* 剩余空间填充 */
+}
+
+.tip-titile {
+	font-size: 28rpx;
+	color: $text-font-color-1;
+	font-weight: 400;
+}
+.tip-address {
+	font-size: 20rpx;
+	color: gray;
 }
 
 .map_container {
-	position: relative;
+	position: flex;
 	top: 0;
-	bottom: 80px; /* 底部留出的空间 */
+	bottom: calc(env(safe-area-inset-bottom) + 90rpx); /* 底部留出的空间 */
 	left: 0;
 	right: 0;
 }
@@ -435,31 +468,6 @@ text {
 	margin: 15px 0;
 	font-size: 15px;
 }
-.address-list {
-	position: relative;
-	top: auto; /* 移除绝对定位 */
-	bottom: auto;
-	left: 50rpx;
-	right: 50rpx;
-	height: 650rpx;
-	width: 650rpx;
-	overflow-y: auto; /* 添加滚动条 */
-	.address-list-item {
-		border-bottom: 1px solid $border-color;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-}
-.tip-titile {
-	font-size: 28rpx;
-	color: $text-font-color-1;
-	font-weight: 400;
-}
-.tip-address {
-	font-size: 20rpx;
-	color: gray;
-}
 
 .place {
 	height: 60rpx;
@@ -472,8 +480,8 @@ text {
 	margin-left: 20rpx;
 }
 .place-item {
-	padding: 10px;
-	border-bottom: 1px solid $border-color;
+	padding-left: 10px;
+	padding-right: 10px;
 	color: $brand-theme-color;
 	cursor: pointer;
 }
@@ -483,9 +491,9 @@ text {
 	padding: 8rpx;
 	background-color: #fff;
 	border-radius: 10rpx;
-	border-bottom: 1px solid $border-color;
 	align-items: center;
 	margin-left: 40rpx;
+	height: 65rpx;
 
 	.searchBox {
 		height: 65rpx;
@@ -509,6 +517,24 @@ text {
 		margin-right: 50rpx;
 	}
 }
+
+.address-list {
+	//position: relative;
+	top: auto;
+	bottom: calc(env(safe-area-inset-bottom) + 90rpx);
+	margin-left: 50rpx;
+	margin-right: 50rpx;
+	height: 550rpx;
+	width: 650rpx;
+	overflow-y: auto; /* 添加滚动条 */
+	.address-list-item {
+		border-bottom: 1px solid $border-color;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+}
+
 .navigate {
 	width: 750rpx;
 	height: 90rpx;

@@ -42,7 +42,7 @@ export default {
 	methods: {
 		async goToquestion() {
 			try {
-				if (this.studentId == null || this.password == null) {
+				if (!this.studentId || !this.password) {
 					uni.showToast({
 						title: "请填写所有信息",
 						icon: "none"
@@ -58,11 +58,15 @@ export default {
 						uni.showModal({
 							title: "登录成功",
 							content: "您已登录成功！",
-							showCancel: false
-						});
-
-						uni.switchTab({
-							url: "/pages/qa/qa"
+							showCancel: false,
+							success: (res) => {
+							    if (res.confirm) {
+							      // 用户点击“确定”后跳转页面
+							      uni.switchTab({
+							        url: "/pages/qa/qa",
+							      });
+							    }
+							  },
 						});
 					} else {
 						// 显示错误消息
@@ -102,11 +106,15 @@ export default {
 								uni.showModal({
 									title: "登录成功",
 									content: "您已登录成功！",
-									showCancel: false
-								});
-								// 登录成功后跳转到首页
-								uni.switchTab({
-									url: "/pages/qa/qa"
+									showCancel: false,
+									success: (res) => {
+									    if (res.confirm) {
+									      // 用户点击“确定”后跳转页面
+									      uni.switchTab({
+									        url: "/pages/qa/qa",
+									      });
+									    }
+									  },
 								});
 							} else {
 								uni.showToast({

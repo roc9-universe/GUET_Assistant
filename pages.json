@@ -16,7 +16,8 @@
 		{
 			"path": "pages/board/board",
 			"style": {
-				"navigationBarTitleText": "展板"
+				"navigationBarTitleText": "展板",
+				"enablePullDownRefresh": true
 			}
 		},
 		{
@@ -108,20 +109,18 @@
 			}
 		},
 		{
-			"path" : "pages/externalPage/externalPage",
-			"style" : 
-			{
-				"navigationBarTitleText" : "外部网页"
+			"path": "pages/externalPage/externalPage",
+			"style": {
+				"navigationBarTitleText": "外部网页"
 			}
 		},
 		{
-			"path" : "pages/messageList/messageList",
-			"style" : 
-			{
-				"navigationBarTitleText" : ""
+			"path": "pages/messageList/messageList",
+			"style": {
+				"navigationBarTitleText": ""
 			}
 		}
-		
+
 	],
 	"tabBar": {
 		"backgroundColor": "#f8f8f8",

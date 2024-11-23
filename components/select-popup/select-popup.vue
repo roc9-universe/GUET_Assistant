@@ -56,7 +56,7 @@ defineExpose({
 
 <style scoped lang="scss">
 .popup-content {
-	width: 500rpx;
+	width: 450rpx;
 	padding: $page-padding;
 }
 

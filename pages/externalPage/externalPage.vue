@@ -19,10 +19,8 @@ const wbStyles = {
 					<view>请注意您的账号和财产安全</view>
 				</view>
 				<view class="tip">
-					<text>
-						您即将离开桂电助手，去往：
-						<text class="url">{{ pageUrl }}</text>
-					</text>
+					您即将离开桂电助手，去往：
+					<text class="url">{{ pageUrl }}</text>
 				</view>
 			</view>
 			<view class="link-view">
@@ -73,6 +71,7 @@ const wbStyles = {
 
 	.tip {
 		line-height: 50rpx;
+		word-wrap: break-word;
 
 		.url {
 			color: $brand-theme-color;

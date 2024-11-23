@@ -66,9 +66,9 @@
 		},
 		async mounted() {
 			// 根据登录状态获取用户ID
-			// const userInfo = uni.getStorageSync("userInfo");
-			// const userId = userInfo.id;
-			const userId = -96940030;
+			const userInfo = uni.getStorageSync("userInfo");
+			const userId = userInfo.id;
+			// const userId = -96940030;
 			await this.loadTools(userId);
 		},
 		computed: {
@@ -168,7 +168,6 @@
 					}
 				}
 			},
-
 
 			viewDetail(id, title, publishTime) {
 				wx.navigateTo({

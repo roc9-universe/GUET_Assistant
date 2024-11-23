@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container box">
 		<view class="msg_list" v-for="(item, index) in msglist" @click="navigateTo(index)">
 			<view class="msg_icon">
 				<view class="icon_container" :style="{ backgroundColor: item.bgc }">
@@ -25,8 +25,7 @@
 				</view>
 			</view>
 		</view>
-
-	</view> 
+	</view>
 </template>
 
 <script setup>
@@ -115,10 +114,11 @@ function navigateTo(index) {
 
 .msg_list {
 	width: 100%;
-	height: 20vh;
+	height: 150rpx;
 	display: flex;
 	flex-direction: row;
-	border-bottom: 0.5rpx solid #cccccc;
+	border-bottom: 0.5rpx solid $text-font-color-5;
+	background-color: $bg-color-white;
 }
 
 .msg_icon {
@@ -130,8 +130,8 @@ function navigateTo(index) {
 }
 
 .icon_container {
-	width: 128rpx;
-	height: 128rpx;
+	width: 90rpx;
+	height: 90rpx;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -146,7 +146,7 @@ function navigateTo(index) {
 
 .msg_content {
 	height: 100%;
-	width: 55%;
+	width: 45%;
 	display: flex;
 	flex-direction: column;
 	/* align-items: center; */
@@ -165,16 +165,17 @@ function navigateTo(index) {
 }
 
 .msg_right {
-	width: 15%;
+	width: 20%;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
+	align-items: flex-end;
 	justify-content: center;
 }
 
 .time {
 	font-size: 24rpx;
 	color: $text-font-color-2;
+	text-align: end;
 }
 
 .unread {
@@ -186,5 +187,4 @@ function navigateTo(index) {
 	color: #fff;
 	border-radius: 18rpx;
 }
-
 </style>

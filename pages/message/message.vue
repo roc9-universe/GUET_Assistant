@@ -25,34 +25,36 @@
 				</view>
 			</view>
 		</view>
-	</view>
+
+	</view> 
 </template>
 
 <script setup>
+import { httpBaseURL } from "../../api/utils/url";
 const msglist = [
 	{
 		index: 0,
 		icon: "../../static/icon/msglist/tianqi.svg",
 		bgc: "#6881ff",
-		title: "天气变化",
-		describe: "天气炎热，建议着短...",
-		time: "2小时前",
+		title: "天气",
+		describe: "请大家注意天气变化",
+		time: "",
 		unreadCount: 0
 	},
 	{
 		index: 1,
 		icon: "../../static/icon/msglist/gantanhao.svg",
 		bgc: "#40d787",
-		title: "系统通知",
+		title: "系统消息",
 		describe: "恭喜你，昵称审核通...",
 		time: "11分钟前",
-		unreadCount: 1
+		unreadCount: 0
 	},
 	{
 		index: 2,
 		icon: "../../static/icon/msglist/qunzu.svg",
 		bgc: "#de868f",
-		title: "活动通知",
+		title: "活动消息",
 		describe: "各位同学，明天10月...",
 		time: "1天前",
 		unreadCount: 0
@@ -64,7 +66,7 @@ const msglist = [
 		title: "学校公告",
 		describe: "关于开展2023-2024...",
 		time: "2周前",
-		unreadCount: 1
+		unreadCount: 0
 	}
 ];
 
@@ -73,10 +75,12 @@ let totalUnreadCount = 0;
 msglist.forEach((item) => {
 	totalUnreadCount += item.unreadCount; // 累加每个消息的 unreadCount
 });
-uni.setTabBarBadge({
-	index: 2,
-	text: totalUnreadCount.toString()
-});
+if (totalUnreadCount > 0) {
+	uni.setTabBarBadge({
+		index: 2,
+		text: totalUnreadCount.toString()
+	});
+}
 
 function navigateTo(index) {
 	switch (index) {
@@ -86,8 +90,14 @@ function navigateTo(index) {
 			});
 			break;
 		case 1:
+			uni.navigateTo({
+				url: `/pages/messageList/messageList?title=${msglist[index].title}`
+			});
 			break;
 		case 2:
+			uni.navigateTo({
+				url: `/pages/messageList/messageList?title=${msglist[index].title}`
+			});
 			break;
 		case 3:
 			uni.switchTab({
@@ -176,4 +186,5 @@ function navigateTo(index) {
 	color: #fff;
 	border-radius: 18rpx;
 }
+
 </style>

@@ -60,3 +60,14 @@ export function getNoticeDetail(id, title) {
 			return response;
 		})
 }
+
+
+export function getMessageList(userId,type) {
+	return request({
+			url: `/message/getTitleList?userId=${userId}&type=${type}`,
+			method: "GET",
+		})
+		.then(response => {
+			return response;
+		})
+}

@@ -230,7 +230,6 @@ export default {
 }
 
 .container {
-	padding-right: 20rpx;
 	display: flex;
 	flex-direction: column;
 	height: 100%;
@@ -238,6 +237,7 @@ export default {
 
 .top_bar {
 	height: 6vh;
+	width: 100%;
 	background-color: $brand-theme-color;
 }
 

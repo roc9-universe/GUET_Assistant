@@ -269,10 +269,14 @@ export default {
 		}
 
 		.name {
+			max-width: 300rpx;
 			font-size: 42rpx;
 			font-weight: bold;
 			color: white;
 			margin-bottom: 10rpx;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
 		}
 
 		.student-id {

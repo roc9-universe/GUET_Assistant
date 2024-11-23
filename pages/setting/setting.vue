@@ -178,11 +178,19 @@ const dialogInputConfirm = async () => {
 			return;
 		}
 	}
-	await updateUserInfo({
-		id: userId,
-		[inputDialogConfig.value.key]: inputData.value
-	});
-	await getUserInfo(userId);
+
+	try {
+		await updateUserInfo({
+			id: userId,
+			[inputDialogConfig.value.key]: inputData.value
+		});
+		await getUserInfo(userId);
+	} catch {
+		uni.showToast({
+			title: "更新失败",
+			icon: "none"
+		});
+	}
 	fetchUserInfo();
 	inputData.value = "";
 };

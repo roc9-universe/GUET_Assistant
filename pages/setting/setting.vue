@@ -50,7 +50,11 @@ function fetchUserInfo() {
 		},
 		studentId: {
 			name: data.type === "学生" ? "学号" : "工号",
-			value: data.studentId
+			value: data.studentId,
+			rule: {
+				tip: "学号/工号只能为数字",
+				regular: "^\\d+$"
+			}
 		},
 		gender: {
 			name: "性别",
@@ -63,7 +67,11 @@ function fetchUserInfo() {
 		},
 		phone: {
 			name: "电话",
-			value: data.phone
+			value: data.phone,
+			rule: {
+				tip: "请输入合法电话号码",
+				regular: "^1[3-9]\\d{9}$"
+			}
 		},
 		type: {
 			name: "身份",
@@ -156,6 +164,19 @@ const dialogInputConfirm = async () => {
 			icon: "none"
 		});
 		return;
+	}
+
+	if (userInfo.value[inputDialogConfig.value.key].rule) {
+		const { regular, tip } = userInfo.value[inputDialogConfig.value.key].rule;
+		const regex = new RegExp(regular);
+		if (!regex.test(inputData.value)) {
+			console.error("规则校验：不合法", tip);
+			uni.showToast({
+				title: tip,
+				icon: "none"
+			});
+			return;
+		}
 	}
 	await updateUserInfo({
 		id: userId,

@@ -61,7 +61,7 @@
 				</scroll-view>
 			</view>
 
-			<button class="register-buttom" @click="register">验证</button>
+			<button class="register-button" @click="register">验证</button>
 		</form>
 	</view>
 </template>
@@ -83,9 +83,9 @@ export default {
 			password: "",
 			confirmPassword: "",
 			studentId: "",
-			type: "student", // 默认选择学生
+			type: "", // 默认选择学生
 			selectedOption: "",
-			selectedIdentity: "student",
+			selectedIdentity: "",
 			showDropdown: false,
 			selectedOption: "",
 			options: [
@@ -151,11 +151,20 @@ export default {
 				return;
 			}
 			try {
+				// 检查密码是否只包含数字和大小写字母
+				const passwordRegex = /^[A-Za-z0-9]+$/;
+				if (!passwordRegex.test(this.password)) {
+					uni.showToast({
+						title: "密码只能包含数字和字母（不包含特殊字符）",
+						icon: "none"
+					});
+					return;
+				}
 				// 发起注册请求
 				const response = await userRegister({
 					username: this.username,
 					type: this.type,
-					password: this.password,
+					password:this.passwordd,
 					college: this.selectedOption, // 根据选择的学院
 					studentId: this.studentId
 				});
@@ -335,7 +344,7 @@ export default {
 	background-color: $bg-color-grey;
 }
 
-.register-buttom {
+.register-button {
 	width: 80%;
 	background-color: $brand-theme-color;
 	color: white;

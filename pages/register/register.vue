@@ -172,7 +172,7 @@ export default {
 				const response = await userRegister({
 					username: this.username,
 					type: this.type,
-					password: this.passwordd,
+					password: this.password,
 					college: this.selectedOption, // 根据选择的学院
 					studentId: this.studentId
 				});
@@ -186,10 +186,10 @@ export default {
 						this.goTologin();
 					}, 2000);
 				} else {
-					uni.showToast({ title: response.msg || "注册失败，请重试", icon: "none" });
+					uni.showToast({ title: "注册失败，请重试", icon: "none" });
 				}
 			} catch (error) {
-				uni.showToast({ title: error.message || "注册失败，请重试", icon: "none" });
+				uni.showToast({ title: "注册失败", icon: "none" });
 			}
 		}
 	}

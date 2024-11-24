@@ -142,6 +142,7 @@ const inputDialogConfig = ref({
  * @param {string} key 用户key
  */
 const inputDialogToggle = (item, key) => {
+	inputData.value = "";
 	if (inputDialog.value) {
 		inputDialogConfig.value = {
 			key,
@@ -264,6 +265,7 @@ const styles = ref({
 <style scoped lang="scss">
 .avatar-box {
 	position: relative;
+
 	.avatar {
 		width: 120rpx;
 		height: 120rpx;

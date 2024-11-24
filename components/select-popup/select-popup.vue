@@ -60,22 +60,23 @@ defineExpose({
 	padding: $page-padding;
 }
 
-:deep(.uni-data-checklist) {
-	.checklist-group {
-		flex-direction: column;
+// 小程序穿透失效
+// :deep(.uni-data-checklist) {
+// 	.checklist-group {
+// 		flex-direction: column;
 
-		.checklist-box {
-			.checklist-content {
-				justify-content: center;
-			}
-		}
+// 		.checklist-box {
+// 			.checklist-content {
+// 				justify-content: center;
+// 			}
+// 		}
 
-		.checklist-box.is--tag {
-			margin-right: 0;
-			text-align: center;
-			padding: 20px;
-			border: 0;
-		}
-	}
-}
+// 		.checklist-box.is--tag {
+// 			margin-right: 0;
+// 			text-align: center;
+// 			padding: 20px;
+// 			border: 0;
+// 		}
+// 	}
+// }
 </style>

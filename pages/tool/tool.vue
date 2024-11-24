@@ -126,6 +126,7 @@ onShow(() => {
 // 	padding: $page-padding;
 // }
 
+
 .tool-box {
 	display: flex;
 	align-items: center;
@@ -139,9 +140,10 @@ onShow(() => {
 		line-height: 100rpx;
 		font-weight: bold;
 		margin: 20rpx;
-		color: $text-font-color-2;
-		background: linear-gradient(to right, transparent 20%, #cde4dd, transparent),
-			linear-gradient(to left, transparent 20%, #cde4dd, transparent);
+		color: $text-font-color-1;
+		background: linear-gradient(to right, transparent 20%, $bg-color-qa, transparent),
+			linear-gradient(to left, transparent 20%, $bg-color-qa, transparent);
+
 	}
 
 	.tool-img {
@@ -156,4 +158,5 @@ onShow(() => {
 		display: flex;
 	}
 }
+
 </style>

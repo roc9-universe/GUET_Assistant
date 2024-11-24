@@ -135,13 +135,26 @@ const currentLocation = ref({
 
 // 推荐地点数据
 const recommendedPlaces = ref([
-	{ id: 1, name: "第十六教学楼", longitude: 110.41890899999999, latitude: 25.31016200000001 },
-	{ id: 2, name: "第十七教学楼", longitude: 110.41897900000004, latitude: 25.309527999999993 },
-	{ id: 3, name: "第十七教学楼", longitude: 110.41897900000004, latitude: 25.309527999999993 },
-	{ id: 4, name: "第十七教学楼", longitude: 110.41897900000004, latitude: 25.309527999999993 },
-	{ id: 5, name: "第十七教学楼", longitude: 110.41897900000004, latitude: 25.309527999999993 },
-	{ id: 6, name: "第十七教学楼", longitude: 110.41897900000004, latitude: 25.309527999999993 },
-	{ id: 7, name: "第十七教学楼", longitude: 110.41897900000004, latitude: 25.309527999999993 }
+	{ id: 1, name: "第一教学楼", longitude: 110.41782151470954, latitude: 25.315374761215846 },
+	{ id: 2, name: "第二教学楼", longitude: 110.41891363744048, latitude: 25.315879193446925 },
+	{ id: 3, name: "第三教学楼", longitude: 110.41941938962384, latitude: 25.31541481096049 },
+	{ id: 4, name: "第四教学楼", longitude: 110.41719692114998, latitude: 25.314746358110042 },
+	{ id: 5, name: "第五教学楼", longitude: 110.41687037245902, latitude: 25.314296370901115 },
+	{ id: 6, name: "第六教学楼", longitude: 110.41670575852856, latitude: 25.313800793990403 },
+	{ id: 7, name: "文科楼", longitude: 110.41655433799303, latitude: 25.31291651785881 },
+	{ id: 8, name: "第十一教学楼", longitude: 110.41827086673572, latitude: 25.31208859486333 },
+	{ id: 9, name: "第十三教学楼", longitude: 110.41711367561174, latitude: 25.31109742554851 },
+	{ id: 10, name: "第十四教学楼", longitude: 110.41733270220732, latitude: 25.310791425226192 },
+	{ id: 11, name: "第十六教学楼", longitude: 110.41890899999999, latitude: 25.31016200000001 },
+	{ id: 12, name: "第十七教学楼", longitude: 110.4189803990372, latitude: 25.309524262307676 },
+	{ id: 13, name: "第四十一教学楼", longitude: 110.4176399766751, latitude: 25.306873475822282 },
+	{ id: 14, name: "第四十二教学楼", longitude: 110.41839417072856, latitude: 25.30686182085074 },
+	{ id: 15, name: "第四十五教学楼", longitude: 110.41684710588527, latitude: 25.306797718498483 },
+	{ id: 16, name: "实训楼", longitude: 110.420936997956, latitude: 25.30989185732404 },
+	{ id: 17, name: "花江慧谷(四创)", longitude: 110.41368666301423, latitude: 25.315393955525753 },
+	{ id: 18, name: "花江智慧谷(观音山)", longitude: 110.408787, latitude: 25.305022 },
+	{ id: 19, name: "科技楼", longitude: 110.4193177998419, latitude: 25.314837335504315 },
+	{ id: 20, name: "大礼堂(会议中心)", longitude: 110.42005841818025, latitude: 25.310717929644596 }
 ]);
 
 onMounted(() => {
@@ -229,8 +242,8 @@ const sureAddress = (ev, type) => {
 	markers.value = [
 		{
 			id: 1,
-			latitude: latitude.value, // 正确地使用了latitude变量
-			longitude: longitude.value // 正确地使用了longitude变量
+			latitude: latitude.value, // 使用了latitude变量
+			longitude: longitude.value // 使用了longitude变量
 		}
 	];
 
@@ -286,12 +299,14 @@ const handelSearch = (ev) => {
 	throttleTimer = setTimeout(() => {
 		// 只有输入框内有值的时候才会搜索
 		if (searchKey.value) {
+			const specificPlace = "桂林电子科技大学花江校区";
+			const query = `${specificPlace} ${searchKey.value}`; // 拼接模糊搜索关键词
 			myAmapFun.value.getPoiAround({
 				iconPath: "../../static/icon/mine/position.svg",
 				iconWidth: 22,
 				iconHeight: 32,
 				location: location,
-				querykeywords: searchKey.value,
+				querykeywords: query,
 				success: (data) => {
 					if (data.poisData.length == 0) {
 						uni.showModal({
@@ -423,7 +438,7 @@ const exitNavigationMode = () => {
 	flex: 0 0 auto; /* 前置内容占据自适应高度 */
 	margin-bottom: 20rpx;
 }
-.buttom{
+.buttom {
 	flex: 1; /* 剩余空间填充 */
 }
 

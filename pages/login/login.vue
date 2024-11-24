@@ -60,13 +60,13 @@ export default {
 							content: "您已登录成功！",
 							showCancel: false,
 							success: (res) => {
-							    if (res.confirm) {
-							      // 用户点击“确定”后跳转页面
-							      uni.switchTab({
-							        url: "/pages/qa/qa",
-							      });
-							    }
-							  },
+								if (res.confirm) {
+									// 用户点击“确定”后跳转页面
+									uni.switchTab({
+										url: "/pages/qa/qa"
+									});
+								}
+							}
 						});
 					} else {
 						// 显示错误消息
@@ -108,13 +108,13 @@ export default {
 									content: "您已登录成功！",
 									showCancel: false,
 									success: (res) => {
-									    if (res.confirm) {
-									      // 用户点击“确定”后跳转页面
-									      uni.switchTab({
-									        url: "/pages/qa/qa",
-									      });
-									    }
-									  },
+										if (res.confirm) {
+											// 用户点击“确定”后跳转页面
+											uni.switchTab({
+												url: "/pages/qa/qa"
+											});
+										}
+									}
 								});
 							} else {
 								uni.showToast({

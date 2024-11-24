@@ -3,16 +3,8 @@
 		
 	</view>
 </template>
-
 <script>
-	export default {
-		data() {
-			return {
-				
-			}
-		},
-		methods: {
-
+</script>
 <style scoped lang="scss">
 // .box {
 // 	padding: $page-padding;
@@ -32,9 +24,8 @@
 		font-weight: bold;
 		margin: 20rpx;
 		color: $text-font-color-1;
+		background: linear-gradient(to right, transparent 20%, $bg-color-qa, transparent),
+			linear-gradient(to left, transparent 20%, $bg-color-qa, transparent);
+
 	}
-</script>
-
-<style>
-
 </style>

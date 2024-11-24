@@ -122,7 +122,7 @@ export default {
 			this.showDropdown = false;
 		},
 		goTologin() {
-			uni.redirectTo({
+			uni.navigateBack({
 				url: "/pages/login/login"
 			});
 		},
@@ -160,11 +160,19 @@ export default {
 					});
 					return;
 				}
+				const studentIdRegex = /^[0-9]+$/;
+				if (!studentIdRegex.test(this.studentId)) {
+					uni.showToast({
+						title: "学号只能包含数字",
+						icon: "none"
+					});
+					return;
+				}
 				// 发起注册请求
 				const response = await userRegister({
 					username: this.username,
 					type: this.type,
-					password:this.passwordd,
+					password: this.passwordd,
 					college: this.selectedOption, // 根据选择的学院
 					studentId: this.studentId
 				});

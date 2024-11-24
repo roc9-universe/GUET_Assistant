@@ -136,6 +136,7 @@ export default {
 					}
 				},
 				fail: (err) => {
+					console.error("微信登录失败", err);
 					uni.showToast({
 						title: "微信登录失败，请重试",
 						icon: "none"
@@ -143,7 +144,7 @@ export default {
 				}
 			});
 		},
-		loginWithQQ(){
+		loginWithQQ() {
 			uni.showToast({
 				title: "抱歉，QQ登录暂不可用，请使用其他方式登录。",
 				icon: "none"

@@ -1,12 +1,14 @@
 <template>
-	<view class="mine">
+	<view class="box">
 		<!--头像-->
 		<view class="info">
 			<view class="profile">
-				<image class="avatar" src="../../static/icon/mine/avatar.jpg" />
+				<image class="avatar" :src="avatar" />
 				<view class="details">
 					<text class="name">{{ username }}</text>
-					<text class="student-id">学号/工号: {{ studentId }}</text>
+					<text class="student-id">
+						{{ type === "学生" ? "学号" : "工号" }} {{ studentId ? studentId : "请绑定账号" }}
+					</text>
 				</view>
 				<button class="edit-btn" @click="editInfo">编辑资料</button>
 			</view>
@@ -15,7 +17,7 @@
 				<text class="school">桂林电子科技大学</text>
 				<image class="icon" src="../../static/icon/mine/school.svg"></image>
 			</view>
-			<text class="specific">学院{{ type }}</text>
+			<text class="specific">学院{{ isAdmin ? "管理员" : type }}</text>
 		</view>
 
 		<!--功能-->
@@ -32,6 +34,10 @@
 				<image class="icon" src="../../static/icon/mine/weather.svg" />
 				<text>今日天气</text>
 			</view>
+		</view>
+
+		<!--工具-->
+		<view class="main">
 			<view class="menu-item" @click="goTotool">
 				<image class="icon" src="../../static/icon/mine/tool.svg" />
 				<text>常用工具</text>
@@ -40,52 +46,99 @@
 				<image class="icon" src="../../static/icon/mine/about.svg" />
 				<text>关于我们</text>
 			</view>
+		</view>
+
+		<!--设置 -->
+		<view class="main">
 			<view class="menu-item" @click="editInfo">
 				<image class="icon" src="../../static/icon/mine/setting.svg" />
 				<text>设置</text>
 			</view>
-			<view class="menu-item" @click="exitLogin">
+			<view v-if="!wxId" class="menu-item" @click="bindWeChat">
+				<image class="icon" src="../../static/icon/mine/wx.svg" />
+				<text>绑定微信</text>
+			</view>
+			<view v-if="!studentId" class="menu-item" @click="bindAccount">
+				<image class="icon" src="../../static/icon/mine/zh.svg" />
+				<text>绑定账号</text>
+			</view>
+			<view class="menu-item" style="border-bottom: 0" @click="exitLogin">
 				<image class="icon" src="../../static/icon/mine/exit.svg" />
 				<text>退出登录</text>
 			</view>
+		</view>
+
+		<view>
+			<uni-popup ref="inputDialog" type="dialog">
+				<uni-popup-dialog
+					mode="input"
+					title="绑定账号"
+					@close="confirmBindingClose()"
+					@confirm="confirmBindingAccount()"
+				>
+					<view style="width: 100%">
+						<view>
+							<uni-easyinput v-model="inputData.studentId" focus placeholder="请填写工号/学号" />
+						</view>
+						<view style="margin-top: 20rpx">
+							<uni-easyinput v-model="inputData.password" type="password" placeholder="请填写密码" />
+						</view>
+					</view>
+				</uni-popup-dialog>
+			</uni-popup>
 		</view>
 	</view>
 </template>
 
 <script>
+import { getUserInfo, binding } from "../../api/user.js";
+
 export default {
 	data() {
 		return {
+			id: "",
+			avatar: "",
 			username: "",
 			studentId: "",
+			wxId: "",
 			type: "",
-			isAdmin: false
+			isAdmin: false,
+			inputData: {
+				studentId: "",
+				password: ""
+			}
 		};
 	},
 	onShow() {
-		// 从 storage 中获取用户信息
-		const userInfo = uni.getStorageSync("userInfo");
-		if (userInfo) {
-			// 用户名和学号
-			this.username = userInfo.username || "未绑定";
-			this.studentId = userInfo.studentId || "请前往编辑资料绑定";
-			this.type = userInfo.type || "未绑定身份";
-			//console.log("name:",this.username);
-			if (userInfo.type === "admin") {
-				this.isAdmin = true;
-			} else {
-				this.isAdmin = false;
-			}
-		}
+		this.initialData();
 	},
 	methods: {
+		initialData() {
+			// 从 storage 中获取用户信息
+			const userInfo = uni.getStorageSync("userInfo");
+			if (userInfo) {
+				// 用户名和学号
+				this.id = userInfo.id || "";
+				this.username = userInfo.username || "未绑定";
+				this.studentId = userInfo.studentId || "";
+				this.wxId = userInfo.wxId || "";
+				this.avatar = userInfo.avatar || "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
+				this.type = userInfo.type || "未绑定身份";
+
+				//console.log("name:",this.username);
+				if (userInfo.type === "admin") {
+					this.isAdmin = true;
+				} else {
+					this.isAdmin = false;
+				}
+			}
+		},
 		editInfo() {
-			//你好
 			uni.navigateTo({
 				url: "/pages/setting/setting"
 			});
 		},
-		goTopublish(){
+		goTopublish() {
 			uni.navigateTo({
 				url: "/pages/publish/publish"
 			});
@@ -112,6 +165,74 @@ export default {
 				url: "/pages/about/about"
 			});
 		},
+		bindWeChat() {
+			uni.showLoading({
+				title: "绑定中",
+				mask: true
+			});
+			wx.login({
+				success: async (res) => {
+					try {
+						await binding({ code: res.code });
+						await getUserInfo(this.id);
+						this.initialData();
+						uni.showToast({
+							title: "绑定成功",
+							icon: "success"
+						});
+					} catch {
+						uni.showToast({
+							title: "绑定失败",
+							icon: "error"
+						});
+					} finally {
+						uni.hideLoading();
+					}
+				}
+			});
+		},
+		bindAccount() {
+			this.$refs.inputDialog.open();
+		},
+		async confirmBindingAccount() {
+			if (this.inputData.password === "" || this.inputData.studentId === "") {
+				uni.showToast({
+					title: "请同时输入账号和密码",
+					icon: "none"
+				});
+				return;
+			}
+			uni.showLoading({
+				title: "绑定中",
+				mask: true
+			});
+			try {
+				await binding(this.inputData);
+				await getUserInfo(this.id);
+				this.initialData();
+				uni.showToast({
+					title: "绑定成功",
+					icon: "success"
+				});
+				this.inputData = {
+					studentId: "",
+					password: ""
+				};
+			} catch {
+				uni.showToast({
+					title: "绑定失败",
+					icon: "error"
+				});
+			} finally {
+				uni.hideLoading();
+			}
+		},
+		confirmBindingClose() {
+			this.inputData = {
+				studentId: "",
+				password: ""
+			};
+		},
 		exitLogin() {
 			uni.clearStorageSync("userInfo");
 			uni.redirectTo({
@@ -123,14 +244,6 @@ export default {
 </script>
 
 <style lang="scss">
-.mine {
-	display: flex;
-	flex-direction: column;
-	width: 100vw;
-	height: calc(100vh - env(safe-area-inset-bottom));
-	background-color: $bg-color-grey;
-}
-
 .info {
 	background-color: $brand-theme-color;
 	padding: 20rpx;
@@ -156,10 +269,14 @@ export default {
 		}
 
 		.name {
+			max-width: 300rpx;
 			font-size: 42rpx;
 			font-weight: bold;
 			color: white;
 			margin-bottom: 10rpx;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
 		}
 
 		.student-id {
@@ -201,8 +318,8 @@ export default {
 	}
 }
 .main {
-	padding: 10rpx 20rpx 20rpx 20rpx;
-	margin-top: 50rpx;
+	padding: 0 20rpx;
+	margin-top: 30rpx;
 	margin-bottom: 20rpx;
 	background-color: white;
 
@@ -211,7 +328,7 @@ export default {
 		flex-direction: row;
 		align-items: center;
 		padding: 20rpx;
-		border-bottom: 1px solid $border-color;
+		border-bottom: 1px solid $text-font-color-5;
 	}
 }
 

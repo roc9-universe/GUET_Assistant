@@ -1,5 +1,5 @@
 <template>
-	<view class="container">
+	<view class="container box">
 		<view class="msg_list" v-for="(item, index) in msglist" @click="navigateTo(index)">
 			<view class="msg_icon">
 				<view class="icon_container" :style="{ backgroundColor: item.bgc }">
@@ -29,30 +29,31 @@
 </template>
 
 <script setup>
+import { httpBaseURL } from "../../api/utils/url";
 const msglist = [
 	{
 		index: 0,
 		icon: "../../static/icon/msglist/tianqi.svg",
 		bgc: "#6881ff",
-		title: "天气变化",
-		describe: "天气炎热，建议着短...",
-		time: "2小时前",
+		title: "天气",
+		describe: "请大家注意天气变化",
+		time: "",
 		unreadCount: 0
 	},
 	{
 		index: 1,
 		icon: "../../static/icon/msglist/gantanhao.svg",
 		bgc: "#40d787",
-		title: "系统通知",
+		title: "系统消息",
 		describe: "恭喜你，昵称审核通...",
 		time: "11分钟前",
-		unreadCount: 1
+		unreadCount: 0
 	},
 	{
 		index: 2,
 		icon: "../../static/icon/msglist/qunzu.svg",
 		bgc: "#de868f",
-		title: "活动通知",
+		title: "活动消息",
 		describe: "各位同学，明天10月...",
 		time: "1天前",
 		unreadCount: 0
@@ -64,7 +65,7 @@ const msglist = [
 		title: "学校公告",
 		describe: "关于开展2023-2024...",
 		time: "2周前",
-		unreadCount: 1
+		unreadCount: 0
 	}
 ];
 
@@ -73,10 +74,12 @@ let totalUnreadCount = 0;
 msglist.forEach((item) => {
 	totalUnreadCount += item.unreadCount; // 累加每个消息的 unreadCount
 });
-uni.setTabBarBadge({
-	index: 2,
-	text: totalUnreadCount.toString()
-});
+if (totalUnreadCount > 0) {
+	uni.setTabBarBadge({
+		index: 2,
+		text: totalUnreadCount.toString()
+	});
+}
 
 function navigateTo(index) {
 	switch (index) {
@@ -86,8 +89,14 @@ function navigateTo(index) {
 			});
 			break;
 		case 1:
+			uni.navigateTo({
+				url: `/pages/messageList/messageList?title=${msglist[index].title}`
+			});
 			break;
 		case 2:
+			uni.navigateTo({
+				url: `/pages/messageList/messageList?title=${msglist[index].title}`
+			});
 			break;
 		case 3:
 			uni.switchTab({
@@ -105,10 +114,11 @@ function navigateTo(index) {
 
 .msg_list {
 	width: 100%;
-	height: 20vh;
+	height: 150rpx;
 	display: flex;
 	flex-direction: row;
-	border-bottom: 0.5rpx solid #cccccc;
+	border-bottom: 0.5rpx solid $text-font-color-5;
+	background-color: $bg-color-white;
 }
 
 .msg_icon {
@@ -120,8 +130,8 @@ function navigateTo(index) {
 }
 
 .icon_container {
-	width: 128rpx;
-	height: 128rpx;
+	width: 90rpx;
+	height: 90rpx;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -136,7 +146,7 @@ function navigateTo(index) {
 
 .msg_content {
 	height: 100%;
-	width: 55%;
+	width: 45%;
 	display: flex;
 	flex-direction: column;
 	/* align-items: center; */
@@ -155,16 +165,17 @@ function navigateTo(index) {
 }
 
 .msg_right {
-	width: 15%;
+	width: 20%;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
+	align-items: flex-end;
 	justify-content: center;
 }
 
 .time {
 	font-size: 24rpx;
 	color: $text-font-color-2;
+	text-align: end;
 }
 
 .unread {

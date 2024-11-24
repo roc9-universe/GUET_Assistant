@@ -1,10 +1,7 @@
 <template>
 	<view class="container">
-		<view class="top_bar"></view>
-
+		<image class="background-image" src="../../static/background/wheatherbackg.jpg" mode="scaleToFill"></image>
 		<view class="content">
-			<image class="background-image" src="../../static/background/wheatherbackg.jpg" mode="aspectFill"></image>
-
 			<view class="main_weather">
 				<view class="title_container">
 					<view class="title_main">灵川县 乡道167</view>
@@ -230,15 +227,10 @@ export default {
 }
 
 .container {
-	padding-right: 20rpx;
 	display: flex;
 	flex-direction: column;
-	height: 100%;
-}
-
-.top_bar {
-	height: 6vh;
-	background-color: $brand-theme-color;
+	min-height: 100vh;
+	position: relative;
 }
 
 .content {
@@ -248,26 +240,19 @@ export default {
 	justify-content: center;
 }
 
-.search_box {
-	margin-top: 16rpx;
-	height: 64rpx;
-	width: 100%;
-	background-color: #ebebeb;
-	border-radius: 32rpx;
-}
-
 .main_weather {
-	margin-top: 8%;
+	margin-top: 10%;
 	margin-bottom: 8%;
 }
 
 .background-image {
-	position: absolute;
 	width: 100%;
-	height: 100%;
+	height: 115%;
+	position: absolute;
 	top: 0;
 	left: 0;
 	z-index: -1;
+	object-fit: cover;
 }
 
 .title_air {

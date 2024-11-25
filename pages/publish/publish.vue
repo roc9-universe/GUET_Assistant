@@ -6,7 +6,7 @@ import { getMessageType, postMessage } from "../../api/notice.js";
 const submitForm = ref({
 	title: "",
 	content: "",
-	userId: [],
+	userId: ["-1519038463", "-96940030"],
 	status: 0,
 	publishTime: "",
 	regularTime: "",

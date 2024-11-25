@@ -30,56 +30,59 @@
 
 <script setup>
 import { httpBaseURL } from "../../api/utils/url";
-const msglist = [
-	{
-		index: 0,
-		icon: "../../static/icon/msglist/tianqi.svg",
-		bgc: "#6881ff",
-		title: "天气",
-		describe: "请大家注意天气变化",
-		time: "",
-		unreadCount: 0
-	},
-	{
-		index: 1,
-		icon: "../../static/icon/msglist/gantanhao.svg",
-		bgc: "#40d787",
-		title: "系统消息",
-		describe: "恭喜你，昵称审核通...",
-		time: "11分钟前",
-		unreadCount: 0
-	},
-	{
-		index: 2,
-		icon: "../../static/icon/msglist/qunzu.svg",
-		bgc: "#de868f",
-		title: "活动消息",
-		describe: "各位同学，明天10月...",
-		time: "1天前",
-		unreadCount: 0
-	},
-	{
-		index: 3,
-		icon: "../../static/icon/msglist/xiaoxi.svg",
-		bgc: "#de868f",
-		title: "学校公告",
-		describe: "关于开展2023-2024...",
-		time: "2周前",
-		unreadCount: 0
-	}
-];
+import { ref } from "vue";
+import { onShow } from "@dcloudio/uni-app";
 
-// 统计未读消息数量
-let totalUnreadCount = 0;
-msglist.forEach((item) => {
-	totalUnreadCount += item.unreadCount; // 累加每个消息的 unreadCount
+const noticeNumber = ref({
+	all: 0, // 全部
+	system: 0, // 系统消息
+	activity: 0 // 活动通知
 });
-if (totalUnreadCount > 0) {
-	uni.setTabBarBadge({
-		index: 2,
-		text: totalUnreadCount.toString()
-	});
-}
+
+const msglist = ref();
+
+onShow(() => {
+	noticeNumber.value = uni.getStorageSync("noticeNumber") || noticeNumber.value;
+
+	msglist.value = [
+		{
+			index: 0,
+			icon: "../../static/icon/msglist/tianqi.svg",
+			bgc: "#6881ff",
+			title: "天气",
+			describe: "请大家注意天气变化",
+			time: "",
+			unreadCount: 0
+		},
+		{
+			index: 1,
+			icon: "../../static/icon/msglist/gantanhao.svg",
+			bgc: "#40d787",
+			title: "系统消息",
+			describe: "恭喜你，昵称审核通...",
+			time: "11分钟前",
+			unreadCount: noticeNumber.value.system
+		},
+		{
+			index: 2,
+			icon: "../../static/icon/msglist/qunzu.svg",
+			bgc: "#de868f",
+			title: "活动消息",
+			describe: "各位同学，明天10月...",
+			time: "1天前",
+			unreadCount: noticeNumber.value.activity
+		},
+		{
+			index: 3,
+			icon: "../../static/icon/msglist/xiaoxi.svg",
+			bgc: "#ffaa7f",
+			title: "学校公告",
+			describe: "关于开展2023-2024...",
+			time: "2周前",
+			unreadCount: 0
+		}
+	];
+});
 
 function navigateTo(index) {
 	switch (index) {
@@ -89,13 +92,17 @@ function navigateTo(index) {
 			});
 			break;
 		case 1:
+			noticeNumber.value.all -= noticeNumber.value.system;
+			noticeNumber.value.system = 0;
 			uni.navigateTo({
-				url: `/pages/messageList/messageList?title=${msglist[index].title}`
+				url: `/pages/messageList/messageList?title=${msglist.value[index].title}`
 			});
 			break;
 		case 2:
+			noticeNumber.value.all -= noticeNumber.value.activity;
+			noticeNumber.value.activity = 0;
 			uni.navigateTo({
-				url: `/pages/messageList/messageList?title=${msglist[index].title}`
+				url: `/pages/messageList/messageList?title=${msglist.value[index].title}`
 			});
 			break;
 		case 3:
@@ -106,6 +113,24 @@ function navigateTo(index) {
 		default:
 			break;
 	}
+
+	msglist.value[index].unreadCount = 0;
+	if (noticeNumber.value.all > 0) {
+		console.log(noticeNumber.value.all);
+		// 设置通知红点
+		uni.setTabBarBadge({
+			index: 2,
+			text: String(noticeNumber.value.all)
+		});
+	} else {
+		noticeNumber.value.all = 0;
+		uni.removeTabBarBadge({
+			index: 2
+		});
+	}
+
+	// 缓存通知数量
+	uni.setStorageSync("noticeNumber", noticeNumber.value);
 }
 </script>
 

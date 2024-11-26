@@ -32,7 +32,6 @@
 import { httpBaseURL } from "../../api/utils/url";
 import { ref } from "vue";
 import { onShow } from "@dcloudio/uni-app";
-import { noticeNumber as noticeNum, controlRed } from "@/utils/socket.js";
 
 const noticeNumber = ref({
 	all: 0, // 全部
@@ -43,8 +42,7 @@ const noticeNumber = ref({
 const msglist = ref();
 
 onShow(() => {
-	noticeNumber.value = noticeNum.value || noticeNumber.value;
-	controlRed();
+	noticeNumber.value = uni.getStorageSync("noticeNumber") || noticeNumber.value;
 
 	msglist.value = [
 		{
@@ -61,7 +59,7 @@ onShow(() => {
 			icon: "../../static/icon/msglist/gantanhao.svg",
 			bgc: "#40d787",
 			title: "系统消息",
-			describe: "恭喜你，昵称审核通...",
+			describe: "请注意系统消息",
 			time: "11分钟前",
 			unreadCount: noticeNumber.value.system
 		},
@@ -70,7 +68,7 @@ onShow(() => {
 			icon: "../../static/icon/msglist/qunzu.svg",
 			bgc: "#de868f",
 			title: "活动消息",
-			describe: "各位同学，明天10月...",
+			describe: "学校的活动消息",
 			time: "1天前",
 			unreadCount: noticeNumber.value.activity
 		},
@@ -79,7 +77,7 @@ onShow(() => {
 			icon: "../../static/icon/msglist/xiaoxi.svg",
 			bgc: "#ffaa7f",
 			title: "学校公告",
-			describe: "关于开展2023-2024...",
+			describe: "请大家注意学校公告",
 			time: "2周前",
 			unreadCount: 0
 		}
@@ -117,6 +115,19 @@ function navigateTo(index) {
 	}
 
 	msglist.value[index].unreadCount = 0;
+	if (noticeNumber.value.all > 0) {
+		console.log(noticeNumber.value.all);
+		// 设置通知红点
+		uni.setTabBarBadge({
+			index: 2,
+			text: String(noticeNumber.value.all)
+		});
+	} else {
+		noticeNumber.value.all = 0;
+		uni.removeTabBarBadge({
+			index: 2
+		});
+	}
 
 	// 缓存通知数量
 	uni.setStorageSync("noticeNumber", noticeNumber.value);

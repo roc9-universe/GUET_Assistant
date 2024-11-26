@@ -62,7 +62,7 @@ export function getNoticeDetail(id, title) {
 }
 
 
-export function getMessageList(userId,type) {
+export function getMessageList(userId, type) {
 	return request({
 			url: `/message/getTitleList?userId=${userId}&type=${type}`,
 			method: "GET",

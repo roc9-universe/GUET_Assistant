@@ -1,43 +1,72 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { onShow } from "@dcloudio/uni-app";
 import { getMessageType, postMessage } from "../../api/notice.js";
+import { getUserList } from "../../api/user.js";
 
 const submitForm = ref({
 	title: "",
 	content: "",
-	userId: ["-1519038463", "-96940030"],
+	userId: [],
 	status: 0,
 	publishTime: "",
 	regularTime: "",
-	messageType: ""
+	messageType: "系统消息"
 });
 
+/** 消息类型 */
 const messageType = ref([]);
+/** 用户范围 */
+const userRange = ref([]);
+/** 用于渲染提交表单中选中的userId */
+const selectedUserRange = computed(() =>
+	userRange.value.filter((user) => submitForm.value.userId.includes(user.value))
+);
+/** 选择器实例 */
+const popup = ref();
+const openSelectPopup = () => {
+	popup.value.open("right");
+};
+const selectUser = (value) => {
+	console.log(value);
+	submitForm.value.userId = value;
+};
 
 const getData = () => {
 	getMessageType().then((res) => {
-		console.log(res);
 		const data = [];
 		for (const value of res.data) {
 			data.push({ value: value, text: value });
 		}
 		messageType.value = data;
 	});
+	getUserList().then((res) => {
+		const data = [];
+		for (const key in res) {
+			data.push({ value: key, text: res[key] });
+		}
+		userRange.value = data;
+	});
 };
 
 onShow(() => {
 	getData();
+	// 获取缓存
 	submitForm.value = {
 		...submitForm.value,
 		...uni.getStorageSync("publishDraft")
 	};
 });
 
+/** 信息白名单：确认需要指定用户群体 */
+const messageWhite = () => {
+	return ["系统消息", "活动消息"].includes(submitForm.value.messageType);
+};
+
 /** 消息类型修改的时候触发 */
 const messageTypeChange = () => {
-	if (!["系统消息", "活动消息"].includes(submitForm.value.messageType)) {
-		delete submitForm.value.userId;
+	if (!messageWhite()) {
+		submitForm.value.userId = [];
 	}
 };
 
@@ -55,7 +84,9 @@ const onPubish = async () => {
 		title: "发布中",
 		mask: true
 	});
+	// 处理提交数据
 	submitForm.value.publishTime = submitForm.value.regularTime;
+
 	try {
 		await postMessage(submitForm.value);
 		uni.hideLoading();
@@ -93,9 +124,25 @@ const onCancel = () => {
 					<uni-easyinput v-model="submitForm.title" focus placeholder="请输入标题"></uni-easyinput>
 				</view>
 			</uni-section>
-			<uni-section v-if="['系统消息', '活动消息'].includes(submitForm.messageType)" title="用户群体" type="line">
+			<uni-section title="消息类型" type="line">
 				<view class="pubish-view">
-					<uni-easyinput focus placeholder="请选择用户群体"></uni-easyinput>
+					<uni-data-select
+						v-model="submitForm.messageType"
+						placeholder="请选择消息类型"
+						:clear="true"
+						:localdata="messageType"
+						@change="messageTypeChange()"
+					/>
+				</view>
+			</uni-section>
+			<uni-section v-if="messageWhite()" title="用户群体" type="line">
+				<view class="pubish-view">
+					<view class="pubish-content pubish-user" @click="openSelectPopup()">
+						<view v-for="(item, index) in selectedUserRange" class="pubish-user-item">
+							<!-- <uni-tag :inverted="true" :text="item.text" type="primary" /> -->
+							{{ item.text }}
+						</view>
+					</view>
 				</view>
 			</uni-section>
 			<uni-section title="定时发布" type="line">
@@ -103,17 +150,7 @@ const onCancel = () => {
 					<uni-datetime-picker v-model="submitForm.regularTime" type="datetime" />
 				</view>
 			</uni-section>
-			<uni-section title="消息类型" type="line">
-				<view class="pubish-view">
-					<uni-data-select
-						v-model="submitForm.messageType"
-						placeholder="请选择消息类型"
-						:clear="ture"
-						:localdata="messageType"
-						@change="messageTypeChange()"
-					/>
-				</view>
-			</uni-section>
+
 			<uni-section title="消息内容" type="line">
 				<view class="pubish-view">
 					<view class="pubish-content" @click="goEdit()">
@@ -124,8 +161,21 @@ const onCancel = () => {
 		</view>
 		<view class="pubish-button-box">
 			<button class="pubish-button" hover-class="is-hover" @click="onPubish()">发布</button>
-			<button style="margin-top: 10px" @click="onCancel()">取消</button>
+			<button style="margin-top: 10px; margin-bottom: 10vh" @click="onCancel()">取消</button>
 		</view>
+
+		<!-- 选择器弹窗 -->
+		<select-popup ref="popup" :range="userRange" :sure="selectUser" :initial-value="submitForm.userId">
+			<template #head>
+				<view class="user-box">
+					<image class="user-img" mode="aspectFill" src="../../static/icon/publish/user.svg"></image>
+					<view class="user-title">用户列表</view>
+				</view>
+			</template>
+			<template #tip>
+				<uni-section title="选择发送的用户" type="line"></uni-section>
+			</template>
+		</select-popup>
 	</view>
 </template>
 
@@ -137,11 +187,27 @@ s .box {
 .pubish-view {
 	padding: $page-padding;
 }
+
 .pubish-content {
 	min-height: 200rpx;
+	max-height: 500rpx;
 	padding: $page-padding;
 	border: 1px solid $border-color;
 	border-radius: 4px;
+	overflow: auto;
+}
+
+.pubish-user {
+	min-height: 100rpx;
+	display: flex;
+	flex-wrap: wrap;
+	.pubish-user-item {
+		padding: 10rpx;
+		margin: 0 10rpx 10rpx 0;
+		color: $brand-theme-color;
+		border: 1px solid $brand-theme-color;
+		border-radius: 8rpx;
+	}
 }
 
 .pubish-button-box {
@@ -157,6 +223,34 @@ s .box {
 
 	.is-hover {
 		background-color: darken($brand-theme-color, 10%);
+	}
+}
+
+.user-box {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 20rpx;
+	line-height: 100rpx;
+	font-weight: bold;
+}
+
+.user-box {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 20rpx;
+
+	.user-img {
+		width: 100rpx;
+		height: 100rpx;
+	}
+
+	.user-title {
+		font-size: 40rpx;
+		font-weight: bold;
+		padding: 20rpx;
+		display: flex;
 	}
 }
 </style>

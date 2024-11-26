@@ -143,3 +143,15 @@ export function binding(data) {
 		return response.data;
 	})
 }
+
+/** 
+ * 返回用户列表
+ */
+export function getUserList() {
+	return request({
+		url: "/user/getUserList",
+		method: "GET"
+	}).then(response => {
+		return response.data;
+	})
+}

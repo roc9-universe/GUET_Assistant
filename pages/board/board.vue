@@ -75,6 +75,7 @@
 import { getNoticeList } from "../../api/notice.js";
 import { getUserTool } from "@/api/tool.js";
 import { getUserInfo } from "../../api/user.js";
+import { controlRed } from "@/utils/socket.js";
 
 export default {
 	data() {
@@ -88,6 +89,9 @@ export default {
 		this.loadAnnouncements();
 		this.userId = uni.getStorageSync("userInfo").id;
 		this.loadTools(this.userId);
+	},
+	onShow() {
+		controlRed();
 	},
 	async onPullDownRefresh() {
 		await this.loadAnnouncements();

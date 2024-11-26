@@ -11,11 +11,28 @@ const BASE_URL = wsBaseURL;
 const userId = uni.getStorageSync("userInfo").id;
 
 /** 通知数量 */
-const noticeNumber = ref(uni.getStorageSync("noticeNumber") || {
+export const noticeNumber = ref(uni.getStorageSync("noticeNumber") || {
 	all: 0, // 全部
 	system: 0, // 系统消息
 	activity: 0, // 活动通知
 });
+
+/** 控制通知红点 */
+export const controlRed = () => {
+	if (noticeNumber.value.all > 0) {
+		console.log(noticeNumber.value);
+		uni.setTabBarBadge({
+			index: 2,
+			text: String(noticeNumber.value.all),
+		});
+	} else {
+		noticeNumber.value.all = 0;
+		uni.removeTabBarBadge({
+			index: 2
+		});
+	}
+	uni.setStorageSync("noticeNumber", noticeNumber.value);
+}
 
 /** 通知处理 */
 const noticeHandle = {
@@ -27,28 +44,15 @@ const noticeHandle = {
 	}
 };
 
+
 /** WebSocket 单例 */
 let socketInstance = null;
 
 export function socket() {
 	if (socketInstance) {
-		console.log("WebSocket 已存在，直接返回当前实例");
+		console.log("WebSocket 已存在，已返回当前实例");
 		return socketInstance;
 	}
-
-	/** 控制通知红点 */
-	const control = () => {
-		if (noticeNumber.value.all > 0) {
-			console.log(noticeNumber.value);
-			uni.setTabBarBadge({
-				index: 2,
-				text: String(noticeNumber.value.all),
-			});
-			uni.setStorageSync("noticeNumber", noticeNumber.value);
-		}
-	}
-
-	control();
 
 	// 创建 WebSocket 连接
 	socketInstance = uni.connectSocket({
@@ -86,7 +90,7 @@ export function socket() {
 		}
 
 		// 设置通知红点
-		control();
+		controlRed();
 	});
 
 	uni.onSocketError(function(res) {

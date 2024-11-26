@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { onShow } from "@dcloudio/uni-app";
 import { chatQA } from "@/api/chat.js";
+import { controlRed } from "@/utils/socket.js";
 
 /** 用户头像 */
 const userAvatar = ref();
@@ -47,6 +48,7 @@ onShow(() => {
 	userAvatar.value =
 		uni.getStorageSync("userInfo").avatar || "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
 	chatData.value = uni.getStorageSync("chatData") || [];
+	controlRed();
 });
 </script>
 

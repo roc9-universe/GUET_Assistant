@@ -57,7 +57,9 @@ defineExpose({
 <style scoped lang="scss">
 .popup-content {
 	width: 450rpx;
+	height: 60vh;
 	padding: $page-padding;
+	overflow: auto;
 }
 
 // 小程序穿透失效

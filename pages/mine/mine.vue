@@ -92,6 +92,7 @@
 
 <script>
 import { getUserInfo, binding } from "../../api/user.js";
+import { controlRed } from "@/utils/socket.js";
 
 export default {
 	data() {
@@ -111,6 +112,7 @@ export default {
 	},
 	onShow() {
 		this.initialData();
+		controlRed();
 	},
 	methods: {
 		initialData() {

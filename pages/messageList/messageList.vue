@@ -31,7 +31,7 @@ export default {
 	methods: {
 		async loadmessages() {
 			try {
-				const userId = uni.getStorageSync("userInfo").studentId;
+				const userId = uni.getStorageSync("userInfo").id;
 				const response = await getMessageList(userId, this.type);
 				this.messages = response.data;
 			} catch (error) {

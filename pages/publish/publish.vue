@@ -7,7 +7,7 @@ import { getUserList } from "../../api/user.js";
 const submitForm = ref({
 	title: "",
 	content: "",
-	userId: [],
+	userId: [""],
 	status: 0,
 	publishTime: "",
 	regularTime: "",
@@ -33,13 +33,7 @@ const selectUser = (value) => {
 };
 
 const getData = () => {
-	getMessageType().then((res) => {
-		const data = [];
-		for (const value of res.data) {
-			data.push({ value: value, text: value });
-		}
-		messageType.value = data;
-	});
+	console.log(111)
 	getUserList().then((res) => {
 		const data = [];
 		for (const key in res) {
@@ -47,9 +41,19 @@ const getData = () => {
 		}
 		userRange.value = data;
 	});
+	getMessageType().then((res) => {
+		const data = [];
+		for (const value of res.data) {
+			data.push({ value: value, text: value });
+		}
+		messageType.value = data;
+	});
+	
+	
 };
 
 onShow(() => {
+	console.log(111)
 	getData();
 	// 获取缓存
 	submitForm.value = {
@@ -138,7 +142,7 @@ const onCancel = () => {
 			<uni-section v-if="messageWhite()" title="用户群体" type="line">
 				<view class="pubish-view">
 					<view class="pubish-content pubish-user" @click="openSelectPopup()">
-						<view v-for="(item, index) in selectedUserRange" class="pubish-user-item">
+						<view v-for="(item, index) in selectedUserRange" :key="item.value" class="pubish-user-item">
 							<!-- <uni-tag :inverted="true" :text="item.text" type="primary" /> -->
 							{{ item.text }}
 						</view>

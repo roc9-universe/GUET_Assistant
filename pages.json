@@ -119,6 +119,20 @@
 			"style": {
 				"navigationBarTitleText": ""
 			}
+		},
+		{
+			"path" : "pages/introduction/introduction",
+			"style" : 
+			{
+				"navigationBarTitleText" : "院校介绍"
+			}
+		},
+		{
+			"path" : "pages/introduction/detail",
+			"style" : 
+			{
+				"navigationBarTitleText" : "院校详请"
+			}
 		}
 
 	],

@@ -20,7 +20,7 @@
 							<image
 								class="swiper-image"
 								mode="aspectFill"
-								src="https://www.guet.edu.cn/_upload/article/images/51/b4/c60744af48fdbf3c5637c9d447ae/a117339b-d2aa-4752-9ca7-d2b12cad231f.jpg"
+								src="https://www.guet.edu.cn/_upload/tpl/01/39/313/template313/images/list_banner.jpg"
 								alt="图2"
 							/>
 						</swiper-item>
@@ -331,6 +331,9 @@ input {
 			font-size: 13px;
 			/* 标题字体大小 */
 			margin-bottom: 5px;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
 		}
 
 		.announcement_date {

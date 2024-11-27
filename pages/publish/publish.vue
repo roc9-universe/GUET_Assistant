@@ -28,12 +28,11 @@ const openSelectPopup = () => {
 	popup.value.open("right");
 };
 const selectUser = (value) => {
-	console.log(value);
 	submitForm.value.userId = value;
 };
 
 const getData = () => {
-	console.log(111)
+	console.log(111);
 	getUserList().then((res) => {
 		const data = [];
 		for (const key in res) {
@@ -48,12 +47,10 @@ const getData = () => {
 		}
 		messageType.value = data;
 	});
-	
-	
 };
 
 onShow(() => {
-	console.log(111)
+	console.log(111);
 	getData();
 	// 获取缓存
 	submitForm.value = {
@@ -70,7 +67,7 @@ const messageWhite = () => {
 /** 消息类型修改的时候触发 */
 const messageTypeChange = () => {
 	if (!messageWhite()) {
-		submitForm.value.userId = [];
+		submitForm.value.userId = [""];
 	}
 };
 

@@ -32,6 +32,7 @@
 import { httpBaseURL } from "../../api/utils/url";
 import { ref } from "vue";
 import { onShow } from "@dcloudio/uni-app";
+import { noticeNumber as noticeNum, controlRed } from "@/utils/socket.js";
 
 const noticeNumber = ref({
 	all: 0, // 全部
@@ -42,7 +43,8 @@ const noticeNumber = ref({
 const msglist = ref();
 
 onShow(() => {
-	noticeNumber.value = uni.getStorageSync("noticeNumber") || noticeNumber.value;
+	noticeNumber.value = noticeNum.value || noticeNumber.value;
+	controlRed();
 
 	msglist.value = [
 		{
@@ -115,19 +117,6 @@ function navigateTo(index) {
 	}
 
 	msglist.value[index].unreadCount = 0;
-	if (noticeNumber.value.all > 0) {
-		console.log(noticeNumber.value.all);
-		// 设置通知红点
-		uni.setTabBarBadge({
-			index: 2,
-			text: String(noticeNumber.value.all)
-		});
-	} else {
-		noticeNumber.value.all = 0;
-		uni.removeTabBarBadge({
-			index: 2
-		});
-	}
 
 	// 缓存通知数量
 	uni.setStorageSync("noticeNumber", noticeNumber.value);

@@ -7,7 +7,15 @@
 
 			<view class="hotspot_box">
 				<view class="hotspot-swiper">
-					<swiper indicator-dots="true" :autoplay="true" :circular="true" interval="3000" duration="500">
+					<swiper
+						indicator-dots="true"
+						indicator-color="rgba(229, 229, 229, 0.3)"
+						indicator-active-color="#ffffff"
+						:autoplay="true"
+						:circular="true"
+						interval="3000"
+						duration="500"
+					>
 						<swiper-item>
 							<image
 								class="swiper-image"

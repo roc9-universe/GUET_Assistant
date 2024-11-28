@@ -1,7 +1,16 @@
 <template>
 	<view class="messageList_container">
+		
+		<view class="title_container">
+			<text class="title_text">{{ type }}</text>
+		</view>
+
 		<view class="message_list">
-			<view v-for="message in messages" :key="message.id" @click="viewDetail(message.id, message.title,message.publishTime)">
+			<view
+				v-for="message in messages"
+				:key="message.id"
+				@click="viewDetail(message.id, message.title, message.publishTime)"
+			>
 				<view class="message_content">
 					<view class="message_title">{{ message.title }}</view>
 					<view class="message_date">{{ TimestampToYYYYMMDD(message.publishTime) }}</view>
@@ -10,7 +19,7 @@
 				<!-- 分割线 -->
 			</view>
 		</view>
-		
+
 		<view class="empty_tips" v-if="this.messages.length === 0">暂无消息</view>
 	</view>
 </template>
@@ -21,7 +30,7 @@ export default {
 	data() {
 		return {
 			messages: [],
-			type:''
+			type: ""
 		};
 	},
 	onLoad(options) {
@@ -62,31 +71,31 @@ export default {
 	flex-direction: column;
 	align-items: center;
 	width: 100%;
-	align-items: center; // 纵轴对齐方式，默认是纵轴 子元素垂直居中
-	justify-content: center; //纵轴对齐方式，默认是纵轴
+	align-items: center;
+	justify-content: center;
 }
 .message_list {
 	display: flex;
 	width: 90%;
-	flex-direction: column; /* 垂直排列 */
+	flex-direction: column;
 }
 .message_item {
-	cursor: pointer; /* 鼠标悬停效果 */
+	cursor: pointer;
 }
 .message_title {
-	font-size: 13px; /* 标题字体大小 */
+	font-size: 13px;
 	margin-bottom: 5px;
 }
 .message_date {
-	font-size: 12px; /* 日期字体大小 */
-	color: #888; /* 日期颜色 */
+	font-size: 12px;
+	color: #888;
 	margin-top: 10px;
-	margin-bottom: 10px; /* 下边距 */
+	margin-bottom: 10px;
 }
 .divider {
-	height: 1px; /* 分割线高度 */
-	background-color: #c5cccc; /* 分割线颜色 */
-	margin: 10px 0; /* 上下边距 */
+	height: 1px;
+	background-color: #c5cccc;
+	margin: 10px 0;
 }
 
 .empty_tips {
@@ -95,7 +104,17 @@ export default {
 	font-size: 28rpx;
 	color: $text-font-color-2;
 	line-height: 2;
-	opacity: 0.7; 
+	opacity: 0.7;
 }
 
+.title_container {
+	width: 100%;
+	text-align: center;
+}
+
+.title_text {
+	font-size: 24rpx;
+	font-weight: bold;
+	color: $text-font-color-5;
+}
 </style>

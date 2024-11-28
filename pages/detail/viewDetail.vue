@@ -7,7 +7,7 @@
       </view>
       <!-- 文章内容 -->
       <view class="article-content">
-        <rich-text :nodes="richTextContent"></rich-text>
+        <rich-text :nodes= "richTextContent" ></rich-text>
       </view>
     </view>
 
@@ -39,7 +39,13 @@ export default {
     async loadAnnouncementDetail(id,title) {
       try {
         const response = await getNoticeDetail(id,title);
-		    this.richTextContent = response.data[0]
+			
+			this.richTextContent = response.data[0]
+			this.richTextContent = this.richTextContent.replace(
+			  /<img /g,
+			  '<img style="max-width:100%;height:auto;display:block;margin:10px 0;" '
+			);
+
       } catch (error) {
         console.error('加载公告详情失败', error);
       }
@@ -107,9 +113,13 @@ export default {
 }
 
 .article-content img {
-  max-width: 100%;
+  
   border-radius: 8px;
-  margin-top: 15px;
+  
+  max-width: 90%; 
+  height: auto;   
+  display: block; 
+  margin: 10px 0; 
 }
 
 .article-content a {
@@ -120,4 +130,6 @@ export default {
 .article-content a:hover {
   text-decoration: underline;
 }
+
+
 </style>

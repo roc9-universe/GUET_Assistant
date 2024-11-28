@@ -97,8 +97,12 @@ export default {
 		this.loadAnnouncements();
 		this.userId = uni.getStorageSync("userInfo").id;
 		this.loadTools(this.userId);
+		
 	},
 	onShow() {
+		
+		this.userId = uni.getStorageSync("userInfo").id;
+		this.loadTools(this.userId);
 		controlRed();
 	},
 	async onPullDownRefresh() {

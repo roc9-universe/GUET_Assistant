@@ -1,10 +1,5 @@
 <template>
 	<view class="messageList_container">
-		
-		<view class="title_container">
-			<text class="title_text">{{ type }}</text>
-		</view>
-
 		<view class="message_list">
 			<view
 				v-for="message in messages"
@@ -36,6 +31,11 @@ export default {
 	onLoad(options) {
 		this.type = options.title;
 		this.loadmessages();
+	},
+	onReady() {
+		uni.setNavigationBarTitle({
+			title: this.type
+		});
 	},
 	methods: {
 		async loadmessages() {
@@ -105,16 +105,5 @@ export default {
 	color: $text-font-color-2;
 	line-height: 2;
 	opacity: 0.7;
-}
-
-.title_container {
-	width: 100%;
-	text-align: center;
-}
-
-.title_text {
-	font-size: 24rpx;
-	font-weight: bold;
-	color: $text-font-color-5;
 }
 </style>

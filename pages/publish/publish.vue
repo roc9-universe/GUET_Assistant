@@ -231,9 +231,10 @@ const onCancel = () => {
 </template>
 
 <style scoped lang="scss">
-s .box {
+.box {
 	display: flex;
 	flex-direction: column;
+	background-color: white;
 }
 
 .pubish-view {

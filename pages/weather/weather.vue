@@ -23,6 +23,9 @@
 					<view class="weather_text">
 						{{ item.weather_text }}
 					</view>
+					<view class="temperature_text">
+						{{ item.tempMax}}|{{item.tempMin}}°C
+					</view>
 				</view>
 			</view>
 
@@ -164,7 +167,8 @@ export default {
 						item.weather_icon = "../../static/icon/weather/" + temp[i].iconDay + "-fill.svg";
 						console.log("icon=>" + temp[i].iconDay);
 						item.weather_text = temp[i].textDay;
-
+						item.tempMax = temp[i].tempMax;
+						item.tempMin = temp[i].tempMin;
 						this.fiveDaysWeather.push(item);
 					}
 					console.log(this.fiveDaysWeather);
@@ -241,8 +245,8 @@ export default {
 }
 
 .main_weather {
-	margin-top: 10%;
-	margin-bottom: 8%;
+	margin-top: 64rpx;
+	margin-bottom:64rpx;
 }
 
 .background-image {
@@ -295,9 +299,9 @@ export default {
 
 .list_weather_container {
 	width: 100%;
-	height: 16vh;
-	margin-top: 10%;
-	margin-bottom: 10%;
+	height: 300rpx;
+	margin-top: 64rpx;
+	margin-bottom: 64rpx;
 	display: flex;
 	flex-direction: row;
 }
@@ -338,4 +342,12 @@ export default {
 	font-weight: bold;
 	color: $text-font-color-5;
 }
+
+.temperature_text {
+	text-align: center;
+	font-size: 32rpx;
+	font-weight: bold;
+	color: $text-font-color-5;
+}
+
 </style>
